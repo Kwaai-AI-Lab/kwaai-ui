@@ -12,6 +12,8 @@ interface BotsContextProps {
   addBot: (bot: Bot) => void;
   removeBot: (id: string) => void;
   loadFaces: () => void;
+  userType: 'student' | 'professor'; // Add userType to context
+  setUserType: React.Dispatch<React.SetStateAction<'student' | 'professor'>>;
 }
 
 const BotsContext = createContext<BotsContextProps | undefined>(undefined);
@@ -20,6 +22,7 @@ export const BotsProvider: React.FC<BotsProviderProps> = ({ children }) => {
   const [bots, setBots] = useState<Bot[]>([]);
   const [faceList, setFaceList] = useState<Feature[]>([]);
   const [voiceList, setVoiceList] = useState<Feature[]>([]);
+  const [userType, setUserType] = useState<'student' | 'professor'>('student'); // Default to 'student'
 
   const addBot = (bot: Bot) => {
     setBots((prevBots) => [...prevBots, bot]);
@@ -56,7 +59,7 @@ export const BotsProvider: React.FC<BotsProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <BotsContext.Provider value={{ bots, faceList,voiceList , addBot, removeBot, loadFaces }}>
+    <BotsContext.Provider value={{ bots, faceList, voiceList, addBot, removeBot, loadFaces, userType, setUserType }}>
       {children}
     </BotsContext.Provider>
   );

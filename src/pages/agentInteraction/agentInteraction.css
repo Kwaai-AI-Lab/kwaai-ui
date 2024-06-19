@@ -1,0 +1,71 @@
+.agentInteractionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.headerInteractionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center; /* This centers items vertically */
+  width: 100%;
+  gap: 10px;
+}
+
+.backButton {
+  padding: 0; /* Remove padding to fit the icon size */
+  background-color: transparent; /* Set background to transparent */
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Center the icon vertically inside the button */
+}
+
+.backIcon {
+  width: 44px; /* Set the width of the icon */
+  height: 44px; /* Set the height of the icon */
+}
+
+.botName {
+  font-family: 'Poppins', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: left;
+  display: flex;
+  align-items: center; /* Center text vertically */
+}
+
+.additionalText {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: left;
+  color: #9577F5;
+  display: flex;
+  align-items: center; /* Center text vertically */
+}
+
+.bodyInteractionContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.leftContent {
+  width: 85%; /* Set width to 85% */
+  height: 100%;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  overflow: hidden; /* Prevent overflow */
+  padding: 10px;
+}
+
+.rightContent {
+  width: 15%;
+  height: 100%;
+  border: 1px solid red;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
