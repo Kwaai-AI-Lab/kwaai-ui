@@ -22,7 +22,7 @@ export const BotsProvider: React.FC<BotsProviderProps> = ({ children }) => {
   const [bots, setBots] = useState<Bot[]>([]);
   const [faceList, setFaceList] = useState<Feature[]>([]);
   const [voiceList, setVoiceList] = useState<Feature[]>([]);
-  const [userType, setUserType] = useState<'student' | 'professor'>('student'); // Default to 'student'
+  const [userType, setUserType] = useState<'student' | 'professor'>('professor'); // Default to 'student'
 
   const addBot = (bot: Bot) => {
     setBots((prevBots) => [...prevBots, bot]);

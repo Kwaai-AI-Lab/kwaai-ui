@@ -3,7 +3,8 @@ import { Bot } from "../../../data/types";
 import botIcon from "../../../assets/bot-icon.png";
 import shareIcon from "../../../assets/share-icon.png";
 import { useBots } from "../../../context/botsContext";
-import DeleteConfirmationModal from "../../../components/deleteConfirmationModal";
+import DeleteConfirmationModal from "../../../components/deleteMessage/deleteConfirmationModal";
+import ShareConfirmationModal from "../../../components/shareMessage/shareConfirmationModal";
 import PrimaryButton from "../../../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../../../components/buttons/secondaryButton/secondaryButton";
 import "./botItem.css";
@@ -16,15 +17,15 @@ interface BotItemProps {
 const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
   const { removeBot, userType } = useBots();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const handleDelete = () => {
     removeBot(botItemData.id);
     setIsModalOpen(false);
   };
 
-  const handleShareClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // handle share logic here
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
   };
 
   const handleDeleteClick = () => {
@@ -70,6 +71,12 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
         onConfirm={handleDelete}
+      />
+      <ShareConfirmationModal
+        isOpen={isShareModalOpen}
+        onRequestClose={() => setIsShareModalOpen(false)}
+        onConfirm={handleDelete}
+        bot={botItemData} // Pass the botItemData here
       />
     </div>
   );
