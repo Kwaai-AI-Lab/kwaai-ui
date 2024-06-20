@@ -3,22 +3,41 @@ import { Bot } from "../../../data/types";
 import botIcon from "../../../assets/bot-icon.png";
 import shareIcon from "../../../assets/share-icon.png";
 import { useBots } from "../../../context/botsContext";
-import "./botItem.css";
 import DeleteConfirmationModal from "../../../components/deleteConfirmationModal";
 import PrimaryButton from "../../../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../../../components/buttons/secondaryButton/secondaryButton";
+import "./botItem.css";
 
 interface BotItemProps {
   botItemData: Bot;
+  onBotSelect: (bot: Bot) => void;
 }
 
-const BotItem: React.FC<BotItemProps> = ({ botItemData }) => {
-  const { removeBot } = useBots();
+const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
+  const { removeBot, userType } = useBots();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDelete = () => {
     removeBot(botItemData.id);
     setIsModalOpen(false);
+  };
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // handle share logic here
+  };
+
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleEditClick = () => {
+    // handle edit logic here
+  };
+
+  const handleGoToCourseClick = () => {
+    console.log('Go to course');
+    onBotSelect(botItemData);
   };
 
   return (
@@ -29,15 +48,23 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData }) => {
       <div className="bot-card-body">
         <div className="bot-card-header-with-button">
           <h2 className="bot-card-name">{botItemData.name}</h2>
-          <button className="share-button">
-            <img src={shareIcon} alt="Share" />
-          </button>
+          { userType === 'professor' && (
+            <button className="share-button" onClick={handleShareClick}>
+              <img src={shareIcon} alt="Share" />
+            </button>
+          )}
         </div>
         <p className="bot-card-description">{botItemData.description}</p>
       </div>
       <div className="bot-buttons-area">
-        <SecondaryButton text="Delete" onClick={() => setIsModalOpen(true)} enabled={true} />
-        <PrimaryButton text="Edit" onClick={() => {}} enabled={true} />
+        {userType === 'professor' ? (
+          <>
+          <SecondaryButton text="Delete" onClick={handleDeleteClick} enabled={true} />
+          <PrimaryButton text="Edit" onClick={handleEditClick} enabled={true} />
+        </>
+        ) : (
+          <PrimaryButton text="Go to Course" onClick={handleGoToCourseClick} enabled={true} />
+        )}
       </div>
       <DeleteConfirmationModal
         isOpen={isModalOpen}
