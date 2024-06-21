@@ -1,0 +1,30 @@
+.sideMenuItem-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.sideMenuItem-container:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Rollover style */
+}
+
+.sideMenuItem-container.selected {
+    background-color: rgba(255, 255, 255, 0.2); /* Selected style */
+}
+
+.sideMenuItem-text {
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: left;
+    color: white;
+    margin-left: 8px;
+}
+
+.sideMenuItem-image {
+    width: 24px;
+    height: 20px;
+}

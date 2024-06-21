@@ -1,0 +1,5 @@
+.sideMenu-container {
+    display: flex;
+    flex-direction: column;
+    /* Other styles as needed */
+}
