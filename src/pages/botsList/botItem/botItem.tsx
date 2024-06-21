@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Bot } from "../../../data/types";
 import botIcon from "../../../assets/bot-icon.png";
 import shareIcon from "../../../assets/share-icon.png";
-import { useBots } from "../../../context/botsContext";
+import { useAgents, AgentViewType } from "../../../context/botsContext";
 import DeleteConfirmationModal from "../../../components/deleteMessage/deleteConfirmationModal";
 import ShareConfirmationModal from "../../../components/shareMessage/shareConfirmationModal";
 import PrimaryButton from "../../../components/buttons/primaryButton/primaryButton";
@@ -12,15 +12,16 @@ import "./botItem.css";
 interface BotItemProps {
   botItemData: Bot;
   onBotSelect: (bot: Bot) => void;
+  onEditBot: (bot: Bot) => void; // Add new prop for handling edit
 }
 
-const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
-  const { removeBot, userType } = useBots();
+const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot }) => {
+  const { removeToMyAgent, agentViewType } = useAgents();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const handleDelete = () => {
-    removeBot(botItemData.id);
+    removeToMyAgent(botItemData.id);
     setIsModalOpen(false);
   };
 
@@ -33,7 +34,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
   };
 
   const handleEditClick = () => {
-    // handle edit logic here
+    onEditBot(botItemData); // Pass botItemData to onEditBot
   };
 
   const handleGoToCourseClick = () => {
@@ -49,7 +50,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
       <div className="bot-card-body">
         <div className="bot-card-header-with-button">
           <h2 className="bot-card-name">{botItemData.name}</h2>
-          { userType === 'professor' && (
+          { agentViewType === AgentViewType.MyAgents && (
             <button className="share-button" onClick={handleShareClick}>
               <img src={shareIcon} alt="Share" />
             </button>
@@ -58,11 +59,11 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect }) => {
         <p className="bot-card-description">{botItemData.description}</p>
       </div>
       <div className="bot-buttons-area">
-        {userType === 'professor' ? (
+        {agentViewType === AgentViewType.MyAgents ? (
           <>
-          <SecondaryButton text="Delete" onClick={handleDeleteClick} enabled={true} />
-          <PrimaryButton text="Edit" onClick={handleEditClick} enabled={true} />
-        </>
+            <SecondaryButton text="Delete" onClick={handleDeleteClick} enabled={true} />
+            <PrimaryButton text="Edit" onClick={handleEditClick} enabled={true} />
+          </>
         ) : (
           <PrimaryButton text="Go to Course" onClick={handleGoToCourseClick} enabled={true} />
         )}

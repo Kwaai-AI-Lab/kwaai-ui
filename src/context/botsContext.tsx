@@ -1,35 +1,49 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { Bot, Feature } from "../data/types";
 
-interface BotsProviderProps {
+interface AgentsProviderProps {
   children: React.ReactNode;
 }
 
-interface BotsContextProps {
-  bots: Bot[];
+interface AgentsContextProps {
+  myAgents: Bot[];
+  shareAgents: Bot[];
   faceList: Feature[];
   voiceList: Feature[];
-  addBot: (bot: Bot) => void;
-  removeBot: (id: string) => void;
+  addToMyAgent: (bot: Bot) => void;
+  updateAgent: (bot: Bot) => void; // New method for updating an agent
+  removeToMyAgent: (id: string) => void;
   loadFaces: () => void;
-  userType: 'student' | 'professor'; // Add userType to context
-  setUserType: React.Dispatch<React.SetStateAction<'student' | 'professor'>>;
+  agentViewType: AgentViewType; // New property to store the selected view type
+  setAgentViewType: (viewType: AgentViewType) => void;
 }
 
-const BotsContext = createContext<BotsContextProps | undefined>(undefined);
+enum AgentViewType {
+  MyAgents = "myAgents",
+  SharedAgents = "sharedAgents"
+}
 
-export const BotsProvider: React.FC<BotsProviderProps> = ({ children }) => {
-  const [bots, setBots] = useState<Bot[]>([]);
+const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
+
+export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
+  const [myAgents, setMyAgents] = useState<Bot[]>([]);
+  const [shareAgents, setSharedAgents] = useState<Bot[]>([]);
   const [faceList, setFaceList] = useState<Feature[]>([]);
   const [voiceList, setVoiceList] = useState<Feature[]>([]);
-  const [userType, setUserType] = useState<'student' | 'professor'>('professor'); // Default to 'student'
+  const [agentViewType, setAgentViewType] = useState<AgentViewType>(AgentViewType.MyAgents); // Default view type
 
-  const addBot = (bot: Bot) => {
-    setBots((prevBots) => [...prevBots, bot]);
+  const addToMyAgent = (agent: Bot) => {
+    setMyAgents((prevMyAgents) => [...prevMyAgents, agent]);
   };
 
-  const removeBot = (id: string) => {
-    setBots((prevBots) => prevBots.filter(bot => bot.id !== id));
+  const updateAgent = (updatedBot: Bot) => {
+    setMyAgents((prevMyAgents) =>
+      prevMyAgents.map((bot) => (bot.id === updatedBot.id ? updatedBot : bot))
+    );
+  };
+
+  const removeToMyAgent = (id: string) => {
+    setMyAgents((prevMyAgents) => prevMyAgents.filter(agent => agent.id !== id));
   };
 
   const loadFaces = async () => {
@@ -52,23 +66,35 @@ export const BotsProvider: React.FC<BotsProviderProps> = ({ children }) => {
     }
   };
 
+  const loadSharedAgents = async () => {
+    try {
+      const response = await fetch("/sharedAgents.json");
+      const data = await response.json();
+      setSharedAgents(data);
+    } catch (error) {
+      console.error("Failed to load shared agents", error);
+    }
+  };
+
   useEffect(() => {
-    console.log("Loading faces...");
     loadFaces();
     loadVoices();
+    loadSharedAgents();
   }, []);
 
   return (
-    <BotsContext.Provider value={{ bots, faceList, voiceList, addBot, removeBot, loadFaces, userType, setUserType }}>
+    <AgentsContext.Provider value={{ myAgents, shareAgents, faceList, voiceList, addToMyAgent, updateAgent, removeToMyAgent, loadFaces, agentViewType, setAgentViewType }}>
       {children}
-    </BotsContext.Provider>
+    </AgentsContext.Provider>
   );
 };
 
-export const useBots = () => {
-  const context = useContext(BotsContext);
+export const useAgents = () => {
+  const context = useContext(AgentsContext);
   if (context === undefined) {
-    throw new Error("useBots must be used within a BotsProvider");
+    throw new Error("useAgents must be used within an AgentsProvider");
   }
   return context;
 };
+
+export { AgentViewType };

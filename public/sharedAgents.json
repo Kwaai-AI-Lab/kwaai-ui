@@ -1,0 +1,78 @@
+[
+    {
+      "id": "bot1",
+      "name": "AI Assistant",
+      "description": "A friendly assistant bot that helps you.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeA7WeVfheNwzeJL_XX_cE1ac_xAkQ1X3v4A&s",
+      "llm": {
+        "id": "llm1",
+        "name": "GPT-3",
+        "image": "https://example.com/images/gpt-3.png"
+      },
+      "files": [],
+      "status": "active",
+      "voice": {
+        "id": "voice1",
+        "name": "Emma",
+        "imageURL": "https://example.com/images/voice-emma.png",
+        "videoURL": "https://example.com/videos/voice-emma.mp4"
+      },
+      "face": {
+        "id": "face1",
+        "name": "Friendly Face",
+        "imageURL": "https://example.com/images/friendly-face.png",
+        "videoURL": "https://example.com/videos/friendly-face.mp4"
+      }
+    },
+    {
+      "id": "bot2",
+      "name": "Yoda Agent",
+      "description": "May the Force be with you.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Zgnc_MXEXwB0otD9RoWHtZX7_HFQb9kBKw&s",
+      "llm": {
+        "id": "llm2",
+        "name": "BERT",
+        "image": "https://example.com/images/bert.png"
+      },
+      "files": [],
+      "status": "inactive",
+      "voice": {
+        "id": "voice2",
+        "name": "John",
+        "imageURL": "https://example.com/images/voice-john.png",
+        "videoURL": "https://example.com/videos/voice-john.mp4"
+      },
+      "face": {
+        "id": "face2",
+        "name": "Helper Face",
+        "imageURL": "https://example.com/images/helper-face.png",
+        "videoURL": "https://example.com/videos/helper-face.mp4"
+      }
+    },
+    {
+      "id": "bot3",
+      "name": "Physics 101",
+      "description": "Physics course.",
+      "img": "https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2015/11/albert-einstein-retrato-scaled.jpg?fit=2560%2C1985&quality=50&strip=all&ssl=1",
+      "llm": {
+        "id": "llm3",
+        "name": "ChatGPT",
+        "image": "https://example.com/images/chatgpt.png"
+      },
+      "files": [],
+      "status": "active",
+      "voice": {
+        "id": "voice3",
+        "name": "Sophia",
+        "imageURL": "https://example.com/images/voice-sophia.png",
+        "videoURL": "https://example.com/videos/voice-sophia.mp4"
+      },
+      "face": {
+        "id": "face3",
+        "name": "Engaging Face",
+        "imageURL": "https://example.com/images/engaging-face.png",
+        "videoURL": "https://example.com/videos/engaging-face.mp4"
+      }
+    }
+  ]
+  

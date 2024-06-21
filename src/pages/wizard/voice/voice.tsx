@@ -1,5 +1,5 @@
 import React from "react";
-import { useBots } from "../../../context/botsContext";
+import { useAgents } from "../../../context/botsContext";
 import { Bot, Feature } from "../../../data/types";
 import OptionSelect from "../optionSelect/optionSelect";
 import voiceIcon from "../../../assets/voice-icon.png";
@@ -11,7 +11,7 @@ interface VoiceProps {
 }
 
 const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
-  const { voiceList } = useBots();
+  const { voiceList } = useAgents();
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
     bot.voice?.id || null
   );

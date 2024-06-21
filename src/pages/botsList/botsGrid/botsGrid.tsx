@@ -5,12 +5,13 @@ import { Bot } from "../../../data/types";
 import "./botsGrid.css";
 
 interface BotsGridProps {
-    bots: Bot[];
-    handleAddNewAgent: () => void;
-    onBotSelect: (bot: Bot) => void; // Add this prop
+  bots: Bot[];
+  handleAddNewAgent: () => void;
+  onBotSelect: (bot: Bot) => void;
+  onEditBot: (bot: Bot) => void; // Add new prop for handling edit
 }
 
-const BotsGrid: React.FC<BotsGridProps> = ({ bots, handleAddNewAgent, onBotSelect }) => {
+const BotsGrid: React.FC<BotsGridProps> = ({ bots, handleAddNewAgent, onBotSelect, onEditBot }) => {
   return (
     <>
       <BotListTitle onAddNewAgent={handleAddNewAgent} />
@@ -19,7 +20,7 @@ const BotsGrid: React.FC<BotsGridProps> = ({ bots, handleAddNewAgent, onBotSelec
       ) : (
         <div className="botsListGrid">
           {bots.map((bot) => (
-            <BotItem key={bot.id} botItemData={bot} onBotSelect={onBotSelect} />
+            <BotItem key={bot.id} botItemData={bot} onBotSelect={onBotSelect} onEditBot={onEditBot} />
           ))}
         </div>
       )}

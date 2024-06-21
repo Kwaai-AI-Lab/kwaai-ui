@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Details from "./details/details";
 import Knowledge from "./knowledge";
 import Llm from "./llm/llm";
@@ -6,19 +6,22 @@ import Status from "./status/status";
 import Test from "./test/test";
 import { LlmOption, Bot } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
-import { useBots } from "../../context/botsContext";
+import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
 import WizardTitle from "./wizardTitle/wizardTitle";
-import WizardBottom from "./wizardBottom/wizardBottom"; // Import the new component
+import WizardBottom from "./wizardBottom/wizardBottom";
 import Face from "./face/face";
 import Voice from "./voice/voice";
 
 interface WizardProps {
   showList: () => void;
+  botToEdit?: Bot | null; // Optional prop for bot to edit
+  setShowWizard: React.Dispatch<React.SetStateAction<boolean>>; // New prop for controlling wizard visibility
 }
 
-const Wizard: React.FC<WizardProps> = ({ showList }) => {
+const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
+  const { addToMyAgent, updateAgent } = useAgents(); // Use updateAgent
   const [currentStep, setCurrentStep] = useState(0);
   const [newBot, setNewBot] = useState<Bot>({
     id: uuidv4(),
@@ -32,7 +35,12 @@ const Wizard: React.FC<WizardProps> = ({ showList }) => {
     face: { id: "", name: "", imageURL: "", videoURL: "" },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addBot } = useBots();
+
+  useEffect(() => {
+    if (botToEdit) {
+      setNewBot(botToEdit); // Load data from botToEdit if provided
+    }
+  }, [botToEdit]);
 
   const steps = [
     <Details key="details" bot={newBot} setBot={setNewBot} />,
@@ -51,7 +59,7 @@ const Wizard: React.FC<WizardProps> = ({ showList }) => {
   ];
 
   const handleNext = () => {
-    console.log(newBot);
+    console.log("currentStep", currentStep);
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
@@ -69,12 +77,17 @@ const Wizard: React.FC<WizardProps> = ({ showList }) => {
 
   const handleConfirmCancel = () => {
     setIsModalOpen(false);
+    setShowWizard(false); // Ensure to update this state to close the wizard
     showList();
   };
 
   const handleDeploy = () => {
-    console.log("New bot to add", newBot);
-    addBot(newBot);
+    if (botToEdit) {
+      updateAgent(newBot); // Update existing bot
+    } else {
+      addToMyAgent(newBot); // Add new bot
+    }
+    setShowWizard(false); // Ensure to update this state to close the wizard
     showList();
   };
 
