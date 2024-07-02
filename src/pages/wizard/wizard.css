@@ -1,0 +1,159 @@
+/* Existing styles */
+
+.wizard-container {
+  display: flex;
+  width: 100%;
+  height: 100%; 
+  flex-direction: column;
+}
+
+.sections-container {
+  margin-top: 40px;
+  display: flex;
+  flex: 1; /* Ensures it takes all available space */
+}
+
+.right-section-wizard {
+  flex: 1; /* Ensures it takes all available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: black;
+  flex-direction: column;
+}
+
+.wizard-bottom-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.wizard-button {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: medium;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.wizard-button + .wizard-button {
+  margin-left: 10px;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  width: 100%;
+  text-align: left;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.details-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #000000; /* Corrected color to be black */
+  margin-bottom: 10px; /* Add some space between text and next element */
+}
+
+.details-name {
+  margin-bottom: 30px; /* Add some space between textarea and next subtitle */
+}
+
+.details-description {
+  margin-bottom: 10px; /* Add some space between subtitle and next textarea */
+}
+
+textarea {
+  resize: none;
+  border-color: #5967F1;
+  border-radius: 8px;
+  background-color: #F0F3FF;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+}
+
+.dropzone {
+  border: 1px dashed #5967F1;
+  border-radius: 4px;
+  background: #F0F3FF;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  width: 60%; 
+  margin: 0 auto; 
+}
+
+.dropzone p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: center;
+  margin: 0;
+}
+
+.dropzone:hover {
+  background-color: #e0e0e0;
+}
+
+.dropzone img {
+  margin-bottom: 10px;
+}
+
+.browse-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.browse-text span {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  text-align: left;
+}
+
+.browse-link {
+  margin-left: 5px;
+  text-decoration: underline;
+  color: #5967F1;
+}
+
+aside {
+  margin-top: 20px;
+}
+
+aside h4 {
+  margin-bottom: 10px;
+}
+
+aside ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+aside ul li {
+  margin-bottom: 5px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}

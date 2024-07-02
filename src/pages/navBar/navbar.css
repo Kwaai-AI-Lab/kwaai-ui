@@ -1,0 +1,38 @@
+.navbar {
+  background-color: white;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 295px; /* Position it to the right of the sidebar */
+  width: calc(100% - 295px); /* Width minus the sidebar width */
+  height: 60px;
+  display: flex;
+  z-index: 1000; /* Ensure it stays above other elements */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 40px; /* Adjust the gap between links */
+}
+
+.navbar-link {
+  color: black;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-link:hover {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.navbar-logo {
+  width: 25%;
+}
+
+.profile-dropdown {
+  margin-left: auto; /* Push the profile dropdown to the far right */
+}
