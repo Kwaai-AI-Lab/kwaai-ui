@@ -1,11 +1,13 @@
 .profile-dropdown {
-    position: relative;
+    position: absolute; /* Change to absolute positioning */
+    top: 10px; /* Adjust the top position as needed */
+    right: 50px; /* Position it to the right */
     display: inline-block;
   }
   
   .profile-button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: transparent; /* Make the background transparent */
+    color: black; /* Change text color to black */
     padding: 10px;
     font-size: 16px;
     border: none;

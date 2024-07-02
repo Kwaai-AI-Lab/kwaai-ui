@@ -4,7 +4,7 @@ import Register from './pages/register/Register';
 import Login from './pages/login/Login';
 import BotsList from './pages/botsList/botsList.tsx';
 import { AuthProvider } from './context/AuthContext.tsx';
-import { BotsProvider } from './context/botsContext.tsx';
+import { AgentsProvider } from './context/botsContext.tsx';
 import PrivateRoute from './components/PrivateRoute.tsx';
 
 const App = () => (
@@ -15,9 +15,9 @@ const App = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/botsList" element={
                     <PrivateRoute>
-                        <BotsProvider>
+                        <AgentsProvider>
                             <BotsList />
-                        </BotsProvider>
+                        </AgentsProvider>
                     </PrivateRoute>
                 } />
                 <Route path="*" element={<Navigate to="/login" />} />
