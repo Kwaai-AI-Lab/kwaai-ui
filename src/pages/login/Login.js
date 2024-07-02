@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getCredential } from '../../webauthn';
 import './Login.css';
 import logo from '../../assets/kwaai.png';
@@ -15,6 +15,7 @@ const Login = () => {
         const response = await fetch(`https://localhost/getCredentialId?email=${encodeURIComponent(email)}`);
         if (!response.ok) {
             console.error('Failed to fetch credentialId');
+            alert('User not found');
             return;
         }
         const { credentialId } = await response.json();
@@ -50,11 +51,26 @@ const Login = () => {
                 window.location.href = '/botsList'; // Redirect to botsList page
             } else {
                 console.error('Login failed');
+                alert('Login failed');
             }
         } catch (error) {
             console.error('Error during login:', error);
+            alert(`Error during login: ${error.message}`);
         }
     };
+
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.key === 'Enter') {
+                handleLogin();
+            }
+        };
+
+        document.addEventListener('keypress', handleKeyPress);
+        return () => {
+            document.removeEventListener('keypress', handleKeyPress);
+        };
+    }, []);
 
     return (
         <div className="auth-container">

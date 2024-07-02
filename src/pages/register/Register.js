@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createCredential } from '../../webauthn';
 import './Register.css';
 import logo from '../../assets/kwaai.png';
@@ -35,14 +35,30 @@ const Register = () => {
 
             if (response.ok) {
                 console.log('Registered successfully');
+                window.location.href = '/login'; // Redirect to login page
             } else {
                 const errorText = await response.text();
                 console.error('Registration failed:', errorText);
+                alert(`Registration failed: ${errorText}`);
             }
         } catch (error) {
             console.error('Error creating credential:', error);
+            alert(`Error creating credential: ${error.message}`);
         }
     };
+
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.key === 'Enter') {
+                handleRegister();
+            }
+        };
+
+        document.addEventListener('keypress', handleKeyPress);
+        return () => {
+            document.removeEventListener('keypress', handleKeyPress);
+        };
+    }, []);
 
     return (
         <div className="auth-container">
