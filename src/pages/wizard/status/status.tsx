@@ -1,3 +1,4 @@
+import React from 'react';
 import { Bot } from "../../../data/types";
 import "./status.css";
 
@@ -10,6 +11,10 @@ const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
 
   function statusHandle(status: string) {
     setBot({ ...bot, status });
+  }
+
+  function toggleAllowEdit(allowEdit: boolean) {
+    setBot({ ...bot, allowEdit });
   }
 
   return (
@@ -50,6 +55,33 @@ const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
               onChange={() => statusHandle("Draft")}
             />
             <span>No, save Draft</span>
+          </label>
+        </div>
+      </div>
+      <span className="status-title">Allow Editing?</span>
+      <div className="status-radio-buttons">
+        <div className={`status-radio-wrapper ${bot.allowEdit ? "active" : ""}`}>
+          <label>
+            <input
+              type="radio"
+              name="allowEdit"
+              value="Yes"
+              checked={bot.allowEdit === true}
+              onChange={() => toggleAllowEdit(true)}
+            />
+            <span>Yes, allow editing</span>
+          </label>
+        </div>
+        <div className={`status-radio-wrapper ${!bot.allowEdit ? "active" : ""}`}>
+          <label>
+            <input
+              type="radio"
+              name="allowEdit"
+              value="No"
+              checked={bot.allowEdit === false}
+              onChange={() => toggleAllowEdit(false)}
+            />
+            <span>No, do not allow editing</span>
           </label>
         </div>
       </div>

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Bot } from "../../data/types";
 import backIcon from "../../assets/back-button-icon.png";
-import Chat from "../../components/chat/chat"; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import Chat from "../../components/chat/chat";
+import ChatLog from "../../components/chatLog/chatLog";
+import { useAgents } from "../../context/botsContext";
 import "./agentInteraction.css";
 
 interface AgentInteractionProps {
@@ -10,6 +14,14 @@ interface AgentInteractionProps {
 }
 
 const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
+  const [isMuted, setIsMuted] = useState(false);
+  const { historyLog } = useAgents();
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+    // Add logic to handle the mute/unmute functionality here
+  };
+
   return (
     <div className="agentInteractionContainer">
       <div className="headerInteractionContainer">
@@ -23,7 +35,17 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         <div className="leftContent">
           <Chat />
         </div>
-        <div className="rightContent">Right Content</div>
+        <div className="rightContent">
+          <div className="imageContainer">
+            <img src={bot.img} alt="Bot" className="botImage" />
+            <button onClick={toggleMute} className="muteButton">
+              <FontAwesomeIcon icon={isMuted ? faVolumeUp : faVolumeMute} className="muteIcon" />
+            </button>
+          </div>
+          <div className="historyContent">
+            <ChatLog historyLogs={historyLog} />
+          </div>
+        </div>
       </div>
     </div>
   );

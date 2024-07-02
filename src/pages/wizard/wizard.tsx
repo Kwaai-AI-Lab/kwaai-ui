@@ -33,6 +33,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     status: "",
     voice: { id: "", name: "", imageURL: "", videoURL: "" },
     face: { id: "", name: "", imageURL: "", videoURL: "" },
+    allowEdit: false,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 

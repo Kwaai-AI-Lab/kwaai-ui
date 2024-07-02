@@ -1,0 +1,8 @@
+.logGroupContainer {
+  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-left: 15px;
+  margin-right: 5px;
+  height: 400px; /* Set a fixed height or max-height as needed */
+  overflow-y: auto; /* Enables vertical scrolling */  
+}

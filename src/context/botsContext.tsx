@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { Bot, Feature } from "../data/types";
+import { Bot, Feature, HistoryLog } from "../data/types";
 
 interface AgentsProviderProps {
   children: React.ReactNode;
@@ -10,6 +10,7 @@ interface AgentsContextProps {
   shareAgents: Bot[];
   faceList: Feature[];
   voiceList: Feature[];
+  historyLog: HistoryLog[];
   addToMyAgent: (bot: Bot) => void;
   updateAgent: (bot: Bot) => void; // New method for updating an agent
   removeToMyAgent: (id: string) => void;
@@ -30,6 +31,7 @@ export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
   const [shareAgents, setSharedAgents] = useState<Bot[]>([]);
   const [faceList, setFaceList] = useState<Feature[]>([]);
   const [voiceList, setVoiceList] = useState<Feature[]>([]);
+  const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [agentViewType, setAgentViewType] = useState<AgentViewType>(AgentViewType.MyAgents); // Default view type
 
   const addToMyAgent = (agent: Bot) => {
@@ -76,14 +78,25 @@ export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
     }
   };
 
+  const loadHistoyLog = async () => {
+    try {
+      const response = await fetch("/historyLog.json");
+      const data = await response.json();
+      setHistoryLog(data);
+    } catch (error) {
+      console.error("Failed to load history log", error);
+    }
+  };
+
   useEffect(() => {
     loadFaces();
     loadVoices();
     loadSharedAgents();
+    loadHistoyLog();
   }, []);
 
   return (
-    <AgentsContext.Provider value={{ myAgents, shareAgents, faceList, voiceList, addToMyAgent, updateAgent, removeToMyAgent, loadFaces, agentViewType, setAgentViewType }}>
+    <AgentsContext.Provider value={{ myAgents, shareAgents, faceList, voiceList, historyLog, addToMyAgent, updateAgent, removeToMyAgent, loadFaces, agentViewType, setAgentViewType }}>
       {children}
     </AgentsContext.Provider>
   );
