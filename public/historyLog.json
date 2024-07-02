@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Today",
+    "logs": [
+      {
+        "id": "1",
+        "content": "What is the capital of France?"
+      },
+      {
+        "id": "2",
+        "content": "How do I use the reduce function in JavaScript?"
+      },
+      {
+        "id": "3",
+        "content": "What is the weather like in New York?"
+      }
+    ]
+  },
+  {
+    "title": "Last 7 days",
+    "logs": [
+      {
+        "id": "4",
+        "content": "Explain the theory of relativity."
+      },
+      {
+        "id": "5",
+        "content": "What are the benefits of using TypeScript?"
+      },
+      {
+        "id": "6",
+        "content": "How does machine learning work?"
+      }
+    ]
+  },
+  {
+    "title": "Last 30 days",
+    "logs": [
+      {
+        "id": "7",
+        "content": "What is the best way to learn Python?"
+      },
+      {
+        "id": "8",
+        "content": "Can you explain what a neural network is?"
+      },
+      {
+        "id": "9",
+        "content": "What are the latest trends in artificial intelligence?"
+      },
+      {
+        "id": "10",
+        "content": "How do I improve my coding skills?"
+      }
+    ]
+  }
+]

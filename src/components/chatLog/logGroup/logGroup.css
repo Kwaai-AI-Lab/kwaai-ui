@@ -1,0 +1,18 @@
+.logGroupTitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 17.81px;
+  text-align: left;
+  margin-bottom: 8px; /* Add some space between the title and the log items */
+  margin-top: 16px;
+}
+
+.logGroup .logItemContent {
+  
+  margin-bottom: 8px; /* Add a 4px gap between each log item */
+}
+
+.logGroup .logItemContent:last-child {
+  margin-bottom: 0; /* Remove the margin from the last item */
+}
