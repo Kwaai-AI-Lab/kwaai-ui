@@ -9,13 +9,19 @@
   display: flex;
   z-index: 1000; /* Ensure it stays above other elements */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  justify-content: space-between;
-  align-items: center;
 }
 
-.navbar-links {
+.navbar-menu {
+  list-style: none;
   display: flex;
-  gap: 40px; /* Adjust the gap between links */
+  margin: 0;
+  padding-right: 12px;
+  width: 75%;
+  justify-content: flex-end;
+}
+
+.navbar-item {
+  margin: 0 8px;
 }
 
 .navbar-link {
@@ -31,8 +37,4 @@
 
 .navbar-logo {
   width: 25%;
-}
-
-.profile-dropdown {
-  margin-left: auto; /* Push the profile dropdown to the far right */
 }

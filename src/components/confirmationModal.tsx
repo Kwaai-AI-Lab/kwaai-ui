@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
-import PrimaryButton from "../components/buttons/primaryButton/primaryButton.tsx";
-import SecondaryButton from "../components/buttons/secondaryButton/secondaryButton.tsx";
+import PrimaryButton from "../components/buttons/primaryButton/primaryButton";
+import SecondaryButton from "../components/buttons/secondaryButton/secondaryButton";
 import "./confirmationModal.css";
 
 // Set the app element for accessibility

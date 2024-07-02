@@ -1,4 +1,3 @@
-import React from "react"; // Add this import
 import { IoAddCircleOutline } from "react-icons/io5";
 import "./botListTitle.css";
 

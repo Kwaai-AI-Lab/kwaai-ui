@@ -7,15 +7,15 @@
 .sidebar {
   width: 295px;
   background-color: #5967F1;
-  position: fixed; /* Ensure it's fixed to the viewport */
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
 }
 
 .contentContainer {
-  margin-left: 295px; /* Ensure content is to the right of the sidebar */
-  margin-top: 100px; /* Adjust padding for the height of the navbar */
+  margin-left: 295px;
+  margin-top: 100px;
   flex: 1;
   display: flex;
   flex-direction: column;

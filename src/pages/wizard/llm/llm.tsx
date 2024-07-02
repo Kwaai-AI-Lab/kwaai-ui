@@ -1,7 +1,7 @@
 import React from "react";
 import { LlmOption } from "../../../data/types";
 import llmOptionsData from "../../../data/llm.json";
-import LlmItem from "./llmItem.tsx";
+import LlmItem from "./llmItem";
 import "./llm.css";
 
 interface LlmProps {

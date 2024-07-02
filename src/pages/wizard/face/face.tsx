@@ -1,7 +1,7 @@
 import React from "react";
-import { useBots } from "../../../context/botsContext.tsx";
+import { useAgents } from "../../../context/botsContext";
 import "./face.css";
-import OptionSelect from "../optionSelect/optionSelect.tsx";
+import OptionSelect from "../optionSelect/optionSelect";
 import { Bot, Feature } from "../../../data/types";
 
 interface FaceProps {
@@ -10,7 +10,7 @@ interface FaceProps {
 }
 
 const Face: React.FC<FaceProps> = ({ bot, setBot }) => {
-  const { faceList } = useBots();
+  const { faceList } = useAgents();
   const [selectedFaceId, setSelectedFaceId] = React.useState<string | null>(
     bot.face?.id || null
   );
