@@ -10,10 +10,18 @@ export interface Bot {
   description: string;
   img: string;
   llm: LlmOption;
-  files:File[];
+  files: File[];
   status: string;
   voice: Feature;
   face: Feature;
+  allowEdit: boolean;
+}
+
+export interface File {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
 }
 
 export interface Feature {
@@ -21,4 +29,14 @@ export interface Feature {
   name: string;
   imageURL: string;
   videoURL: string;
+}
+
+export interface HistoryLog {
+  title: string;
+  logs: HistoryItem[];
+}
+
+export interface HistoryItem {
+  id: string;
+  content: string;
 }

@@ -22,7 +22,8 @@
         "name": "Friendly Face",
         "imageURL": "https://example.com/images/friendly-face.png",
         "videoURL": "https://example.com/videos/friendly-face.mp4"
-      }
+      },
+      "allowEdit": true
     },
     {
       "id": "bot2",
@@ -47,7 +48,8 @@
         "name": "Helper Face",
         "imageURL": "https://example.com/images/helper-face.png",
         "videoURL": "https://example.com/videos/helper-face.mp4"
-      }
+      },
+      "allowEdit": true
     },
     {
       "id": "bot3",
@@ -72,7 +74,8 @@
         "name": "Engaging Face",
         "imageURL": "https://example.com/images/engaging-face.png",
         "videoURL": "https://example.com/videos/engaging-face.mp4"
-      }
+      },
+      "allowEdit": true
     }
   ]
   

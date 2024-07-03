@@ -1,0 +1,80 @@
+.logItemContent {
+  background-color: white;
+  white-space: nowrap;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  height: 35px;
+  border-radius: 5px;
+  width: calc(100% - 20px);
+  border: 1px solid transparent; /* Add transparent border for layout consistency */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  cursor: pointer;
+  gap: 4px;
+}
+
+.textContent {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17.81px;
+  text-align: left;
+  flex-grow: 1;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.textContent:hover {
+  color: #5967F1;
+  border-color: #5967F1;
+}
+
+.logItemMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+
+.logItemMenu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.logItemMenu li {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17.81px;
+  text-align: left;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s; /* Add color transition */
+  display: flex; /* Ensures proper alignment of text and icon */
+  align-items: center; /* Center items vertically */
+}
+
+.logItemMenu li:hover {
+  background-color: #B0BDFF; /* New hover background */
+  color: white; /* Change text color on hover */
+}
+
+.menuIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 15px; /* Increased margin to add more space between the icon and text */
+  fill: currentColor; /* Ensure the icon color matches the text color */
+  transition: fill 0.2s; /* Smooth transition for the icon color change on hover */
+}
+
+.logItemMenu li:hover .menuIcon {
+  fill: white; /* Change icon color to white on hover */
+}
