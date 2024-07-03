@@ -56,7 +56,7 @@
 }
 
 .leftContent {
-  width: 85%;
+  width: 78%;
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
@@ -64,7 +64,7 @@
 }
 
 .rightContent {
-  width: 15%;
+  width: 22%;
   height: 100%;
   box-sizing: border-box;
   display: flex;

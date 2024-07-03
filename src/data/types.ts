@@ -17,6 +17,13 @@ export interface Bot {
   allowEdit: boolean;
 }
 
+export interface File {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+}
+
 export interface Feature {
   id: string;
   name: string;
