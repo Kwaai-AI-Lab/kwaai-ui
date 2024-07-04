@@ -27,7 +27,7 @@
     },
     {
       "id": "bot2",
-      "name": "Yoda Agent",
+      "name": "Yoda Assistant",
       "description": "May the Force be with you.",
       "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Zgnc_MXEXwB0otD9RoWHtZX7_HFQb9kBKw&s",
       "llm": {

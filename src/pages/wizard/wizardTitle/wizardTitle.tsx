@@ -36,17 +36,17 @@ const WizardTitle: React.FC<WizardTitleProps> = ({ currentStep }) => {
   const getWizardSubTitle = () => {
     switch (currentStep) {
       case 0:
-        return "Step 1: Set the new bot";
+        return "Step 1: Set the new assistant";
       case 1:
         return "Step 2: Choose an AI";
       case 2:
         return "Step 3: Share you knowledge";
       case 3:
-        return "Step 4: Choose the agent’s face";
+        return "Step 4: Choose the assistant face";
       case 4:
         return "Step 5: Now, Let’s choose it’s voice";
       case 5:
-        return "Step 6: Test the agent";
+        return "Step 6: Test the assistant";
       case 6:
           return "Step 7: Deploy!";
       default:
@@ -57,7 +57,7 @@ const WizardTitle: React.FC<WizardTitleProps> = ({ currentStep }) => {
   return (
     <div className="wizard-title">
       <div className="wizard-title-content">
-        <span>Add New Agent</span>
+        <span>Add New Assistant</span>
       </div>
       <img src={getWizardImage()} alt="wizard" />
       <div className="wizard-sub-title">

@@ -9,8 +9,8 @@ interface SideMenuProps {
 }
 
 const menuItems = [
-    { text: "My agents", imageSrc: agentIcon, viewType: AgentViewType.MyAgents },
-    { text: "Shared agents", imageSrc: agentIcon, viewType: AgentViewType.SharedAgents }
+    { text: "My assistant", imageSrc: agentIcon, viewType: AgentViewType.MyAgents },
+    { text: "Shared assistants", imageSrc: agentIcon, viewType: AgentViewType.SharedAgents }
 ];
 
 const SideMenu: React.FC<SideMenuProps> = ({ onItemClick }) => {
