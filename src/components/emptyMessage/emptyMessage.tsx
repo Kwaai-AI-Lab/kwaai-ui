@@ -7,7 +7,7 @@ const EmptyMessage: React.FC = () => {
     <div className="empty-message">
       <img src={botAvatar} alt="Bot Avatar" />
       <span>Hmm, it’s empty here!</span>
-      <span>Ready to create your first agent?</span>
+      <span>Ready to create your first assistant?</span>
     </div>
   );
 };

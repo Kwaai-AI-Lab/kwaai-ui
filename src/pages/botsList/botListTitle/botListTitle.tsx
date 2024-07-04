@@ -8,10 +8,10 @@ interface BotListTitleProps {
 const BotListTitle: React.FC<BotListTitleProps> = ({ onAddNewAgent }) => {
     return (
         <div className="titleContainer">
-          <span className="title">Agent Catalogue</span>
+          <span className="title">Assistant Catalogue</span>
           <button className="addButton" onClick={onAddNewAgent}>
             <IoAddCircleOutline className="addButtonIcon" />
-            Add New Agent
+            Add New Assistant
           </button>
         </div>
       );

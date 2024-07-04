@@ -19,7 +19,7 @@ const Details: React.FC<DetailsProps> = ({ bot, setBot }) => {
   };
   return (
     <div className="detail-container">
-      <span className="details-subtitle">Agent's Name :</span>
+      <span className="details-subtitle">Assistant's Name :</span>
       <textarea
         rows={3}
         className="details-name"
