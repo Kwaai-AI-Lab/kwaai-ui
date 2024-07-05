@@ -8,6 +8,19 @@
     npm i
 `
 
+- Ensure your localhost has trusted certificate
+
+`
+    brew install mkcert
+
+    mkcert -install
+
+    cd into /src directory
+
+    mkcert -cert-file localhost.pem -key-file localhost-key.pem localhost
+
+    add localhost.pem to trusted certificates in browser
+`
 - Start the postgres container
   
 `
