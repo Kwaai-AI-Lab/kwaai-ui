@@ -48,7 +48,7 @@ const Login = () => {
 
             if (loginResponse.ok) {
                 console.log('Logged in successfully');
-                window.location.href = '/botsList'; // Redirect to botsList page
+                window.location.href = '/home'; // Redirect to home page
             } else {
                 console.error('Login failed');
                 alert('Login failed');

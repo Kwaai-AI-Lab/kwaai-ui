@@ -5,10 +5,10 @@ import Wizard from "../wizard/wizard";
 import BotsGrid from "./botsGrid/botsGrid";
 import AgentInteraction from "../agentInteraction/agentInteraction";
 import SideBar from "../../components/sideBar/sideBar";
-import "./botsList.css";
+import "./home.css";
 import { Bot } from "../../data/types";
 
-export default function BotsList() {
+export default function Home() {
   const { myAgents, shareAgents, setAgentViewType } = useAgents();
   const [showWizard, setShowWizard] = useState(false);
   const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
