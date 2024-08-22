@@ -17,7 +17,7 @@
         "imageURL": "https://example.com/images/voice-emma.png",
         "videoURL": "https://example.com/videos/voice-emma.mp4"
       },
-      "face": {
+      "persona": {
         "id": "face1",
         "name": "Friendly Face",
         "imageURL": "https://example.com/images/friendly-face.png",
@@ -43,7 +43,7 @@
         "imageURL": "https://example.com/images/voice-john.png",
         "videoURL": "https://example.com/videos/voice-john.mp4"
       },
-      "face": {
+      "persona": {
         "id": "face2",
         "name": "Helper Face",
         "imageURL": "https://example.com/images/helper-face.png",
@@ -69,7 +69,7 @@
         "imageURL": "https://example.com/images/voice-sophia.png",
         "videoURL": "https://example.com/videos/voice-sophia.mp4"
       },
-      "face": {
+      "persona": {
         "id": "face3",
         "name": "Engaging Face",
         "imageURL": "https://example.com/images/engaging-face.png",
