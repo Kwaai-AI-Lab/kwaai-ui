@@ -5,17 +5,20 @@ export interface LlmOption {
 }
 
 export interface Bot {
-  id: string;
+  id?: string;
   name: string;
+  uri: string;
   description: string;
-  img: string;
-  llm: LlmOption;
-  files: File[];
+  resource_llm_id: string;
+  persona_id: string;
+  files: string[];
   status: string;
-  voice: Feature;
-  face: Feature;
-  allowEdit: boolean;
+  allow_edit: string;
+  kind: string;
+  icon: string;
 }
+
+
 
 export interface File {
   id: string;
@@ -25,6 +28,7 @@ export interface File {
 }
 
 export interface Feature {
+  description: string;
   id: string;
   name: string;
   imageURL: string;

@@ -11,7 +11,7 @@ interface LlmItemProps {
 const LlmItem: React.FC<LlmItemProps> = ({ llmItemData, isSelected, onSelect }) => {
   return (
     <div 
-      className="llm-card"
+      className={`llm-card ${isSelected ? 'selected' : ''}`} 
       onClick={() => onSelect(llmItemData)}
     >
       <div className="llm-card-top">

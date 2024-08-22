@@ -11,7 +11,7 @@ interface OptionSelectProps {
 
 const OptionSelect: React.FC<OptionSelectProps> = ({ feature, isSelected, onSelect }) => {
   return (
-    <div className="face-item" onClick={onSelect}>
+    <div className="persona-item" onClick={onSelect}>
       {feature.imageURL ? (
         <img src={feature.imageURL} alt={feature.name} className="feature-image" />
       ) : (

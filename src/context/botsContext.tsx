@@ -8,13 +8,13 @@ interface AgentsProviderProps {
 interface AgentsContextProps {
   myAgents: Bot[];
   shareAgents: Bot[];
-  faceList: Feature[];
+  personaList: Feature[];
   voiceList: Feature[];
   historyLog: HistoryLog[];
   addToMyAgent: (bot: Bot) => void;
   updateAgent: (bot: Bot) => void; // New method for updating an agent
   removeToMyAgent: (id: string) => void;
-  loadFaces: () => void;
+  loadPersonas: () => void;
   agentViewType: AgentViewType; // New property to store the selected view type
   setAgentViewType: (viewType: AgentViewType) => void;
 }
@@ -29,7 +29,7 @@ const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
 export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
   const [myAgents, setMyAgents] = useState<Bot[]>([]);
   const [shareAgents, setSharedAgents] = useState<Bot[]>([]);
-  const [faceList, setFaceList] = useState<Feature[]>([]);
+  const [personaList, setPersonaList] = useState<Feature[]>([]);
   const [voiceList, setVoiceList] = useState<Feature[]>([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
   const [agentViewType, setAgentViewType] = useState<AgentViewType>(AgentViewType.MyAgents); // Default view type
@@ -48,13 +48,13 @@ export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
     setMyAgents((prevMyAgents) => prevMyAgents.filter(agent => agent.id !== id));
   };
 
-  const loadFaces = async () => {
+  const loadPersonas = async () => {
     try {
-      const response = await fetch("/faces.json");
+      const response = await fetch("/personas.json");
       const data = await response.json();
-      setFaceList(data);
+      setPersonaList(data);
     } catch (error) {
-      console.error("Failed to load faces", error);
+      console.error("Failed to load personas", error);
     }
   };
 
@@ -89,14 +89,14 @@ export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    loadFaces();
+    loadPersonas();
     loadVoices();
     loadSharedAgents();
     loadHistoyLog();
   }, []);
 
   return (
-    <AgentsContext.Provider value={{ myAgents, shareAgents, faceList, voiceList, historyLog, addToMyAgent, updateAgent, removeToMyAgent, loadFaces, agentViewType, setAgentViewType }}>
+    <AgentsContext.Provider value={{ myAgents, shareAgents, personaList, voiceList, historyLog, addToMyAgent, updateAgent, removeToMyAgent, loadPersonas, agentViewType, setAgentViewType }}>
       {children}
     </AgentsContext.Provider>
   );

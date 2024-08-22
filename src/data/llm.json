@@ -1,16 +1,16 @@
 [
     {
-      "id": "1",
+      "id": "7bea4732-214f-40e7-9161-4e7241a2b82e",
       "name": "Chat GPT",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeKLn6ytvckQXWhrDdq0D44Lz80GxJ6wxLpH7W-VWHMA&s"
     },
     {
-      "id": "2",
+      "id": "7bea4732-214f-40e7-9161-4e7241a2b97e",
       "name": "Llama2",
       "image": "https://assets-global.website-files.com/625447c67b621ab49bb7e3e5/6511e6898e966841878dee22_64f2042e4dd1948b864b520b_Frame%25203186%2520(1).jpeg"
     },
     {
-      "id": "3",
+      "id": "7bea4732-214f-40e7-9161-4e7241a2b92e",
       "name": "Llama2",
       "image": "https://assets-global.website-files.com/625447c67b621ab49bb7e3e5/6511e6898e966841878dee22_64f2042e4dd1948b864b520b_Frame%25203186%2520(1).jpeg"
     }
