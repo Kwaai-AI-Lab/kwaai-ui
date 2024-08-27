@@ -1,5 +1,5 @@
 import { PAIOS_API_URL } from "../config/env";
-import { Bot } from "../data/types";
+import { Bot, conversation, Message } from "../data/types";
 
 interface CreateAssistantResponse {
   name: string;
@@ -91,6 +91,92 @@ class AssistantsService {
       }
     } catch (error) {
       console.error("Error deleting assistant:", error);
+      throw error;
+    }
+  }
+
+  async uploadFiles(assistantId: string, files: File[]): Promise<void> {
+    console.log("You're in the uploadFiles function");
+    try {
+      const formData = new FormData();
+      files.forEach((file) => {
+        console.log(file.name);
+        formData.append("files", file);
+      });
+
+      const response = await fetch(`${PAIOS_API_URL}/upload/${assistantId}/`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.log(response);
+        throw new Error(`Error: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      throw error;
+    }
+  }
+
+  static async getAssistants(kind: string): Promise<Bot[]> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/resources?filter={"kind":"${kind}"}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Unexpected response format");
+      }
+      return data;
+    } catch (error) {
+      console.error("Error fetching assistants:", error);
+      throw new Error(`Error fetching assistants: ${error}`);
+    }
+  }
+
+  async createConversation(name:string, assistantId: string): Promise<conversation> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/conversations/${assistantId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async sendMessage(assistantId:string, conversationId: string, prompt: string): Promise<Message> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          assistant_id: assistantId,
+          conversation_id: conversationId,
+          prompt: prompt,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error(error);
       throw error;
     }
   }

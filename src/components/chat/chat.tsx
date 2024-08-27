@@ -1,31 +1,34 @@
 import React, { useState } from "react";
-import "./chat.css";  // Import the CSS file
+import "./chat.css";
 import ChatMessage from "./chatMessage/chatMessage";  
 import PrimaryButton from "../buttons/primaryButton/primaryButton"; 
+import { Message } from "../../data/types";
 
-interface Message {
+interface MessageLocal {
   sender: "user" | "ai";
   text: string;
 }
 
-const Chat: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+interface chatProps {
+  handleMessage: (inputValue:string) => Promise<Message | "" >;
+}
+
+const Chat: React.FC <chatProps> = ({handleMessage}) => {
+  const [messages, setMessages] = useState<MessageLocal[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSend = () => {
-    if (!inputValue.trim()) return;
-
-    const userMessage: Message = { sender: "user", text: inputValue };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setInputValue("");
-
+  const handleSend = async () => {
+    if (inputValue.trim() === "") {
+      return;
+    }
     setLoading(true);
-    setTimeout(() => {
-      const aiMessage: Message = { sender: "ai", text: "This is the AI response." };
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
-      setLoading(false);
-    }, 1000); // Simulate loading time
+    setMessages([...messages, { sender: "user", text: inputValue }]);
+    const message = await handleMessage(inputValue);
+    if (message) {
+      setMessages([...messages, { sender: "ai", text: message.chat_response }]);
+    }
+    setLoading(false);
   };
 
   return (

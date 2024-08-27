@@ -7,12 +7,13 @@ import DeleteConfirmationModal from "../../../components/deleteMessage/deleteCon
 import ShareConfirmationModal from "../../../components/shareMessage/shareConfirmationModal";
 import PrimaryButton from "../../../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../../../components/buttons/secondaryButton/secondaryButton";
+import AssistantsService from "../../../services/assistants.service";
 import "./botItem.css";
 
 interface BotItemProps {
   botItemData: Bot;
   onBotSelect: (bot: Bot) => void;
-  onEditBot: (bot: Bot) => void; // Add new prop for handling edit
+  onEditBot: (bot: Bot) => void;
 }
 
 const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot }) => {
@@ -20,9 +21,25 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot }
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const handleDelete = () => {
-    removeToMyAgent(botItemData.id);
-    setIsModalOpen(false);
+  const personaImages: { [key: string]: string } = {
+    "7bea4732-214f-40e7-9161-4e7241a2b97e": "https://static.vecteezy.com/system/resources/previews/026/536/284/non_2x/27yr-old-beautiful-face-ai-generated-free-photo.jpg",
+    "7bea4732-214f-40e7-9161-4e7241a2b97f": "https://img.freepik.com/premium-photo/face-that-has-word-ai-it_872754-2069.jpg",
+    "7bea4732-214f-40e7-9161-4e7241a2b97a": "https://images.nightcafe.studio//assets/man-in-suit.jpg?tr=w-1600,c-at_max",
+    "7bea4732-214f-40e7-9161-4e7241a2b97h": "/DrEvelyn.png",
+    "7bea4732-214f-40e7-9161-4e7241a2b97i": "/DrMarcus.png",
+    "7bea4732-214f-40e7-9161-4e7241a2b97j": "/DrLinda.png",
+  };
+  
+
+  const handleDelete = async () => {
+    try {
+      const assistantsService = new AssistantsService();
+      await assistantsService.deleteAssistant(botItemData.id);
+      removeToMyAgent(botItemData.id);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting assistant:", error);
+    }
   };
 
   const handleShareClick = () => {
@@ -34,23 +51,24 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot }
   };
 
   const handleEditClick = () => {
-    onEditBot(botItemData); // Pass botItemData to onEditBot
+    onEditBot(botItemData);
   };
 
   const handleGoToCourseClick = () => {
-    console.log('Go to course');
     onBotSelect(botItemData);
   };
+
+  const imageUrl = personaImages[botItemData.persona_id || ""] || botIcon;
 
   return (
     <div className="bot-card">
       <div className="bot-card-header">
-        <img src={botItemData.img ? botItemData.img : botIcon} alt="bot" />
+        <img src={imageUrl} alt="bot" />
       </div>
       <div className="bot-card-body">
         <div className="bot-card-header-with-button">
           <h2 className="bot-card-name">{botItemData.name}</h2>
-          { agentViewType === AgentViewType.MyAgents && (
+          {agentViewType === AgentViewType.MyAgents && (
             <button className="share-button" onClick={handleShareClick}>
               <img src={shareIcon} alt="Share" />
             </button>
@@ -77,10 +95,10 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot }
         isOpen={isShareModalOpen}
         onRequestClose={() => setIsShareModalOpen(false)}
         onConfirm={handleDelete}
-        bot={botItemData} // Pass the botItemData here
+        bot={botItemData}
       />
     </div>
   );
-}
+};
 
 export default BotItem;

@@ -14,10 +14,31 @@
         "description": "Alex brings a dynamic and energetic presence, perfect for those who need a boost of motivation and a can-do attitude. His approach is proactive and always aimed at achieving the best results."
     },
     {
-        "id": "7bea4732-214f-40e7-9161-4e7241a2b97g",
+        "id": "7bea4732-214f-40e7-9161-4e7241a2b97a",
         "name": "John",
         "imageURL": "https://images.nightcafe.studio//assets/man-in-suit.jpg?tr=w-1600,c-at_max",
         "videoURL": "",
         "description": "John is a seasoned expert with a wealth of knowledge, perfect for users who need detailed and precise advice. His experience and professionalism make him a reliable partner in any challenge."
+    },
+    {
+        "id": "7bea4732-214f-40e7-9161-4e7241a2b97h",
+        "name": "Dr. Evelyn Hart",
+        "imageURL": "/DrEvelyn.png",
+        "videoURL": "",
+        "description": "Dr. Evelyn Hart is a seasoned professor of Computer Science specializing in Artificial Intelligence and Machine Learning. "
+    },
+    {
+        "id": "7bea4732-214f-40e7-9161-4e7241a2b97i",
+        "name": "Prof. Marcus Delgado",
+        "imageURL": "/DrMarcus.png",
+        "videoURL": "",
+        "description": "Prof. Marcus Delgado is a distinguished professor of History, with a deep expertise in 20th-century political movements and their global impact."
+    },
+    {
+        "id": "7bea4732-214f-40e7-9161-4e7241a2b97j",
+        "name": "Dr. Linda Nakamura",
+        "imageURL": "/DrLinda.png",
+        "videoURL": "",
+        "description": "Dr. Linda Nakamura is an innovative professor of Environmental Science, focusing on sustainability and climate change. "
     }
 ]

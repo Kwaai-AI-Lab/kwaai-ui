@@ -18,7 +18,23 @@ export interface Bot {
   icon: string;
 }
 
+export interface conversation {
+  id: string;
+  name: string;
+  created_timestamp: string;
+  last_updated_timestamp: string;
+  archive: string;
+  assistant_id: string;
+}
 
+export interface Message {
+  id: string;
+  assistant_id: string;
+  conversation_id: string;
+  timestamp: string;
+  prompt: string;
+  chat_response: string;
+}
 
 export interface File {
   id: string;
