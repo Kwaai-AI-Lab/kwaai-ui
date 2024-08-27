@@ -38,15 +38,15 @@ const WizardTitle: React.FC<WizardTitleProps> = ({ currentStep }) => {
       case 0:
         return "Step 1: Set the new assistant";
       case 1:
-        return "Step 2: Choose an AI";
+        return "Step 2: Choose the assistant persona ";
       case 2:
-        return "Step 3: Share you knowledge";
+        return "Step 3: Choose an AI";
       case 3:
-        return "Step 4: Choose the assistant persona";
+        return "Step 4: Share your knowledge";
       case 4:
-        return "Step 5: Now, Let’s choose it’s voice";
+        return "Step 5: Test the assistant";
       case 5:
-        return "Step 6: Test the assistant";
+        return "Step 6: Deploy";
       case 6:
           return "Step 7: Deploy!";
       default:
