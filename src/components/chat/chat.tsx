@@ -22,14 +22,27 @@ const Chat: React.FC <chatProps> = ({handleMessage}) => {
     if (inputValue.trim() === "") {
       return;
     }
+    
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: "user", text: inputValue }
+    ]);
+    
+    setInputValue("");
     setLoading(true);
-    setMessages([...messages, { sender: "user", text: inputValue }]);
+    
     const message = await handleMessage(inputValue);
+    
     if (message) {
-      setMessages([...messages, { sender: "ai", text: message.chat_response }]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "ai", text: message.chat_response }
+      ]);
     }
+    
     setLoading(false);
   };
+  
 
   return (
     <div className="chat-container">

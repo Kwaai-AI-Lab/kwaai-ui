@@ -131,7 +131,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
         try {
           const assistantsService = new AssistantsService();
           console.log("Uploading files:", docsFiles);
-          await assistantsService.uploadFiles(newBot.id || "", docsFiles);
+          assistantsService.uploadFiles(newBot.id || "", docsFiles);
           setNewBot((prevBot) => ({
             ...prevBot,
             ...response,
