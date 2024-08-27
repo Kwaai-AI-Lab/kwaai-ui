@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAgents } from "../../../context/botsContext";
 import "./persona.css";
 import OptionSelect from "../optionSelect/optionSelect";
@@ -12,9 +12,18 @@ interface PersonaProps {
 
 const Persona: React.FC<PersonaProps> = ({ bot, setBot, errors }) => {
   const { personaList } = useAgents();
+  
   const [selectedPersonaId, setSelectedPersonaId] = React.useState<string | null>(
     bot.persona_id || null
   );
+
+  useEffect(() => {
+    if (!selectedPersonaId && personaList.length > 0) {
+      setSelectedPersonaId(personaList[0].id);
+      setBot((prevBot) => ({ ...prevBot, persona_id: personaList[0].id }));
+    }
+  }, [personaList, selectedPersonaId, setBot]);
+
   const selectedPersona = personaList.find((persona) => persona.id === selectedPersonaId);
 
   const handleSelect = (persona: Feature) => {
@@ -32,11 +41,12 @@ const Persona: React.FC<PersonaProps> = ({ bot, setBot, errors }) => {
       <div className="persona-container">
         <div className="persona-left-container">
           {personaList.map((persona) => (
-              <OptionSelect
-                feature={persona}
-                isSelected={persona.id === selectedPersonaId}
-                onSelect={() => handleSelect(persona)}
-              />
+            <OptionSelect
+              key={persona.id}
+              feature={persona}
+              isSelected={persona.id === selectedPersonaId}
+              onSelect={() => handleSelect(persona)}
+            />
           ))}
         </div>
         <div className="persona-right-container">

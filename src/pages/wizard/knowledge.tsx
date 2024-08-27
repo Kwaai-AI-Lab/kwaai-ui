@@ -1,28 +1,36 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import downloadIcon from "../../assets/download-icon.png"
-import { Bot } from "../../data/types";
+import downloadIcon from "../../assets/download-icon.png";
+import "./knowledge.css";
 
 interface KnowledgeProps {
-  bot: Bot;
-  setBot: React.Dispatch<React.SetStateAction<Bot>>;
+  onFilesChange: (files: File[]) => void;
 }
 
-const Knowledge: React.FC<KnowledgeProps> = ({ bot, setBot }) => {
+const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange }) => {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const newFiles = [...files, ...acceptedFiles];
+      setFiles(newFiles);
+      onFilesChange(newFiles);
+    },
+    [files, onFilesChange]
+  );
+
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: (acceptedFiles) => {
-      setBot((prevBot) => ({
-        ...prevBot,
-        files: [...prevBot.files, ...acceptedFiles]
-      }));
+    onDrop,
+    accept: {
+      'application/pdf': ['.pdf']
     }
   });
 
-  const fileList = bot.files.map((file, index) => (
-    <li key={index}>
-      {file.name} - {file.size} bytes
-    </li>
-  ));
+  const handleRemoveFile = (index: number) => {
+    const newFiles = files.filter((_, i) => i !== index);
+    setFiles(newFiles);
+    onFilesChange(newFiles);
+  };
 
   return (
     <div className="details-container">
@@ -35,8 +43,20 @@ const Knowledge: React.FC<KnowledgeProps> = ({ bot, setBot }) => {
           <span className="browse-link">Browse</span>
         </div>
       </div>
-      <aside>
-        <ul>{fileList}</ul>
+      <aside className="file-list">
+        <ul>
+          {files.map((file: File, index: number) => (
+              <li key={index} className="file-item">
+                {file.name}
+                <button
+                  className="remove-file-button"
+                  onClick={() => handleRemoveFile(index)}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+        </ul>
       </aside>
     </div>
   );

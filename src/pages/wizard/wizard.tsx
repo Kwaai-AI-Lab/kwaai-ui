@@ -4,7 +4,7 @@ import Knowledge from "./knowledge";
 import Llm from "./llm/llm";
 import Status from "./status/status";
 import Test from "./test/test";
-import { LlmOption, Bot } from "../../data/types";
+import { Bot, Message } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
 import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
@@ -23,6 +23,7 @@ interface WizardProps {
 const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
   const { addToMyAgent, updateAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
+  const [docsFiles, setDocsFiles] = useState<File[]>([]);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newBot, setNewBot] = useState<Bot>({
@@ -47,19 +48,29 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     }
   }, [botToEdit]);
 
+  const handleMessage = async (inputValue: string): Promise<Message | "" > => {
+    try {
+      const assistantsService = new AssistantsService();
+      const conversationData = await assistantsService.createConversation("test", newBot.id || "");
+      const message = await assistantsService.sendMessage(newBot.id || "", conversationData.id, inputValue);
+      return message;
+    } catch (error: any) {
+      console.error("Error submitting files:", error);
+      return "";
+    }
+  };
+
   const steps = [
     <Details key="details" bot={newBot} setBot={setNewBot} errors={errors} />,
     <Persona key="persona" bot={newBot} setBot={setNewBot} errors={errors} />,
-    <Llm
-      key="llm"
-      onSelect={(llmOption: LlmOption) =>
-        setNewBot({ ...newBot, resource_llm_id: llmOption.id })
-      }
-      selectedLlmOption={{ id: newBot.resource_llm_id, name: newBot.name, image: "" }}
+    <Llm 
+      key="llm" 
+      onSelect={(llmOption) => setNewBot({ ...newBot, resource_llm_id: llmOption.id })} 
+      selectedLlmOption={{ id: newBot.resource_llm_id, name: newBot.name, image: "" }} 
       errors={errors}
     />,
-    <Knowledge key="knowledge" bot={newBot} setBot={setNewBot} />,
-    <Test key="test" />,
+    <Knowledge key="knowledge" onFilesChange={setDocsFiles} />,
+     <Test key="test" handleMessage={handleMessage} />,
     <Status key="status" bot={newBot} setBot={setNewBot} />,
   ];
 
@@ -116,6 +127,19 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           ...response,
         }));
         setIsUpdateMode(true);
+      } else if (currentStep === 3) {
+        try {
+          const assistantsService = new AssistantsService();
+          console.log("Uploading files:", docsFiles);
+          await assistantsService.uploadFiles(newBot.id || "", docsFiles);
+          setNewBot((prevBot) => ({
+            ...prevBot,
+            ...response,
+          }));
+        } catch (error) {
+          console.error("Error submitting files:", error);
+          return;
+        }
       } else if (isUpdateMode) {
         response = await assistantsService.updateAssistant(
           newBot.id || "",
@@ -136,6 +160,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           ...prevBot,
           ...response,
         }));
+      }else if (currentStep === 4) {
       }
 
       if (currentStep < steps.length - 1) {

@@ -37,9 +37,10 @@
   justify-content: space-evenly;
   align-content: start;
   width: 50%;
-  height: 100%;
+  max-height: calc(2 * 250px + 20px);
   padding: 10px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .persona-right-container {
@@ -95,6 +96,16 @@
   transition: all 0.3s ease;
 }
 
+.persona-option-container {
+  height: 150px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
 .persona-option-container:hover {
   background-color: #f5f5f5;
 }
@@ -102,9 +113,4 @@
 .persona-option-container.selected {
   border-color: #1976d2;
   background-color: #e3f2fd;
-}
-
-.selected-persona-image {
-  max-width: 100%;
-  border-radius: 4px;
 }

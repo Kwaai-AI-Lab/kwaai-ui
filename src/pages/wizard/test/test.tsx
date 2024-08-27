@@ -1,11 +1,16 @@
 import React from "react";
-import Chat from "../../../components/chat/chat"; // Import the Chat component
-import "./test.css";  // Import the CSS file
+import Chat from "../../../components/chat/chat";
+import "./test.css";
+import { Message } from "../../../data/types";
 
-const Test: React.FC = () => {
+interface testProps {
+  handleMessage: (inputValue:string) => Promise<Message | "" >;
+}
+
+const Test: React.FC <testProps> = ({handleMessage}) => {
   return (
     <div className="test-container">
-      <Chat />
+      <Chat handleMessage={handleMessage}/>
     </div>
   );
 };
