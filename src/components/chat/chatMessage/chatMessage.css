@@ -15,10 +15,14 @@
   }
   
   .chat-message.user .circle {
+    min-width: 31px;
+    min-height: 31px;
     background-color: #5967F1;
   }
   
   .chat-message.ai .circle {
+    min-width: 31px;
+    min-height: 31px;
     background-color: #DFE4EA;
   }
   

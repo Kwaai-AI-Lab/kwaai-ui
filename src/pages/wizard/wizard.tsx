@@ -6,6 +6,7 @@ import Status from "./status/status";
 import Test from "./test/test";
 import { Bot, Message } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
+import ContinueModal from "../../components/continueModal";
 import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
@@ -34,12 +35,13 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     resource_llm_id: "",
     persona_id: "",
     files: [],
-    status: "public",
-    allow_edit: "True",
+    status: botToEdit ? botToEdit.status : "private",
+    allow_edit: botToEdit ? botToEdit.allow_edit : "False", // Default to "False" if creating new
     kind: "assistant",
     icon: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isContinueModalOpen, setIsContinueModalOpen] = useState(false);
 
   useEffect(() => {
     if (botToEdit) {
@@ -51,8 +53,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   const handleMessage = async (inputValue: string): Promise<Message | "" > => {
     try {
       const assistantsService = new AssistantsService();
-      const conversationData = await assistantsService.createConversation("test", newBot.id || "");
-      const message = await assistantsService.sendMessage(newBot.id || "", conversationData.id, inputValue);
+      const message = await assistantsService.sendMessage(newBot.id || "", "", inputValue, "True");
       return message;
     } catch (error: any) {
       console.error("Error submitting files:", error);
@@ -70,7 +71,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       errors={errors}
     />,
     <Knowledge key="knowledge" onFilesChange={setDocsFiles} />,
-     <Test key="test" handleMessage={handleMessage} />,
+    <Test key="test" handleMessage={handleMessage} />,
     <Status key="status" bot={newBot} setBot={setNewBot} />,
   ];
 
@@ -118,7 +119,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
             persona_id: newBot.persona_id,
             files: newBot.files,
             status: newBot.status,
-            allow_edit: newBot.allow_edit ? "True" : "False",
+            allow_edit: newBot.allow_edit === "True" ? "True" : "False", // Ensure proper assignment
             icon: newBot.icon,
           }
         );
@@ -128,18 +129,19 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
         }));
         setIsUpdateMode(true);
       } else if (currentStep === 3) {
-        try {
-          const assistantsService = new AssistantsService();
-          console.log("Uploading files:", docsFiles);
-          assistantsService.uploadFiles(newBot.id || "", docsFiles);
-          setNewBot((prevBot) => ({
-            ...prevBot,
-            ...response,
-          }));
-        } catch (error) {
-          console.error("Error submitting files:", error);
-          return;
+        if (docsFiles.length > 0) {
+          try {
+            assistantsService.uploadFiles(newBot.id || "", docsFiles);
+          } catch (error) {
+            console.error("Error submitting files:", error);
+            return;
+          }
+        } else {
+          console.log("No files to upload.");
         }
+      } else if (currentStep === 4) {
+        setIsContinueModalOpen(true);
+        return;
       } else if (isUpdateMode) {
         response = await assistantsService.updateAssistant(
           newBot.id || "",
@@ -151,7 +153,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
             persona_id: newBot.persona_id,
             files: newBot.files,
             status: newBot.status,
-            allow_edit: newBot.allow_edit ? "True" : "False",
+            allow_edit: newBot.allow_edit === "True" ? "True" : "False",
             kind: newBot.kind,
             icon: newBot.icon || "",
           }
@@ -160,7 +162,6 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           ...prevBot,
           ...response,
         }));
-      }else if (currentStep === 4) {
       }
 
       if (currentStep < steps.length - 1) {
@@ -195,12 +196,55 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     showList();
   };
 
-  const handleDeploy = () => {
-    if (isUpdateMode) {
-      updateAgent(newBot);
-    } else {
-      addToMyAgent(newBot);
+  const handleContinue = () => {
+    setIsContinueModalOpen(false);
+    setCurrentStep(currentStep + 1);
+  };
+
+  const resetBot = () => {
+    setNewBot({
+      id: uuidv4(),
+      name: "",
+      description: "",
+      uri: "",
+      resource_llm_id: "",
+      persona_id: "",
+      files: [],
+      status: "public",
+      allow_edit: "True",
+      kind: "assistant",
+      icon: "",
+    });
+    setIsUpdateMode(false);
+    setCurrentStep(0);
+  };
+  
+
+  const handleDeploy = async () => {
+    try {
+      const assistantsService = new AssistantsService();
+  
+      await assistantsService.updateAssistant(
+        newBot.id || "",
+        {
+          name: newBot.name,
+          description: newBot.description,
+          uri: newBot.uri,
+          resource_llm_id: newBot.resource_llm_id,
+          persona_id: newBot.persona_id,
+          files: newBot.files,
+          status: newBot.status,
+          allow_edit: newBot.allow_edit === "True" ? "True" : "False", // Ensure proper assignment
+          kind: newBot.kind,
+          icon: newBot.icon || "",
+        }
+      );
+  
+    } catch (error) {
+      console.error("Error creating or updating assistant:", error);
     }
+    addToMyAgent(newBot);
+    resetBot();
     setShowWizard(false);
     showList();
   };
@@ -226,6 +270,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmCancel}
+      />
+
+      <ContinueModal
+        isOpen={isContinueModalOpen}
+        onRequestClose={() => setIsContinueModalOpen(false)}
+        onConfirm={handleContinue}
       />
     </div>
   );

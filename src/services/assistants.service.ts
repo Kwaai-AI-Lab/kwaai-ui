@@ -158,7 +158,7 @@ class AssistantsService {
     }
   }
 
-  async sendMessage(assistantId:string, conversationId: string, prompt: string): Promise<Message> {
+  async sendMessage(assistantId:string, conversationId: string|null, prompt: string, test:string): Promise<Message> {
     try {
       const response = await fetch(`${PAIOS_API_URL}/messages`, {
         method: "POST",
@@ -169,6 +169,7 @@ class AssistantsService {
           assistant_id: assistantId,
           conversation_id: conversationId,
           prompt: prompt,
+          test: test || "",
         }),
       });
       if (!response.ok) {

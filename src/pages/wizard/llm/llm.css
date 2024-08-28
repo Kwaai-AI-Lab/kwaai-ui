@@ -10,10 +10,11 @@
 
 .llm-list-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(3, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 800px;
+  justify-content: center;
 }
 
 .error-message {
@@ -26,4 +27,14 @@
   font-size: 0.875em;
   width: 70%;
   text-align: center;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
 }

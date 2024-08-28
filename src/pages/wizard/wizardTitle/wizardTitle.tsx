@@ -4,7 +4,6 @@ import wizard3 from "../../../assets/wizard-step3.png";
 import wizard4 from "../../../assets/wizard-step4.png";
 import wizard5 from "../../../assets/wizard-step5.png";
 import wizard6 from "../../../assets/wizard-step6.png";
-import wizard7 from "../../../assets/wizard-step7.png";
 import "./wizardTitle.css";
 
 interface WizardTitleProps {
@@ -26,8 +25,6 @@ const WizardTitle: React.FC<WizardTitleProps> = ({ currentStep }) => {
         return wizard5;
       case 5:
         return wizard6;
-      case 6:
-        return wizard7;
       default:
         return wizard1;
     }
@@ -47,8 +44,6 @@ const WizardTitle: React.FC<WizardTitleProps> = ({ currentStep }) => {
         return "Step 5: Test the assistant";
       case 5:
         return "Step 6: Deploy";
-      case 6:
-          return "Step 7: Deploy!";
       default:
         return "Step 7: Deploy!";
     }

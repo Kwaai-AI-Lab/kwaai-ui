@@ -11,7 +11,6 @@ const ChatLog: React.FC<ChatLogProps> = ({ historyLogs }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const logItemClickHandler = (item: HistoryItem) => {
-    console.log(`Clicked LogItem ID: ${item.id}`);
     if (selectedItemId === item.id) {
       setSelectedItemId(null);
       return;
