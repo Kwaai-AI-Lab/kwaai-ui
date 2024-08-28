@@ -30,10 +30,11 @@ export interface conversation {
 export interface Message {
   id: string;
   assistant_id: string;
-  conversation_id: string;
+  conversation_id: string | null;
   timestamp: string;
   prompt: string;
   chat_response: string;
+  test: string;
 }
 
 export interface File {

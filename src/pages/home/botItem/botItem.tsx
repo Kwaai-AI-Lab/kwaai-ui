@@ -14,28 +14,29 @@ interface BotItemProps {
   botItemData: Bot;
   onBotSelect: (bot: Bot) => void;
   onEditBot: (bot: Bot) => void;
+  onBotDelete: (botId: string) => void;
 }
 
-const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot }) => {
+const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, onBotDelete }) => {
   const { removeToMyAgent, agentViewType } = useAgents();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
+  // Asegúrate de que los IDs aquí coincidan exactamente con los proporcionados
   const personaImages: { [key: string]: string } = {
     "7bea4732-214f-40e7-9161-4e7241a2b97e": "https://static.vecteezy.com/system/resources/previews/026/536/284/non_2x/27yr-old-beautiful-face-ai-generated-free-photo.jpg",
     "7bea4732-214f-40e7-9161-4e7241a2b97f": "https://img.freepik.com/premium-photo/face-that-has-word-ai-it_872754-2069.jpg",
     "7bea4732-214f-40e7-9161-4e7241a2b97a": "https://images.nightcafe.studio//assets/man-in-suit.jpg?tr=w-1600,c-at_max",
-    "7bea4732-214f-40e7-9161-4e7241a2b97h": "/DrEvelyn.png",
-    "7bea4732-214f-40e7-9161-4e7241a2b97i": "/DrMarcus.png",
-    "7bea4732-214f-40e7-9161-4e7241a2b97j": "/DrLinda.png",
+    "7bea4732-214f-40e7-9161-4e7241a2b97b": "/DrEvelyn.png",
+    "7bea4732-214f-40e7-9161-4e7241a2b97c": "/DrMarcus.png",
+    "7bea4732-214f-40e7-9161-4e7241a2b97d": "/DrLinda.png",
   };
-  
 
   const handleDelete = async () => {
     try {
       const assistantsService = new AssistantsService();
       await assistantsService.deleteAssistant(botItemData.id);
-      removeToMyAgent(botItemData.id);
+      onBotDelete(botItemData.id);
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error deleting assistant:", error);

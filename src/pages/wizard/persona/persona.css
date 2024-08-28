@@ -114,3 +114,13 @@
   border-color: #1976d2;
   background-color: #e3f2fd;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}

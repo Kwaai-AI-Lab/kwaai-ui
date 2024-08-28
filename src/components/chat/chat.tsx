@@ -3,6 +3,7 @@ import "./chat.css";
 import ChatMessage from "./chatMessage/chatMessage";  
 import PrimaryButton from "../buttons/primaryButton/primaryButton"; 
 import { Message } from "../../data/types";
+import { DotLoader } from "react-spinners";
 
 interface MessageLocal {
   sender: "user" | "ai";
@@ -55,12 +56,13 @@ const Chat: React.FC <chatProps> = ({handleMessage}) => {
           />
         ))}
         {loading && (
-          <ChatMessage sender="ai" text="Loading..." />
+          <DotLoader color="#5967F1" size={30} />
         )}
       </div>
       <div className="chat-input-container">
         <textarea
           className="chat-textarea"
+          placeholder="Type a message..."
           rows={3}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

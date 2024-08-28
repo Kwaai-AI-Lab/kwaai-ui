@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { LlmOption } from "../../../data/types";
-import llmOptionsData from "../../../data/llm.json";
 import LlmItem from "./llmItem";
 import useAssistants from "../../../hooks/assistants.hook";
 import "./llm.css";
+import { DotLoader } from "react-spinners";
 
 interface LlmProps {
   onSelect: (option: LlmOption) => void;
@@ -14,7 +14,6 @@ interface LlmProps {
 const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
   const { assistants } = useAssistants("llm");
 
-  // Mapeo de los datos
   const mappedAssistants = assistants.map((assistant) => ({
     name: assistant.name,
     uri: assistant.uri,
@@ -27,14 +26,14 @@ const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
     allow_edit: assistant.allow_edit || null,
     kind: assistant.kind || "llm",
     icon: assistant.icon || null,
-    id: assistant.id || "", // Asegurar que `id` sea siempre una string
+    id: assistant.id || "",
   }));
 
   useEffect(() => {
-    if (!selectedLlmOption?.id && llmOptionsData.length > 0) {
-      onSelect(llmOptionsData[0]);
+    if (!selectedLlmOption?.id && mappedAssistants.length > 0) {
+      onSelect(mappedAssistants[0]);
     }
-  }, [selectedLlmOption, onSelect]);
+  }, [selectedLlmOption, mappedAssistants, onSelect]);
 
   return (
     <div className="llm-container">
@@ -42,14 +41,20 @@ const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
         <div className="error-message">{errors.resource_llm_id}</div>
       )}
       <div className="llm-list-grid">
-        {mappedAssistants.map((llm) => (
-          <LlmItem
-            key={llm.id}
-            llmItemData={llm}
-            isSelected={selectedLlmOption.id === llm.id}
-            onSelect={onSelect}
-          />
-        ))}
+        {mappedAssistants.length > 0 ? (
+          mappedAssistants.map((llm) => (
+            <LlmItem
+              key={llm.id}
+              llmItemData={llm}
+              isSelected={selectedLlmOption.id === llm.id}
+              onSelect={onSelect}
+            />
+          ))
+        ) : (
+          <div className="loader-container">
+            <DotLoader color="#5967F1" size={60} />
+          </div>
+        )}
       </div>
     </div>
   );
