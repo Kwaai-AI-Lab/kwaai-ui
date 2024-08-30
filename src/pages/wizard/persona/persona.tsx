@@ -21,10 +21,11 @@ const Persona: React.FC<PersonaProps> = ({ bot, setBot, errors }) => {
 
   useEffect(() => {
     if (!selectedPersonaId && personaList.length > 0) {
+
       setSelectedPersonaId(personaList[0].id);
       setBot((prevBot) => ({ ...prevBot, persona_id: personaList[0].id }));
     }
-    setLoading(false); // Simula el fin de la carga
+    setLoading(false);
   }, [personaList, selectedPersonaId, setBot]);
 
   const selectedPersona = personaList.find((persona) => persona.id === selectedPersonaId);

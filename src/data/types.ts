@@ -18,6 +18,14 @@ export interface Bot {
   icon: string;
 }
 
+export interface Persona {
+  id: string | null;
+  name: string;
+  description: string;
+  voice_id: string;
+  face_id: string;  
+}
+
 export interface conversation {
   id: string;
   name: string;
@@ -25,6 +33,12 @@ export interface conversation {
   last_updated_timestamp: string;
   archive: string;
   assistant_id: string;
+}
+
+export interface Face {
+  id: string;
+  name: string;
+  imageURL: string;
 }
 
 export interface Message {
@@ -46,6 +60,13 @@ export interface File {
 
 export interface Feature {
   description: string;
+  id: string;
+  name: string;
+  imageURL: string;
+  videoURL: string;
+}
+
+export interface Voices {
   id: string;
   name: string;
   imageURL: string;

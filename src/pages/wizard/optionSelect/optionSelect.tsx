@@ -1,24 +1,18 @@
 import React from "react";
-import { Feature } from "../../../data/types";
-import voiceIcon from "../../../assets/voice-icon.png";
+import { Feature, Face } from "../../../data/types";
 import "./optionSelect.css";
 
 interface OptionSelectProps {
-  feature: Feature;
+  feature: Feature | Face;
   isSelected: boolean;
   onSelect: () => void;
 }
 
 const OptionSelect: React.FC<OptionSelectProps> = ({ feature, isSelected, onSelect }) => {
+  console.log("feature___________________________",feature);
   return (
     <div className="persona-item" onClick={onSelect}>
-      {feature.imageURL ? (
-        <img src={feature.imageURL} alt={feature.name} className="feature-image" />
-      ) : (
-        <div className="placeholder">
-          <img src={voiceIcon} alt="Voice Icon" className="voice-icon-option" />
-        </div>
-      )}
+        <img src={feature?.imageURL} alt={feature?.name} className="feature-image" />
       <div className="radio-button-container">
         <input
           type="radio"
