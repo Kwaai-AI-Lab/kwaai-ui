@@ -5,22 +5,25 @@ import Wizard from "../wizard/wizard";
 import BotsGrid from "./botsGrid/botsGrid";
 import AgentInteraction from "../agentInteraction/agentInteraction";
 import SideBar from "../../components/sideBar/sideBar";
-import ConfirmationModal from "../../components/confirmationModal"; // Import ConfirmationModal
+import PersonasWizard from "../wizard/personasWizard"; // Ensure correct import capitalization
+import ConfirmationModal from "../../components/confirmationModal";
 import "./home.css";
-import { Bot } from "../../data/types";
+import { Bot, Persona } from "../../data/types";
 
 export default function Home() {
-  const { myAgents, shareAgents, setAgentViewType } = useAgents();
+  const { myAgents, personas, shareAgents, setAgentViewType } = useAgents();
   const [showWizard, setShowWizard] = useState(false);
   const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
   const [editBot, setEditBot] = useState<Bot | null>(null);
+  const [editPersona, setEditPersona] = useState<Persona | null>(null);
   const [viewType, setViewType] = useState<AgentViewType>(AgentViewType.MyAgents);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
-  const [pendingViewType, setPendingViewType] = useState<AgentViewType | null>(null); // State to store the viewType temporarily
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingViewType, setPendingViewType] = useState<AgentViewType | null>(null);
 
   const newAgentHandler = () => {
     setShowWizard(true);
     setEditBot(null);
+    setEditPersona(null);
   };
 
   const handleBotSelect = (bot: Bot) => {
@@ -54,10 +57,21 @@ export default function Home() {
 
   const handleEditBot = (bot: Bot) => {
     setEditBot(bot);
+    setEditPersona(null);
     setShowWizard(true);
   };
 
-  const agentsToShow = viewType === AgentViewType.MyAgents ? myAgents : shareAgents;
+  const handleEditPersona = (persona: Persona) => {
+    setEditPersona(persona);
+    setEditBot(null);
+    setShowWizard(true);
+  };
+
+  const agentsToShow = viewType === AgentViewType.MyAgents
+    ? myAgents
+    : viewType === AgentViewType.Personas
+    ? personas
+    : shareAgents;
 
   const handleConfirmModal = () => {
     setIsModalOpen(false);
@@ -83,9 +97,29 @@ export default function Home() {
           {selectedBot ? (
             <AgentInteraction bot={selectedBot} onBack={handleBackToList} />
           ) : showWizard ? (
-            <Wizard showList={handleBackToList} botToEdit={editBot} setShowWizard={setShowWizard} />
+            viewType === AgentViewType.Personas ? (
+              <PersonasWizard
+                viewType={viewType}
+                showList={handleBackToList}
+                botToEdit={editPersona}
+                setShowWizard={setShowWizard}
+              />
+            ) : (
+              <Wizard
+                viewType={viewType}
+                showList={handleBackToList}
+                botToEdit={editBot}
+                setShowWizard={setShowWizard}
+              />
+            )
           ) : (
-            <BotsGrid bots={agentsToShow} handleAddNewAgent={newAgentHandler} onBotSelect={handleBotSelect} onEditBot={handleEditBot} />
+            <BotsGrid
+              viewType={viewType}
+              bots={agentsToShow}
+              handleAddNewAgent={newAgentHandler}
+              onBotSelect={handleBotSelect}
+              onEditBot={viewType === AgentViewType.Personas ? handleEditPersona : handleEditBot}
+            />
           )}
         </div>
       </div>

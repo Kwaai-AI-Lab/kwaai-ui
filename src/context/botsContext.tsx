@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { Bot, Feature, HistoryLog } from "../data/types";
+import { Bot, Feature, HistoryLog, Persona, Face } from "../data/types";
 
 interface AgentsProviderProps {
   children: React.ReactNode;
@@ -8,20 +8,23 @@ interface AgentsProviderProps {
 interface AgentsContextProps {
   myAgents: Bot[];
   shareAgents: Bot[];
+  personas: Persona[];
   personaList: Feature[];
   voiceList: Feature[];
   historyLog: HistoryLog[];
-  addToMyAgent: (bot: Bot) => void;
-  updateAgent: (bot: Bot) => void; // New method for updating an agent
+  faceList: Face[];
+  addToMyAgent: (bot: Bot | Persona) => void;
+  updateAgent: (bot: Bot) => void;
   removeToMyAgent: (id: string) => void;
   loadPersonas: () => void;
-  agentViewType: AgentViewType; // New property to store the selected view type
+  agentViewType: AgentViewType;
   setAgentViewType: (viewType: AgentViewType) => void;
 }
 
 enum AgentViewType {
   MyAgents = "myAgents",
-  SharedAgents = "sharedAgents"
+  SharedAgents = "sharedAgents",
+  Personas = "personas",
 }
 
 const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
@@ -29,10 +32,11 @@ const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
 export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
   const [myAgents, setMyAgents] = useState<Bot[]>([]);
   const [shareAgents, setSharedAgents] = useState<Bot[]>([]);
+  const [personas, setPersonas] = useState<Persona[]>([]);
   const [personaList, setPersonaList] = useState<Feature[]>([]);
   const [voiceList, setVoiceList] = useState<Feature[]>([]);
   const [historyLog, setHistoryLog] = useState<HistoryLog[]>([]);
-  const [agentViewType, setAgentViewType] = useState<AgentViewType>(AgentViewType.MyAgents); // Default view type
+  const [agentViewType, setAgentViewType] = useState<AgentViewType>(AgentViewType.MyAgents);
 
   const addToMyAgent = (agent: Bot) => {
     setMyAgents((prevMyAgents) => [...prevMyAgents, agent]);
@@ -58,45 +62,13 @@ export const AgentsProvider: React.FC<AgentsProviderProps> = ({ children }) => {
     }
   };
 
-  const loadVoices = async () => {
-    try {
-      const response = await fetch("/voices.json");
-      const data = await response.json();
-      setVoiceList(data);
-    } catch (error) {
-      console.error("Failed to load voices", error);
-    }
-  };
-
-  const loadSharedAgents = async () => {
-    try {
-      const response = await fetch("/sharedAgents.json");
-      const data = await response.json();
-      setSharedAgents(data);
-    } catch (error) {
-      console.error("Failed to load shared agents", error);
-    }
-  };
-
-  const loadHistoyLog = async () => {
-    try {
-      const response = await fetch("/historyLog.json");
-      const data = await response.json();
-      setHistoryLog(data);
-    } catch (error) {
-      console.error("Failed to load history log", error);
-    }
-  };
-
   useEffect(() => {
     loadPersonas();
-    loadVoices();
-    loadSharedAgents();
-    loadHistoyLog();
-  }, []);
+  }
+  , []);
 
   return (
-    <AgentsContext.Provider value={{ myAgents, shareAgents, personaList, voiceList, historyLog, addToMyAgent, updateAgent, removeToMyAgent, loadPersonas, agentViewType, setAgentViewType }}>
+    <AgentsContext.Provider value={{ myAgents, shareAgents, personas, personaList, voiceList, historyLog, addToMyAgent, updateAgent, removeToMyAgent, loadPersonas, agentViewType, setAgentViewType }}>
       {children}
     </AgentsContext.Provider>
   );

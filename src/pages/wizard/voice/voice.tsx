@@ -1,23 +1,23 @@
 import React from "react";
-import { useAgents } from "../../../context/botsContext";
-import { Bot, Feature } from "../../../data/types";
+import { Persona, Voices } from "../../../data/types";
 import OptionSelect from "../optionSelect/optionSelect";
 import voiceIcon from "../../../assets/voice-icon.png";
+import VoiceList from "../../../assets/voices.json";
 import "./voice.css";
 
 interface VoiceProps {
-  bot: Bot;
-  setBot: React.Dispatch<React.SetStateAction<Bot>>;
+  bot: Persona;
+  setBot: React.Dispatch<React.SetStateAction<Persona>>;
 }
 
 const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
-  const { voiceList } = useAgents();
+  const voiceList = VoiceList;
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | null>(
-    bot.voice?.id || null
+    bot.voice_id || null
   );
   const selectedVoice = voiceList.find((voice) => voice.id === selectedVoiceId);
 
-  const handleSelect = (voice: Feature) => {
+  const handleSelect = (voice: Voices) => {
     setSelectedVoiceId(voice.id);
     setBot((prevBot) => ({ ...prevBot, voice }));
   }

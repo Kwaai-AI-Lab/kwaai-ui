@@ -1,50 +1,62 @@
 import BotItem from "../botItem/botItem";
 import BotListTitle from "../botListTitle/botListTitle";
 import EmptyMessage from "../../../components/emptyMessage/emptyMessage";
-import { Bot } from "../../../data/types";
+import { Bot, Persona } from "../../../data/types";
 import { useState, useEffect } from "react";
 import "./botsGrid.css";
 import useAssistants from "../../../hooks/assistants.hook";
 import { DotLoader } from "react-spinners";
+import usePersonas from "../../../hooks/personas.hook";
+import { AgentViewType } from "../../../context/botsContext";
 
 interface BotsGridProps {
-  bots: Bot[];
+  viewType: AgentViewType;
+  bots: Bot[] | Persona[];
   handleAddNewAgent: () => void;
   onBotSelect: (bot: Bot) => void;
   onEditBot: (bot: Bot) => void;
 }
 
-const BotsGrid: React.FC<BotsGridProps> = ({ handleAddNewAgent, onBotSelect, onEditBot }) => {
+const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotSelect, onEditBot }) => {
   const { assistants } = useAssistants("assistant");
-  const [localBots, setLocalBots] = useState<Bot[]>([]);
+  const { personas } = usePersonas();
+  const [localItems, setLocalItems] = useState<Array<Bot | Persona>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (assistants.length > 0) {
-      setLocalBots(assistants);
+    if (assistants.length > 0 || personas.length > 0) {
+      setLocalItems([...assistants, ...personas]);
       setLoading(false);
     }
-  }, [assistants]);
+  }, [assistants, personas]);
+
+  useEffect(() => {
+    if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
+      setLocalItems(assistants);
+    } else if (viewType === AgentViewType.Personas) {
+      setLocalItems(personas);
+    }
+  }, [viewType, assistants, personas]);
 
   const handleBotDelete = (botId: string) => {
-    setLocalBots((prevBots) => prevBots.filter((bot) => bot.id !== botId));
+    setLocalItems((prevItems) => prevItems.filter((item) => item.id !== botId));
   };
 
   return (
     <>
-      <BotListTitle onAddNewAgent={handleAddNewAgent} />
+      <BotListTitle viewType={viewType} onAddNewAgent={handleAddNewAgent} />
       {loading ? (
         <div className="loader-container">
           <DotLoader color="#5967F1" size={60} />
         </div>
-      ) : localBots.length === 0 ? (
+      ) : localItems.length === 0 ? (
         <EmptyMessage />
       ) : (
         <div className="botsListGrid">
-          {localBots.map((bot) => (
+          {localItems.map((item) => (
             <BotItem
-              key={bot.id}
-              botItemData={bot}
+              key={item.id}
+              botItemData={item}
               onBotSelect={onBotSelect}
               onEditBot={onEditBot}
               onBotDelete={handleBotDelete}
@@ -55,5 +67,6 @@ const BotsGrid: React.FC<BotsGridProps> = ({ handleAddNewAgent, onBotSelect, onE
     </>
   );
 };
+
 
 export default BotsGrid;

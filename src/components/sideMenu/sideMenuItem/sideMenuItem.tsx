@@ -5,7 +5,7 @@ interface SideMenuItemProps {
     text: string;
     imageSrc: string;
     onClick: () => void;
-    selected: boolean;  // Add selected prop
+    selected: boolean;
 }
 
 const SideMenuItem: React.FC<SideMenuItemProps> = ({ text, imageSrc, onClick, selected }) => {

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
 import WizardTitle from "./wizardTitle/wizardTitle";
 import WizardBottom from "./wizardBottom/wizardBottom";
-import Persona from "./persona/persona";
+import PersonaView from "./persona/persona";
 import AssistantsService from "../../services/assistants.service";
 
 interface WizardProps {
@@ -36,7 +36,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     persona_id: "",
     files: [],
     status: botToEdit ? botToEdit.status : "private",
-    allow_edit: botToEdit ? botToEdit.allow_edit : "False", // Default to "False" if creating new
+    allow_edit: botToEdit ? botToEdit.allow_edit : "False",
     kind: "assistant",
     icon: "",
   });
@@ -63,7 +63,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
 
   const steps = [
     <Details key="details" bot={newBot} setBot={setNewBot} errors={errors} />,
-    <Persona key="persona" bot={newBot} setBot={setNewBot} errors={errors} />,
+    <PersonaView key="persona" bot={newBot} setBot={setNewBot} errors={errors} />,
     <Llm 
       key="llm" 
       onSelect={(llmOption) => setNewBot({ ...newBot, resource_llm_id: llmOption.id })} 

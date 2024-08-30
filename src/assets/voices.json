@@ -2,19 +2,19 @@
     {
         "id": "voice1",
         "name": "Voice 1",
-        "imageURL": "",
+        "imageURL": "/voice-icon.png",
         "videoURL": ""
     },
     {
         "id": "voice2",
         "name": "Voice 2",
-        "imageURL": "",
-        "videoURL": ""
+        "imageURL": "/voice-icon.png",
+        "videoURL": "asdasdasd"
     },
     {
         "id": "voice3",
         "name": "Voice 3",
-        "imageURL": "",
-        "videoURL": ""
+        "imageURL": "/voice-icon.png",
+        "videoURL": "asdasdasd"
     }
 ]
