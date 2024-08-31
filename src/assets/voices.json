@@ -1,18 +1,18 @@
 [
     {
-        "id": "voice1",
+        "id": "a1b2c3d4-e5f6-4789-ab01-23456789abcd",
         "name": "Voice 1",
         "imageURL": "/voice-icon.png",
         "videoURL": ""
     },
     {
-        "id": "voice2",
+        "id": "f1e2d3c4-b5a6-4789-ab01-23456789abcd",
         "name": "Voice 2",
         "imageURL": "/voice-icon.png",
         "videoURL": "asdasdasd"
     },
     {
-        "id": "voice3",
+        "id": "12345678-9abc-def0-1234-56789abcdef0",
         "name": "Voice 3",
         "imageURL": "/voice-icon.png",
         "videoURL": "asdasdasd"
