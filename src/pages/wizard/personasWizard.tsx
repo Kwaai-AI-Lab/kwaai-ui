@@ -84,17 +84,19 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
       const personasService = new PersonasService();
       let response: Persona;
 
-      if (currentStep === 2 && !isUpdateMode) {
+      if (currentStep === 2) {
         setNewBot((prevBot) => ({
           ...prevBot,
           ...response,
         }));
     } else if (currentStep === 3) {
+        setNewBot((prevBot) => ({
+            ...prevBot,
+            ...response,
+            }));
         setIsContinueModalOpen(true);
-        return;
       } else if (isUpdateMode) {
         response = await personasService.updatePersona(newBot.id || "", {
-          id: newBot.id,
           name: newBot.name,
           description: newBot.description,
           voice_id: newBot.voice_id,
@@ -145,7 +147,6 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
 
   const resetBot = () => {
     setNewBot({
-      id: uuidv4(),
       name: "",
       description: "",
       voice_id: "",
@@ -159,13 +160,9 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
     try {
       const personasService = new PersonasService();
 
-      await personasService.updatePersona(newBot.id || "", {
-        id: newBot.id,
-        name: newBot.name,
-        description: newBot.description,
-        voice_id: newBot.voice_id,
-        face_id: newBot.face_id,
-      });
+      await personasService.createPersona(
+        newBot
+      );
     } catch (error) {
       console.error("Error creating or updating assistant:", error);
     }

@@ -19,7 +19,7 @@ export interface Bot {
 }
 
 export interface Persona {
-  id: string | null;
+  id?: string;
   name: string;
   description: string;
   voice_id: string;

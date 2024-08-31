@@ -19,8 +19,8 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
 
   const handleSelect = (voice: Voices) => {
     setSelectedVoiceId(voice.id);
-    setBot((prevBot) => ({ ...prevBot, voice }));
-  }
+    setBot((prevBot) => ({ ...prevBot, voice_id: voice.id }));
+  };
 
   return (
     <div className="voice-container">
