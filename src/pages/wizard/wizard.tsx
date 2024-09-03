@@ -4,7 +4,7 @@ import Knowledge from "./knowledge";
 import Llm from "./llm/llm";
 import Status from "./status/status";
 import Test from "./test/test";
-import { Bot, Message } from "../../data/types";
+import { Bot } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
 import ContinueModal from "../../components/continueModal";
 import { useAgents } from "../../context/botsContext";
@@ -22,7 +22,7 @@ interface WizardProps {
 }
 
 const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
-  const { addToMyAgent, updateAgent } = useAgents();
+  const { addToMyAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
   const [docsFiles, setDocsFiles] = useState<File[]>([]);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
@@ -50,11 +50,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     }
   }, [botToEdit]);
 
-  const handleMessage = async (inputValue: string): Promise<Message | "" > => {
+  const handleMessage = async (inputValue: string): Promise<string> => {
     try {
       const assistantsService = new AssistantsService();
-      const message = await assistantsService.sendMessage(newBot.id || "", "", inputValue, "True");
-      return message;
+      //const message = await assistantsService.sendMessage(newBot.id || "", "", inputValue, "True");
+      const answer = await assistantsService.getAnswer(newBot.id || "", inputValue);
+      return answer;
     } catch (error: any) {
       console.error("Error submitting files:", error);
       return "";
@@ -70,7 +71,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       selectedLlmOption={{ id: newBot.resource_llm_id, name: newBot.name, image: "" }} 
       errors={errors}
     />,
-    <Knowledge key="knowledge" onFilesChange={setDocsFiles} />,
+    <Knowledge key="knowledge" assistantId={newBot.id} onFilesChange={setDocsFiles} />,
     <Test key="test" handleMessage={handleMessage} />,
     <Status key="status" bot={newBot} setBot={setNewBot} />,
   ];
@@ -100,6 +101,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   };
 
   const handleNext = async () => {
+    console.log("Current step:", currentStep);
     if (!validateFields()) {
       return;
     }
@@ -126,9 +128,11 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
         setNewBot((prevBot) => ({
           ...prevBot,
           ...response,
+          id: response.id
         }));
         setIsUpdateMode(true);
       } else if (currentStep === 3) {
+        console.log("Files to upload:", docsFiles);
         if (docsFiles.length > 0) {
           try {
             assistantsService.uploadFiles(newBot.id || "", docsFiles);
@@ -140,7 +144,8 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           console.log("No files to upload.");
         }
       } else if (currentStep === 4) {
-        setIsContinueModalOpen(true);
+        //setIsContinueModalOpen(true);
+        setCurrentStep(currentStep + 1);
         return;
       } else if (isUpdateMode) {
         response = await assistantsService.updateAssistant(

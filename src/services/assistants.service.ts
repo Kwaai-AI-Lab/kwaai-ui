@@ -1,5 +1,5 @@
 import { PAIOS_API_URL } from "../config/env";
-import { Bot, conversation, Message } from "../data/types";
+import { Bot, conversation, Message, AssistantFile } from "../data/types";
 
 interface CreateAssistantResponse {
   name: string;
@@ -104,7 +104,7 @@ class AssistantsService {
         formData.append("files", file);
       });
 
-      const response = await fetch(`${PAIOS_API_URL}/upload/${assistantId}/`, {
+      const response = await fetch(`${PAIOS_API_URL}/rag-indexing/${assistantId}/`, {
         method: "POST",
         body: formData,
       });
@@ -178,6 +178,85 @@ class AssistantsService {
       return response.json();
     } catch (error) {
       console.error(error);
+      throw error;
+    }
+  }
+
+  // Method to get files associated with an assistant
+  async getFiles(assistantId: string): Promise<AssistantFile[]> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/rag-indexing/${assistantId}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Unexpected response format");
+      }
+
+      return data as AssistantFile[];
+    } catch (error) {
+      console.error("Error fetching files:", error);
+      throw error;
+    }
+  }
+
+  // Method to delete files associated with an assistant
+  async deleteFiles(assistantId: string, fileIds: string[]): Promise<void> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/rag-indexing/${assistantId}/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          file_ids: fileIds
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      console.log("Files deleted successfully");
+    } catch (error) {
+      console.error("Error deleting files:", error);
+      throw error;
+    }
+  }
+
+  async getAnswer(assistantId: string, question: string): Promise<string> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          assistant_id: assistantId,
+          prompt: question,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Return the chat_response value
+      console.log("response = ", data.chat_response);
+      return data.chat_response;
+    } catch (error) {
+      console.error("Error fetching answer:", error);
       throw error;
     }
   }

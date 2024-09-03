@@ -11,7 +11,7 @@ interface MessageLocal {
 }
 
 interface chatProps {
-  handleMessage: (inputValue:string) => Promise<Message | "" >;
+  handleMessage: (inputValue:string) => Promise<string>;
 }
 
 const Chat: React.FC <chatProps> = ({handleMessage}) => {
@@ -37,7 +37,7 @@ const Chat: React.FC <chatProps> = ({handleMessage}) => {
     if (message) {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "ai", text: message.chat_response }
+        { sender: "ai", text: message }
       ]);
     }
     

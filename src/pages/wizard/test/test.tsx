@@ -4,7 +4,7 @@ import "./test.css";
 import { Message } from "../../../data/types";
 
 interface testProps {
-  handleMessage: (inputValue:string) => Promise<Message | "" >;
+  handleMessage: (inputValue:string) => Promise<string>;
 }
 
 const Test: React.FC <testProps> = ({handleMessage}) => {

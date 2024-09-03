@@ -1,3 +1,4 @@
+
 export interface LlmOption {
   id: string;
   name: string;
@@ -81,4 +82,10 @@ export interface HistoryLog {
 export interface HistoryItem {
   id: string;
   content: string;
+}
+
+export interface AssistantFile {
+  name: string;
+  num_chunks: string | null;
+  id: string | null;
 }
