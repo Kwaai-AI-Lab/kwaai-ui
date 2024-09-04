@@ -6,7 +6,7 @@ import ContinueModal from "../../components/continueModal";
 import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
-import WizardTitle from "./wizardTitle/wizardTitle";
+import PersonaTitle from "./wizardTitle/personasTitle";
 import WizardBottom from "./wizardBottom/wizardBottom";
 import Face from "./face/face";
 import PersonasService from "../../services/personas.service";
@@ -89,19 +89,13 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
           ...prevBot,
           ...response,
         }));
-    } else if (currentStep === 3) {
+    } else if (currentStep === 3 && !isUpdateMode) {
         setNewBot((prevBot) => ({
             ...prevBot,
             ...response,
             }));
         setIsContinueModalOpen(true);
-      } else if (isUpdateMode) {
-        response = await personasService.updatePersona(newBot.id || "", {
-          name: newBot.name,
-          description: newBot.description,
-          voice_id: newBot.voice_id,
-          face_id: newBot.face_id,
-        });
+      } else if (isUpdateMode && currentStep === 3) {
         setNewBot((prevBot) => ({
           ...prevBot,
           ...response,
@@ -127,7 +121,7 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
   };
 
   const handleConfirmCancel = async () => {
-    if (currentStep === 0 && isUpdateMode) {
+    if (!isUpdateMode) {
       try {
         const personasService = new PersonasService();
         await personasService.deletePersona(newBot.id || "");
@@ -157,24 +151,36 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
   };
 
   const handleDeploy = async () => {
+    if (!isUpdateMode) {
     try {
       const personasService = new PersonasService();
-
-      await personasService.createPersona(
-        newBot
-      );
+      const { id, ...personaData } = newBot;
+      await personasService.createPersona(personaData);
     } catch (error) {
       console.error("Error creating or updating assistant:", error);
     }
-    addToMyAgent(newBot);
-    resetBot();
-    setShowWizard(false);
-    showList();
-  };
+  } else {
+    try {
+      const personasService = new PersonasService();
+      await personasService.updatePersona(newBot.id || "", {
+        name: newBot.name,
+        description: newBot.description,
+        voice_id: newBot.voice_id,
+        face_id: newBot.face_id,
+      });
+    } catch (error) {
+      console.error("Error creating or updating assistant:", error);
+    }
+  }
+  addToMyAgent(newBot);
+  resetBot();
+  setShowWizard(false);
+  showList();
+}
 
   return (
     <div className="wizard-container">
-      <WizardTitle currentStep={currentStep} />
+      <PersonaTitle currentStep={currentStep} />
       <div className="sections-container">
         <div className="right-section-wizard">{steps[currentStep]}</div>
       </div>

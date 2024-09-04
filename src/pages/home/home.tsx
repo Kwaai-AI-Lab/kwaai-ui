@@ -113,13 +113,13 @@ export default function Home() {
               />
             )
           ) : (
-            <BotsGrid
-              viewType={viewType}
-              bots={agentsToShow}
-              handleAddNewAgent={newAgentHandler}
-              onBotSelect={handleBotSelect}
-              onEditBot={viewType === AgentViewType.Personas ? handleEditPersona : handleEditBot}
-            />
+        <BotsGrid
+          viewType={viewType}
+          bots={agentsToShow}
+          handleAddNewAgent={newAgentHandler}
+          onBotSelect={handleBotSelect}
+          onEditBot={viewType === AgentViewType.Personas ? handleEditPersona : handleEditBot}
+        />
           )}
         </div>
       </div>

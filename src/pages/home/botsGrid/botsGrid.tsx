@@ -14,7 +14,7 @@ interface BotsGridProps {
   bots: Bot[] | Persona[];
   handleAddNewAgent: () => void;
   onBotSelect: (bot: Bot) => void;
-  onEditBot: (bot: Bot) => void;
+  onEditBot: (bot: Bot | Persona) => void;
 }
 
 const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotSelect, onEditBot }) => {
