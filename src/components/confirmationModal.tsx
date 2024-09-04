@@ -4,7 +4,6 @@ import PrimaryButton from "../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../components/buttons/secondaryButton/secondaryButton";
 import "./confirmationModal.css";
 
-// Set the app element for accessibility
 Modal.setAppElement('#root');
 
 interface ConfirmationModalProps {

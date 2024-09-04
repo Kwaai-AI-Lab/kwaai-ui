@@ -9,11 +9,12 @@ import PrimaryButton from "../../../components/buttons/primaryButton/primaryButt
 import SecondaryButton from "../../../components/buttons/secondaryButton/secondaryButton";
 import AssistantsService from "../../../services/assistants.service";
 import "./botItem.css";
+import PersonasService from "../../../services/personas.service";
 
 interface BotItemProps {
   botItemData: Bot | Persona;
   onBotSelect: (bot: Bot | Persona) => void;
-  onEditBot: (bot: Bot) => void;
+  onEditBot: (bot: Bot | Persona) => void;
   onBotDelete: (botId: string) => void;
 }
 
@@ -31,16 +32,33 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
     "7bea4732-214f-40e7-9161-4e7241a2b97d": "/DrLinda.png",
   };
 
-  const handleDelete = async () => {
+  const handleDeleteBot = async () => {
     try {
-      if ('uri' in botItemData) {
-        const assistantsService = new AssistantsService();
-        await assistantsService.deleteAssistant(botItemData.id);
-        onBotDelete(botItemData.id);
-      }
+      const assistantsService = new AssistantsService();
+      await assistantsService.deleteAssistant(botItemData.id);
+      onBotDelete(botItemData.id);
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error deleting assistant:", error);
+    }
+  };
+  
+  const handleDeletePersona = async () => {
+    try {
+      const personasService = new PersonasService();
+      await personasService.deletePersona(botItemData.id);
+      onBotDelete(botItemData.id);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting persona:", error);
+    }
+  };
+  
+  const handleDelete = () => {
+    if ('uri' in botItemData) {
+      handleDeleteBot();
+    } else {
+      handleDeletePersona();
     }
   };
 
@@ -53,9 +71,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
   };
 
   const handleEditClick = () => {
-    if ('uri' in botItemData) {
       onEditBot(botItemData);
-    }
   };
 
   const handleGoToCourseClick = () => {
@@ -83,7 +99,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
         <p className="bot-card-description">{botItemData.description}</p>
       </div>
       <div className="bot-buttons-area">
-        {agentViewType === AgentViewType.MyAgents || AgentViewType.Personas ? (
+        {agentViewType === AgentViewType.MyAgents || agentViewType === AgentViewType.Personas ? (
           <>
             <SecondaryButton text="Delete" onClick={handleDeleteClick} enabled={true} />
             <PrimaryButton text="Edit" onClick={handleEditClick} enabled={!!('uri' in botItemData || AgentViewType.Personas)} />
