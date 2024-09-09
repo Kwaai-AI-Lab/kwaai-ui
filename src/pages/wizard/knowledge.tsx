@@ -8,15 +8,19 @@ import "./knowledge.css";
 interface KnowledgeProps {
   onFilesChange: (files: File[]) => void;
   assistantId: string | undefined;
+  onFilesAdded: () => void;
 }
 
-const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => {
+const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFilesAdded }) => {
   const [localfiles, setLocalFiles] = useState<File[]>([]);
   const [allFiles, setAllFiles] = useState<AssistantFile[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
  
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: any[]) => {
+      if (acceptedFiles.length > 0) {
+        onFilesAdded(); // Trigger the prop when files are added
+      }
       if (fileRejections.length > 0) {
         const firstError = fileRejections[0].errors[0];
         setErrorMessage(firstError.message);
@@ -37,7 +41,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => 
       setLocalFiles(newFiles);
       onFilesChange(newFiles);
     },
-    [localfiles, onFilesChange, allFiles]
+    [localfiles, onFilesChange, allFiles, onFilesAdded]
   );
 
   useEffect(() => {

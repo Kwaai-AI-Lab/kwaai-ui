@@ -22,6 +22,7 @@ interface WizardProps {
 }
 
 const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
+  const [isIndexingMode, setIsIndexingMode] = useState(false);
   const { addToMyAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
   const [docsFiles, setDocsFiles] = useState<File[]>([]);
@@ -50,6 +51,10 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     }
   }, [botToEdit]);
 
+  const handleFilesAdded = () => {
+    setIsIndexingMode(true);  // Switch to "Index" mode when files are dropped
+  };
+
   const handleMessage = async (inputValue: string): Promise<string> => {
     try {
       const assistantsService = new AssistantsService();
@@ -71,7 +76,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       selectedLlmOption={{ id: newBot.resource_llm_id, name: newBot.name, image: "" }} 
       errors={errors}
     />,
-    <Knowledge key="knowledge" assistantId={newBot.id} onFilesChange={setDocsFiles} />,
+    <Knowledge key="knowledge" assistantId={newBot.id} onFilesChange={setDocsFiles} onFilesAdded={handleFilesAdded} />,
     <Test key="test" handleMessage={handleMessage} />,
     <Status key="status" bot={newBot} setBot={setNewBot} />,
   ];
@@ -101,6 +106,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   };
 
   const handleNext = async () => {
+    console.log("Press next");
     if (!validateFields()) {
       return;
     }
@@ -131,10 +137,10 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
         }));
         setIsUpdateMode(true);
       } else if (currentStep === 3) {
-        console.log("Files to upload:", docsFiles);
+        
         if (docsFiles.length > 0) {
           try {
-            assistantsService.uploadFiles(newBot.id || "", docsFiles);
+            await assistantsService.uploadFiles(newBot.id || "", docsFiles);
           } catch (error) {
             console.error("Error submitting files:", error);
             return;
@@ -226,11 +232,15 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   const handleIndexing = async () => {
     try {
       const assistantsService = new AssistantsService();
+      console.log("start Indexing assistant");
       await assistantsService.uploadFiles(newBot.id || "", docsFiles);
+      console.log("End Indexing assistant");
+
+      setIsIndexingMode(false);  // Switch back to "Continue" after indexing is done
     } catch (error) {
       console.error("Error indexing assistant:", error);
     }
-  }
+  };
 
   const handleDeploy = async () => {
     try {
@@ -276,6 +286,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           onCancel={handleCancel}
           onDeploy={handleDeploy}
           onIndexing={handleIndexing}
+          isIndexingMode={isIndexingMode}
         />
       </div>
 
