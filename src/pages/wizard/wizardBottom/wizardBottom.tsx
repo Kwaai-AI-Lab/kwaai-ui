@@ -11,10 +11,11 @@ interface WizardBottomProps {
   onCancel: () => void;
   onDeploy: () => void;
   onIndexing: () => void;
+  isIndexing: boolean;
   isIndexingMode: boolean;
 }
 
-const WizardBottom: React.FC<WizardBottomProps> = ({ currentStep, totalSteps, onBack, onNext, onCancel, onDeploy, onIndexing, isIndexingMode }) => {
+const WizardBottom: React.FC<WizardBottomProps> = ({ currentStep, totalSteps, onBack, onNext, onCancel, onDeploy, onIndexing, isIndexingMode, isIndexing }) => {
   return (
     <div className="wizard-bottom-container">
       {currentStep > 0 && <SecondaryButton text="Back" onClick={onBack} enabled={true} />}
@@ -22,7 +23,7 @@ const WizardBottom: React.FC<WizardBottomProps> = ({ currentStep, totalSteps, on
       <PrimaryButton
         text={isIndexingMode ? "Index" : currentStep === totalSteps - 1 ? "Deploy" : "Continue"}
         onClick={isIndexingMode ? onIndexing : currentStep === totalSteps - 1 ? onDeploy : onNext}
-        enabled={!isIndexingMode}
+        enabled={!isIndexing}
       />
     </div>
   );

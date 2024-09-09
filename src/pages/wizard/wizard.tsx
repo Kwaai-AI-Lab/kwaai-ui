@@ -22,6 +22,7 @@ interface WizardProps {
 }
 
 const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
+  const [isIndexing, setIsIndexing] = useState(false);
   const [isIndexingMode, setIsIndexingMode] = useState(false);
   const { addToMyAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
@@ -219,11 +220,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   
   const handleIndexing = async () => {
     try {
+      setIsIndexing(true);
       const assistantsService = new AssistantsService();
       console.log("start Indexing assistant");
       await assistantsService.uploadFiles(newBot.id || "", docsFiles);
       console.log("End Indexing assistant");
-
+      setIsIndexing(false);
       setIsIndexingMode(false);  // Switch back to "Continue" after indexing is done
     } catch (error) {
       console.error("Error indexing assistant:", error);
@@ -274,6 +276,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           onCancel={handleCancel}
           onDeploy={handleDeploy}
           onIndexing={handleIndexing}
+          isIndexing={isIndexing}
           isIndexingMode={isIndexingMode}
         />
       </div>
