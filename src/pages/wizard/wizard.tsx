@@ -101,7 +101,6 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   };
 
   const handleNext = async () => {
-    console.log("Current step:", currentStep);
     if (!validateFields()) {
       return;
     }
@@ -224,6 +223,14 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     setCurrentStep(0);
   };
   
+  const handleIndexing = async () => {
+    try {
+      const assistantsService = new AssistantsService();
+      await assistantsService.uploadFiles(newBot.id || "", docsFiles);
+    } catch (error) {
+      console.error("Error indexing assistant:", error);
+    }
+  }
 
   const handleDeploy = async () => {
     try {
@@ -268,6 +275,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           onNext={handleNext}
           onCancel={handleCancel}
           onDeploy={handleDeploy}
+          onIndexing={handleIndexing}
         />
       </div>
 

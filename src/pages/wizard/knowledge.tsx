@@ -13,18 +13,23 @@ interface KnowledgeProps {
 const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => {
   const [localfiles, setLocalFiles] = useState<File[]>([]);
   const [allFiles, setAllFiles] = useState<AssistantFile[]>([]);
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+ 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    (acceptedFiles: File[], fileRejections: any[]) => {
+      if (fileRejections.length > 0) {
+        const firstError = fileRejections[0].errors[0];
+        setErrorMessage(firstError.message);
+      } else {
+        setErrorMessage(null);
+      }
 
-       // Map the dropped files to AssistantFile objects
       const newAssistantFiles: AssistantFile[] = acceptedFiles.map((file) => ({
         name: file.name,
-        num_chunks: null, // or set it to an empty string or null as per your requirement
-        id: '' // ID is empty for local files, as these have not been uploaded yet
+        num_chunks: null,
+        id: ""
       }));
 
-      // Push the new AssistantFiles to allFiles state
       const updatedAllFiles = [...allFiles, ...newAssistantFiles];
       setAllFiles(updatedAllFiles);
 
@@ -54,11 +59,24 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => 
     fetchFiles();
   }, [assistantId]);
 
+  function duplicateNameValidator(file: File) {
+    const isDuplicate = allFiles.some(existingFile => existingFile.name === file.name);
+    if (isDuplicate) {
+      console.log(`File with name "${file.name}" already exists.`);
+      return {
+        code: "name-duplicate",
+        message: `File with name "${file.name}" already exists.`
+      };
+    }
+    return null;
+  }
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'application/pdf': ['.pdf']
-    }
+      "application/pdf": [".pdf"]
+    },
+    validator: duplicateNameValidator
   });
 
   const handleRemoveFile = async (index: number) => {
@@ -105,6 +123,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => 
           <span className="browse-link">Browse</span>
         </div>
       </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <aside className="file-list">
         <ul>
           {allFiles.map((file: AssistantFile, index: number) => (

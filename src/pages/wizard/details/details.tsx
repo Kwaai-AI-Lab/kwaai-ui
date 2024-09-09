@@ -42,7 +42,7 @@ const Details: React.FC<DetailsProps> = ({ viewType,bot, setBot, errors }) => {
       {errors?.name && <span className="error-message">{errors.name}</span>}
       <textarea
         rows={3}
-        className="details-name"
+        className='details-name'
         value={bot.name}
         onChange={handleNameChange}
       />

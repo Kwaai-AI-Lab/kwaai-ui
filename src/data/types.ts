@@ -6,7 +6,7 @@ export interface LlmOption {
 }
 
 export interface Bot {
-  id?: string;
+  id: string;
   name: string;
   uri: string;
   description: string;
@@ -32,6 +32,7 @@ export interface conversation {
   name: string;
   created_timestamp: string;
   last_updated_timestamp: string;
+  messages: Message[];
   archive: string;
   assistant_id: string;
 }
@@ -50,6 +51,11 @@ export interface Message {
   prompt: string;
   chat_response: string;
   test: string;
+}
+
+export interface ConversationGroup {
+  conversations: conversation[];
+  title: string;
 }
 
 export interface File {
@@ -76,12 +82,7 @@ export interface Voices {
 
 export interface HistoryLog {
   title: string;
-  logs: HistoryItem[];
-}
-
-export interface HistoryItem {
-  id: string;
-  content: string;
+  logs: conversation[];
 }
 
 export interface AssistantFile {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bot, Persona } from "../../../data/types";
 import botIcon from "../../../assets/bot-icon.png";
 import shareIcon from "../../../assets/share-icon.png";
@@ -22,6 +22,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
   const { removeToMyAgent, agentViewType } = useAgents();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [personaImage, setPersonaImage] = useState(botIcon);
 
   const personaImages: { [key: string]: string } = {
     "7bea4732-214f-40e7-9161-4e7241a2b97e": "https://static.vecteezy.com/system/resources/previews/026/536/284/non_2x/27yr-old-beautiful-face-ai-generated-free-photo.jpg",
@@ -31,6 +32,33 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
     "7bea4732-214f-40e7-9161-4e7241a2b97c": "/DrMarcus.png",
     "7bea4732-214f-40e7-9161-4e7241a2b97d": "/DrLinda.png",
   };
+
+  useEffect(() => {
+    const fetchPersonas = async () => {
+      if ('persona_id' in botItemData && botItemData.persona_id) {
+        try {
+          const personasService = new PersonasService();
+          const fetchedPersona = await personasService.getPersona(botItemData.persona_id);
+          if (fetchedPersona && fetchedPersona.face_id) {
+            const imageUrl = personaImages[fetchedPersona.face_id] || botIcon;
+            setPersonaImage(imageUrl);
+          } else {
+            setPersonaImage(botIcon);
+          }
+        } catch (error) {
+          console.error("Error fetching persona:", error);
+          setPersonaImage(botIcon); // Fallback image
+        }
+      } else if ('face_id' in botItemData && botItemData.face_id) {
+        const imageUrl = personaImages[botItemData.face_id] || botIcon;
+        setPersonaImage(imageUrl);
+      } else {
+        setPersonaImage(botIcon);
+      }
+    };
+
+    fetchPersonas();
+  }, [botItemData]);
 
   const handleDeleteBot = async () => {
     try {
@@ -42,7 +70,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
       console.error("Error deleting assistant:", error);
     }
   };
-  
+
   const handleDeletePersona = async () => {
     try {
       const personasService = new PersonasService();
@@ -53,7 +81,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
       console.error("Error deleting persona:", error);
     }
   };
-  
+
   const handleDelete = () => {
     if ('uri' in botItemData) {
       handleDeleteBot();
@@ -71,21 +99,17 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
   };
 
   const handleEditClick = () => {
-      onEditBot(botItemData);
+    onEditBot(botItemData);
   };
 
   const handleGoToCourseClick = () => {
     onBotSelect(botItemData);
   };
 
-  const imageUrl = 'persona_id' in botItemData
-    ? personaImages[botItemData.persona_id || ""] || botIcon
-    : personaImages[botItemData.face_id || ""] || botIcon;
-
   return (
     <div className="bot-card">
       <div className="bot-card-header">
-        <img src={imageUrl} alt="bot" />
+        <img src={personaImage} alt="bot" />
       </div>
       <div className="bot-card-body">
         <div className="bot-card-header-with-button">

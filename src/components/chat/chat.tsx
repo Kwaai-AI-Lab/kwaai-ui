@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./chat.css";
 import ChatMessage from "./chatMessage/chatMessage";  
 import PrimaryButton from "../buttons/primaryButton/primaryButton"; 
-import { Message } from "../../data/types";
 import { DotLoader } from "react-spinners";
 
 interface MessageLocal {
@@ -10,15 +9,21 @@ interface MessageLocal {
   text: string;
 }
 
-interface chatProps {
-  handleMessage: (inputValue:string) => Promise<string>;
+interface ChatProps {
+  handleMessage: (inputValue: string) => Promise<string>;
+  messages: MessageLocal[];
 }
 
-const Chat: React.FC <chatProps> = ({handleMessage}) => {
+const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }) => {
   const [messages, setMessages] = useState<MessageLocal[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    console.log('Setting Messages:', incomingMessages);
+    setMessages(incomingMessages);
+  }, [incomingMessages]);
+  
   const handleSend = async () => {
     if (inputValue.trim() === "") {
       return;
@@ -43,7 +48,6 @@ const Chat: React.FC <chatProps> = ({handleMessage}) => {
     
     setLoading(false);
   };
-  
 
   return (
     <div className="chat-container">
