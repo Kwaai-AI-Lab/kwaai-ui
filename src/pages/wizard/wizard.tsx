@@ -52,8 +52,8 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     }
   }, [botToEdit]);
 
-  const handleFilesAdded = () => {
-    setIsIndexingMode(true);  // Switch to "Index" mode when files are dropped
+  const handleFilesAdded = (isIndexing: boolean) => {
+    setIsIndexingMode(isIndexing);  // Switch to "Index" mode when files are dropped
   };
 
   const handleMessage = async (inputValue: string): Promise<string> => {
@@ -173,6 +173,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
 
   const handleBack = () => {
     if (currentStep > 0) {
+      setIsIndexingMode(false); 
       setCurrentStep(currentStep - 1);
     }
   };

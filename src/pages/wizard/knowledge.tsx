@@ -8,7 +8,7 @@ import "./knowledge.css";
 interface KnowledgeProps {
   onFilesChange: (files: File[]) => void;
   assistantId: string | undefined;
-  onFilesAdded: () => void;
+  onFilesAdded: (isIndexig:boolean) => void;
 }
 
 const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFilesAdded }) => {
@@ -19,7 +19,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: any[]) => {
       if (acceptedFiles.length > 0) {
-        onFilesAdded(); // Trigger the prop when files are added
+        onFilesAdded(true); // Trigger the prop when files are added
       }
       if (fileRejections.length > 0) {
         const firstError = fileRejections[0].errors[0];
@@ -93,7 +93,14 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
       const newLocalFiles = localfiles.filter((file) => file.name !== fileToRemove.name);
       setLocalFiles(newLocalFiles);
       onFilesChange(newLocalFiles);
+
+      console.log("All files length = ", allFiles.length);
+
+      if(newAllFiles.length === 0){
+        onFilesAdded(false);
+      }
     };
+
   
     if (fileToRemove.id) {
       // If the file has an ID, it exists on the server, so we delete it
