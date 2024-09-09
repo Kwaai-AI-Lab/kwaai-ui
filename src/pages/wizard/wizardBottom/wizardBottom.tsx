@@ -22,7 +22,7 @@ const WizardBottom: React.FC<WizardBottomProps> = ({ currentStep, totalSteps, on
       <PrimaryButton
         text={isIndexingMode ? "Index" : currentStep === totalSteps - 1 ? "Deploy" : "Continue"}
         onClick={isIndexingMode ? onIndexing : currentStep === totalSteps - 1 ? onDeploy : onNext}
-        enabled={true}
+        enabled={!isIndexingMode}
       />
     </div>
   );

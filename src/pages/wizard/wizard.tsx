@@ -136,18 +136,6 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           id: response.id
         }));
         setIsUpdateMode(true);
-      } else if (currentStep === 3) {
-        
-        if (docsFiles.length > 0) {
-          try {
-            await assistantsService.uploadFiles(newBot.id || "", docsFiles);
-          } catch (error) {
-            console.error("Error submitting files:", error);
-            return;
-          }
-        } else {
-          console.log("No files to upload.");
-        }
       } else if (currentStep === 4) {
         //setIsContinueModalOpen(true);
         setCurrentStep(currentStep + 1);
