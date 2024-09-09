@@ -87,40 +87,33 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
     const fileToRemove = allFiles[index];
   
     const updateFileLists = () => {
-      const newAllFiles = allFiles.filter((file) => file.id !== fileToRemove.id);
-      setAllFiles(newAllFiles);
+      setAllFiles((prevAllFiles) => prevAllFiles.filter((_, i) => i !== index));
+      
+      setLocalFiles((prevLocalFiles) => prevLocalFiles.filter((file) => file.name !== fileToRemove.name));
+      
+      onFilesChange(localfiles.filter((file) => file.name !== fileToRemove.name));
   
-      const newLocalFiles = localfiles.filter((file) => file.name !== fileToRemove.name);
-      setLocalFiles(newLocalFiles);
-      onFilesChange(newLocalFiles);
-
-      console.log("All files length = ", allFiles.length);
-
-      if(newAllFiles.length === 0){
+      if(allFiles.length - 1 === 0){
         onFilesAdded(false);
       }
     };
-
   
     if (fileToRemove.id) {
-      // If the file has an ID, it exists on the server, so we delete it
       try {
         const assistantsService = new AssistantsService();
         await assistantsService.deleteFiles(assistantId!, [fileToRemove.id]);
         console.log("File deleted from server:", fileToRemove.id);
   
-        // Update files list
         updateFileLists();
       } catch (error) {
         console.error("Error deleting file from server:", error);
       }
     } else {
-      console.log("Try to remove file locally with name =", fileToRemove.name);
-      // If the file has no ID, it's a local file that needs to be removed by matching the name
+      console.log("Removing local file:", fileToRemove.name);
       updateFileLists();
-      console.log("Local file removed:", fileToRemove.name);
     }
   };
+  
   
 
   return (
