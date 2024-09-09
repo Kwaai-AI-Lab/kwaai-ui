@@ -7,6 +7,7 @@ import { DotLoader } from "react-spinners";
 interface MessageLocal {
   sender: "user" | "ai";
   text: string;
+  timestamp: number; // Add timestamp property
 }
 
 interface ChatProps {
@@ -31,7 +32,7 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
     
     setMessages((prevMessages) => [
       ...prevMessages,
-      { sender: "user", text: inputValue }
+      { sender: "user", text: inputValue, timestamp: Date.now() } // Add timestamp
     ]);
     
     setInputValue("");
@@ -42,17 +43,20 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
     if (message) {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "ai", text: message }
+        { sender: "ai", text: message, timestamp: Date.now() } // Add timestamp
       ]);
     }
     
     setLoading(false);
   };
 
+  // Sort messages by timestamp
+  const sortedMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+
   return (
     <div className="chat-container">
       <div className="chat-history">
-        {messages.map((message, index) => (
+        {sortedMessages.map((message, index) => (
           <ChatMessage
             key={index}
             sender={message.sender}
