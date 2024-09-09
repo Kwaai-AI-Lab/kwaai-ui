@@ -60,20 +60,20 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
 
   const groupConversationsByTimestamp = (conversations: conversation[]) => {
     const sortedConversations = [...conversations].sort(
-      (a, b) => new Date(a.created_timestamp).getTime() - new Date(b.created_timestamp).getTime()
+      (a, b) => new Date(b.created_timestamp).getTime() - new Date(a.created_timestamp).getTime()
     );
-
+  
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const lastSevenDays = new Date(today);
     lastSevenDays.setDate(today.getDate() - 7);
     const lastThirtyDays = new Date(today);
     lastThirtyDays.setDate(today.getDate() - 30);
-
+  
     const todayGroup: conversation[] = [];
     const lastSevenDaysGroup: conversation[] = [];
     const lastThirtyDaysGroup: conversation[] = [];
-
+  
     sortedConversations.forEach((conversation) => {
       const timestamp = new Date(conversation.created_timestamp);
       if (timestamp >= today) {
@@ -84,13 +84,14 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
         lastThirtyDaysGroup.push(conversation);
       }
     });
-
+  
     return [
       { title: "Today", conversations: todayGroup },
       { title: "Last 7 days", conversations: lastSevenDaysGroup },
       { title: "Last 30 days", conversations: lastThirtyDaysGroup },
     ];
   };
+  
 
   const groupedConversations = groupConversationsByTimestamp(conversations);
 
