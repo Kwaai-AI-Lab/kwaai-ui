@@ -90,3 +90,9 @@ export interface AssistantFile {
   num_chunks: string | null;
   id: string | null;
 }
+
+export interface AssistantFile {
+  name: string;
+  num_chunks: string | null;
+  id: string | null;
+}

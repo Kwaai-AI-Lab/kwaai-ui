@@ -15,6 +15,7 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }) => {
+
   const [messages, setMessages] = useState<MessageLocal[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,7 +24,7 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
     console.log('Setting Messages:', incomingMessages);
     setMessages(incomingMessages);
   }, [incomingMessages]);
-  
+
   const handleSend = async () => {
     if (inputValue.trim() === "") {
       return;
@@ -48,6 +49,7 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
     
     setLoading(false);
   };
+  
 
   return (
     <div className="chat-container">

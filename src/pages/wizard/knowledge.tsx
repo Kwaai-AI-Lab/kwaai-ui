@@ -103,7 +103,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
         const assistantsService = new AssistantsService();
         await assistantsService.deleteFiles(assistantId!, [fileToRemove.id]);
         console.log("File deleted from server:", fileToRemove.id);
-  
+ 
         updateFileLists();
       } catch (error) {
         console.error("Error deleting file from server:", error);

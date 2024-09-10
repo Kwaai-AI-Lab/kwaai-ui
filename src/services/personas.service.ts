@@ -28,6 +28,7 @@ class PersonasService {
     }
   }
 
+
   async createPersona(persona: Persona): Promise<Persona> {
     try {
       const response = await fetch(`${PAIOS_API_URL}/personas`, {
