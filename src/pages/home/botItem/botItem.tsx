@@ -82,37 +82,6 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
     }
   };
 
-  const personaImages: { [key: string]: string } = {
-    "7bea4732-214f-40e7-9161-4e7241a2b97e": "https://static.vecteezy.com/system/resources/previews/026/536/284/non_2x/27yr-old-beautiful-face-ai-generated-free-photo.jpg",
-    "7bea4732-214f-40e7-9161-4e7241a2b97f": "https://img.freepik.com/premium-photo/face-that-has-word-ai-it_872754-2069.jpg",
-    "7bea4732-214f-40e7-9161-4e7241a2b97a": "https://images.nightcafe.studio//assets/man-in-suit.jpg?tr=w-1600,c-at_max",
-    "7bea4732-214f-40e7-9161-4e7241a2b97b": "/DrEvelyn.png",
-    "7bea4732-214f-40e7-9161-4e7241a2b97c": "/DrMarcus.png",
-    "7bea4732-214f-40e7-9161-4e7241a2b97d": "/DrLinda.png",
-  };
-
-  const handleDeleteBot = async () => {
-    try {
-      const assistantsService = new AssistantsService();
-      await assistantsService.deleteAssistant(botItemData.id);
-      onBotDelete(botItemData.id);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error deleting assistant:", error);
-    }
-  };
-  
-  const handleDeletePersona = async () => {
-    try {
-      const personasService = new PersonasService();
-      await personasService.deletePersona(botItemData.id);
-      onBotDelete(botItemData.id);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error deleting persona:", error);
-    }
-  };
-  
   const handleDelete = () => {
     if ('uri' in botItemData) {
       handleDeleteBot();
@@ -136,10 +105,6 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
   const handleGoToCourseClick = () => {
     onBotSelect(botItemData);
   };
-
-  const imageUrl = 'persona_id' in botItemData
-    ? personaImages[botItemData.persona_id || ""] || botIcon
-    : personaImages[botItemData.face_id || ""] || botIcon;
 
   return (
     <div className="bot-card">

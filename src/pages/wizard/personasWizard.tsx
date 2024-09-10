@@ -11,7 +11,7 @@ import WizardBottom from "./wizardBottom/wizardBottom";
 import Face from "./face/face";
 import PersonasService from "../../services/personas.service";
 import { AgentViewType } from "../../context/botsContext";
-import Voice from "./voice/voice";
+// import Voice from "./voice/voice"; // Comentado ya que no se necesita actualmente
 
 interface WizardProps {
   showList: () => void;
@@ -29,17 +29,16 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
     id: botToEdit ? botToEdit.id : uuidv4(),
     name: "",
     description: "",
-    voice_id: "",
+    voice_id: "a1b2c3d4-e5f6-4789-ab01-23456789abcd", // ID hardcodeado
     face_id: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isContinueModalOpen, setIsContinueModalOpen] = useState(false);
 
-  
   useEffect(() => {
-    console.log("Youre in the useEffect");
+    console.log("You're in the useEffect");
     if (botToEdit) {
-        console.log("Youre in the botToEdit useEffect");
+      console.log("You're in the botToEdit useEffect");
       setNewBot(botToEdit);
       setIsUpdateMode(true);
     }
@@ -48,7 +47,8 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
   const steps = [
     <Details key="details" bot={newBot} setBot={setNewBot} errors={errors} viewType={viewType} />,
     <Face key="persona" bot={newBot} setBot={setNewBot} errors={errors} />,
-    <Voice key="voice" bot={newBot} setBot={setNewBot} errors={errors} />,
+    // Comentado el paso de Voice ya que no se necesita actualmente
+    // <Voice key="voice" bot={newBot} setBot={setNewBot} errors={errors} />,
   ];
 
   const validateFields = (): boolean => {
@@ -65,11 +65,13 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
       if (!newBot.face_id) {
         newErrors.face_id = "Face selection is required";
       }
-    } else if (currentStep === 2) {
-      if (!newBot.voice_id) {
-        newErrors.voice_id = "Voice selection is required";
-      }
-    }
+    } 
+    // Eliminada la validación para el voice_id ya que es hardcodeado
+    // else if (currentStep === 2) {
+    //   if (!newBot.voice_id) {
+    //     newErrors.voice_id = "Voice selection is required";
+    //   }
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -89,11 +91,11 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
           ...prevBot,
           ...response,
         }));
-    } else if (currentStep === 3 && !isUpdateMode) {
+      } else if (currentStep === 3 && !isUpdateMode) {
         setNewBot((prevBot) => ({
-            ...prevBot,
-            ...response,
-            }));
+          ...prevBot,
+          ...response,
+        }));
         setIsContinueModalOpen(true);
       } else if (isUpdateMode && currentStep === 3) {
         setNewBot((prevBot) => ({
@@ -141,9 +143,10 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
 
   const resetBot = () => {
     setNewBot({
+      id: uuidv4(),
       name: "",
       description: "",
-      voice_id: "",
+      voice_id: "a1b2c3d4-e5f6-4789-ab01-23456789abcd", // ID hardcodeado
       face_id: "",
     });
     setIsUpdateMode(false);
@@ -152,31 +155,31 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
 
   const handleDeploy = async () => {
     if (!isUpdateMode) {
-    try {
-      const personasService = new PersonasService();
-      const { id, ...personaData } = newBot;
-      await personasService.createPersona(personaData);
-    } catch (error) {
-      console.error("Error creating or updating assistant:", error);
+      try {
+        const personasService = new PersonasService();
+        const { id, ...personaData } = newBot;
+        await personasService.createPersona(personaData);
+      } catch (error) {
+        console.error("Error creating or updating assistant:", error);
+      }
+    } else {
+      try {
+        const personasService = new PersonasService();
+        await personasService.updatePersona(newBot.id || "", {
+          name: newBot.name,
+          description: newBot.description,
+          voice_id: newBot.voice_id, // Sigue usando el ID hardcodeado
+          face_id: newBot.face_id,
+        });
+      } catch (error) {
+        console.error("Error creating or updating assistant:", error);
+      }
     }
-  } else {
-    try {
-      const personasService = new PersonasService();
-      await personasService.updatePersona(newBot.id || "", {
-        name: newBot.name,
-        description: newBot.description,
-        voice_id: newBot.voice_id,
-        face_id: newBot.face_id,
-      });
-    } catch (error) {
-      console.error("Error creating or updating assistant:", error);
-    }
-  }
-  addToMyAgent(newBot);
-  resetBot();
-  setShowWizard(false);
-  showList();
-}
+    addToMyAgent(newBot);
+    resetBot();
+    setShowWizard(false);
+    showList();
+  };
 
   return (
     <div className="wizard-container">
