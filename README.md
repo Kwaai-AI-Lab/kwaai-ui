@@ -8,36 +8,9 @@
     npm i
 `
 
-- Ensure your localhost has trusted certificate
+- Download the backend (pAI-OS) from the following repository and run the instructions:
 
-`
-    brew install mkcert
-
-    mkcert -install
-
-    cd into /src directory
-
-    mkcert -cert-file localhost.pem -key-file localhost-key.pem localhost
-
-    add localhost.pem to trusted certificates in browser
-`
-- Start the postgres container
-  
-`
-    docker-compose up -d
-`
-
-- Migrate Database tables (users, user_credentials)
-
-`
-    npx prisma migrate dev --name init
-`
-
-- Start the backend expressjs server
-
-`
-    node .\src\server.js
-`
+[pAI-OS GitHub Repository](https://github.com/pAI-OS/paios)
 
 - Start the Rectjs frontend
 
