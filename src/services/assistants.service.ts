@@ -96,7 +96,6 @@ class AssistantsService {
   }
 
   async uploadFiles(assistantId: string, files: File[]): Promise<void> {
-    console.log("You're in the uploadFiles function");
     try {
       const formData = new FormData();
       files.forEach((file) => {
@@ -252,7 +251,6 @@ class AssistantsService {
 
       const data = await response.json();
 
-      // Return the chat_response value
       console.log("response = ", data.chat_response);
       return data.chat_response;
     } catch (error) {

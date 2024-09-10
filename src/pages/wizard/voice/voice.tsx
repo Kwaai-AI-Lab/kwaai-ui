@@ -1,7 +1,7 @@
 import React from "react";
 import { Persona, Voices } from "../../../data/types";
 import OptionSelect from "../optionSelect/optionSelect";
-import voiceIcon from "../../../assets/voice-icon.png";
+import VoiceIcon from "../../../assets/voice-icon.png";
 import VoiceList from "../../../assets/voices.json";
 import "./voice.css";
 

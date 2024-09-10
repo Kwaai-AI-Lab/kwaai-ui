@@ -8,23 +8,32 @@ import "./knowledge.css";
 interface KnowledgeProps {
   onFilesChange: (files: File[]) => void;
   assistantId: string | undefined;
+  onFilesAdded: (isIndexig:boolean) => void;
 }
 
-const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => {
+const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFilesAdded }) => {
   const [localfiles, setLocalFiles] = useState<File[]>([]);
   const [allFiles, setAllFiles] = useState<AssistantFile[]>([]);
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+ 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    (acceptedFiles: File[], fileRejections: any[]) => {
+      if (acceptedFiles.length > 0) {
+        onFilesAdded(true); // Trigger the prop when files are added
+      }
+      if (fileRejections.length > 0) {
+        const firstError = fileRejections[0].errors[0];
+        setErrorMessage(firstError.message);
+      } else {
+        setErrorMessage(null);
+      }
 
-       // Map the dropped files to AssistantFile objects
       const newAssistantFiles: AssistantFile[] = acceptedFiles.map((file) => ({
         name: file.name,
-        num_chunks: null, // or set it to an empty string or null as per your requirement
-        id: '' // ID is empty for local files, as these have not been uploaded yet
+        num_chunks: null,
+        id: ""
       }));
 
-      // Push the new AssistantFiles to allFiles state
       const updatedAllFiles = [...allFiles, ...newAssistantFiles];
       setAllFiles(updatedAllFiles);
 
@@ -32,7 +41,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => 
       setLocalFiles(newFiles);
       onFilesChange(newFiles);
     },
-    [localfiles, onFilesChange, allFiles]
+    [localfiles, onFilesChange, allFiles, onFilesAdded]
   );
 
   useEffect(() => {
@@ -54,44 +63,57 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => 
     fetchFiles();
   }, [assistantId]);
 
+  function duplicateNameValidator(file: File) {
+    const isDuplicate = allFiles.some(existingFile => existingFile.name === file.name);
+    if (isDuplicate) {
+      console.log(`File with name "${file.name}" already exists.`);
+      return {
+        code: "name-duplicate",
+        message: `File with name "${file.name}" already exists.`
+      };
+    }
+    return null;
+  }
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'application/pdf': ['.pdf']
-    }
+      "application/pdf": [".pdf"]
+    },
+    validator: duplicateNameValidator
   });
 
   const handleRemoveFile = async (index: number) => {
     const fileToRemove = allFiles[index];
   
     const updateFileLists = () => {
-      const newAllFiles = allFiles.filter((file) => file.id !== fileToRemove.id);
-      setAllFiles(newAllFiles);
+      setAllFiles((prevAllFiles) => prevAllFiles.filter((_, i) => i !== index));
+      
+      setLocalFiles((prevLocalFiles) => prevLocalFiles.filter((file) => file.name !== fileToRemove.name));
+      
+      onFilesChange(localfiles.filter((file) => file.name !== fileToRemove.name));
   
-      const newLocalFiles = localfiles.filter((file) => file.name !== fileToRemove.name);
-      setLocalFiles(newLocalFiles);
-      onFilesChange(newLocalFiles);
+      if(allFiles.length - 1 === 0){
+        onFilesAdded(false);
+      }
     };
   
     if (fileToRemove.id) {
-      // If the file has an ID, it exists on the server, so we delete it
       try {
         const assistantsService = new AssistantsService();
         await assistantsService.deleteFiles(assistantId!, [fileToRemove.id]);
         console.log("File deleted from server:", fileToRemove.id);
-  
-        // Update files list
+ 
         updateFileLists();
       } catch (error) {
         console.error("Error deleting file from server:", error);
       }
     } else {
-      console.log("Try to remove file locally with name =", fileToRemove.name);
-      // If the file has no ID, it's a local file that needs to be removed by matching the name
+      console.log("Removing local file:", fileToRemove.name);
       updateFileLists();
-      console.log("Local file removed:", fileToRemove.name);
     }
   };
+  
   
 
   return (
@@ -105,6 +127,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId }) => 
           <span className="browse-link">Browse</span>
         </div>
       </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <aside className="file-list">
         <ul>
           {allFiles.map((file: AssistantFile, index: number) => (

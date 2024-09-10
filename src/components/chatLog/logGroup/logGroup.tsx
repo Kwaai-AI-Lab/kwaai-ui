@@ -1,27 +1,36 @@
 import React from "react";
-import { HistoryLog, HistoryItem } from "../../../data/types";
+import { conversation, ConversationGroup } from "../../../data/types";
 import LogItem from "../logItem/logItem";
 import "./logGroup.css";
 
 interface LogGroupProps {
-  group: HistoryLog;
+  group: ConversationGroup;
   selectedItemId: string | null;
-  logItemClickHandler: (item: HistoryItem) => void;
+  logItemClickHandler: (item: conversation) => void;
+  logItemClickConversationHandler: (item: conversation) => void;
+  onChangeName: (item: conversation, newName: string) => void;
+  onDelete: (item: conversation) => void;
 }
 
 const LogGroup: React.FC<LogGroupProps> = ({
   group,
   selectedItemId,
   logItemClickHandler,
+  logItemClickConversationHandler,
+  onChangeName,
+  onDelete,
 }) => (
   <div className="logGroup">
     <div className="logGroupTitle">{group.title}</div>
-    {group.logs.map((log) => (
+    {group.conversations.map((log) => (
       <LogItem
         key={log.id}
         item={log}
-        isActive = {selectedItemId === log.id}
-        logItemClickHandler={logItemClickHandler} 
+        isActive={selectedItemId === log.id}
+        logItemClickHandler={logItemClickHandler}
+        logItemClickConversationHandler={logItemClickConversationHandler}
+        onChangeName={onChangeName}
+        onDelete={onDelete}
       />
     ))}
   </div>

@@ -28,6 +28,7 @@ export default function Home() {
 
   const handleBotSelect = (bot: Bot) => {
     setSelectedBot(bot);
+    console.log(bot);
   };
 
   const handleBackToList = () => {

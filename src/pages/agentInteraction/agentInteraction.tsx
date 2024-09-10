@@ -1,26 +1,109 @@
-import React, { useState } from "react";
-import { Bot } from "../../data/types";
+import React, { useEffect, useState } from "react";
+import { Bot, conversation, Message, Persona } from "../../data/types";
 import backIcon from "../../assets/back-button-icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import Chat from "../../components/chat/chat";
 import ChatLog from "../../components/chatLog/chatLog";
-import { useAgents } from "../../context/botsContext";
+import messagesService from "../../services/messages.service";
 import "./agentInteraction.css";
+import PersonasService from "../../services/personas.service";
 
 interface AgentInteractionProps {
   bot: Bot;
   onBack: () => void;
 }
 
+const personaImages: { [key: string]: string } = {
+  "7bea4732-214f-40e7-9161-4e7241a2b97e": "https://static.vecteezy.com/system/resources/previews/026/536/284/non_2x/27yr-old-beautiful-face-ai-generated-free-photo.jpg",
+  "7bea4732-214f-40e7-9161-4e7241a2b97f": "https://img.freepik.com/premium-photo/face-that-has-word-ai-it_872754-2069.jpg",
+  "7bea4732-214f-40e7-9161-4e7241a2b97a": "https://images.nightcafe.studio//assets/man-in-suit.jpg?tr=w-1600,c-at_max",
+  "7bea4732-214f-40e7-9161-4e7241a2b97b": "/DrEvelyn.png",
+  "7bea4732-214f-40e7-9161-4e7241a2b97c": "/DrMarcus.png",
+  "7bea4732-214f-40e7-9161-4e7241a2b97d": "/DrLinda.png",
+};
+
 const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   const [isMuted, setIsMuted] = useState(false);
-  const { historyLog } = useAgents();
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [persona, setPersona] = useState<Persona | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]); 
+
+  useEffect(() => {
+    const fetchPersonas = async () => {
+      try {
+        const personasService = new PersonasService();
+        const fetchedPersona = await personasService.getPersona(bot.persona_id);
+        setPersona(fetchedPersona);
+      } catch (error) {
+        console.error("Error fetching persona:", error);
+      }
+    };
+
+    fetchPersonas();
+  }, [bot.persona_id]);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (conversationId) {
+        try {
+          const messagesServiceInstance = new messagesService();
+          const response = await messagesServiceInstance.getConversationMessages(conversationId);
+          setMessages(Array.isArray(response.messages) ? response.messages : []);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+          setMessages([]); 
+        }
+      }
+    };
+
+    fetchMessages();
+  }, [conversationId]);
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
-    // Add logic to handle the mute/unmute functionality here
   };
+
+  const logItemClickConversationHandler = (item: conversation) => {
+    setConversationId(item.id);
+  };
+
+  const handleMessages = async (inputValue: string): Promise<string> => {
+    try {
+      const messagesServiceInstance = new messagesService();
+      let currentConversationId = conversationId;
+
+      if (!currentConversationId) {
+        const conversation = await messagesServiceInstance.createConversation(inputValue, bot.id);
+        currentConversationId = conversation.id;
+        setConversationId(currentConversationId);
+      }
+
+      const message = await messagesServiceInstance.sendMessage(bot.id, currentConversationId, inputValue);
+
+      setMessages((prevMessages) => Array.isArray(prevMessages) ? [...prevMessages, message] : [message]);
+
+      return message.chat_response;
+    } catch (error) {
+      console.error("Error sending message:", error);
+      return "There was an error sending your message.";
+    }
+  };
+
+  const personaImageUrl = persona && personaImages[persona.face_id] ? personaImages[persona.face_id] : "/default-image.png";
+
+  const mappedMessages = Array.isArray(messages)
+    ? messages.flatMap((message) => [
+        {
+          sender: "user" as const,
+          text: message.prompt,
+        },
+        {
+          sender: "ai" as const,
+          text: message.chat_response,
+        },
+      ])
+    : [];
 
   return (
     <div className="agentInteractionContainer">
@@ -33,17 +116,17 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
       </div>
       <div className="bodyInteractionContainer">
         <div className="leftContent">
-          <Chat />
+          <Chat handleMessage={handleMessages} messages={mappedMessages} />
         </div>
         <div className="rightContent">
           <div className="imageContainer">
-            <img src={bot.img} alt="Bot" className="botImage" />
+            <img src={personaImageUrl} alt="Bot" className="botImage" />
             <button onClick={toggleMute} className="muteButton">
               <FontAwesomeIcon icon={isMuted ? faVolumeUp : faVolumeMute} className="muteIcon" />
             </button>
           </div>
           <div className="historyContent">
-            <ChatLog historyLogs={historyLog} />
+            <ChatLog botId={bot.id} logItemClickConversationHandler={logItemClickConversationHandler} />
           </div>
         </div>
       </div>

@@ -15,6 +15,20 @@ class PersonasService {
     }
   }
 
+  async getPersona(id: string): Promise<Persona> {
+    try {
+      const response = await fetch(`${PAIOS_API_URL}/personas/${id}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching persona:", error);
+      throw error;
+    }
+  }
+
+
   async createPersona(persona: Persona): Promise<Persona> {
     try {
       const response = await fetch(`${PAIOS_API_URL}/personas`, {
