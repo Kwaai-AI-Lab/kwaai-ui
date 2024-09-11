@@ -1,4 +1,3 @@
-import { PAIOS_API_URL } from "../config/env";
 import { Bot, conversation, Message, AssistantFile } from "../data/types";
 
 interface CreateAssistantResponse {
@@ -15,7 +14,10 @@ interface CreateAssistantResponse {
   id: string;
 }
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 class AssistantsService {
+
   async createAssistant(
     name: string,
     description: string,
@@ -32,7 +34,7 @@ class AssistantsService {
     }
   ): Promise<CreateAssistantResponse> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/resources`, {
+      const response = await fetch(`${API_URL}/resources`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -64,7 +66,7 @@ class AssistantsService {
 
   async updateAssistant(assistantId: string, assistantData: Bot): Promise<CreateAssistantResponse> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/resources/${assistantId}`, {
+      const response = await fetch(`${API_URL}/resources/${assistantId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +85,7 @@ class AssistantsService {
 
   async deleteAssistant(id: string): Promise<void> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/resources/${id}`, {
+      const response = await fetch(`${API_URL}/resources/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -103,7 +105,7 @@ class AssistantsService {
         formData.append("files", file);
       });
 
-      const response = await fetch(`${PAIOS_API_URL}/rag-indexing/${assistantId}/`, {
+      const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {
         method: "POST",
         body: formData,
       });
@@ -120,7 +122,7 @@ class AssistantsService {
 
   static async getAssistants(kind: string): Promise<Bot[]> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/resources?filter={"kind":"${kind}"}`);
+      const response = await fetch(`${API_URL}/resources?filter={"kind":"${kind}"}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
@@ -138,7 +140,7 @@ class AssistantsService {
 
   async createConversation(name:string, assistantId: string): Promise<conversation> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/conversations/${assistantId}`, {
+      const response = await fetch(`${API_URL}/conversations/${assistantId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +161,7 @@ class AssistantsService {
 
   async sendMessage(assistantId:string, conversationId: string|null, prompt: string, test:string): Promise<Message> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/messages`, {
+      const response = await fetch(`${API_URL}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -184,7 +186,7 @@ class AssistantsService {
   // Method to get files associated with an assistant
   async getFiles(assistantId: string): Promise<AssistantFile[]> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/rag-indexing/${assistantId}/`, {
+      const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -211,7 +213,7 @@ class AssistantsService {
   // Method to delete files associated with an assistant
   async deleteFiles(assistantId: string, fileIds: string[]): Promise<void> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/rag-indexing/${assistantId}/`, {
+      const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -234,7 +236,7 @@ class AssistantsService {
 
   async getAnswer(assistantId: string, question: string): Promise<string> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/messages`, {
+      const response = await fetch(`${API_URL}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

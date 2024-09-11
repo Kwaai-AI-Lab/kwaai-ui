@@ -1,11 +1,12 @@
 import { conversation, Message } from "../data/types";
-import { PAIOS_API_URL } from "../config/env";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 class messagesService {
 
     async createConversation(name:string, assistantId: string): Promise<conversation> {
         try {
-          const response = await fetch(`${PAIOS_API_URL}/conversations/${assistantId}`, {
+          const response = await fetch(`${API_URL}/conversations/${assistantId}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -27,7 +28,7 @@ class messagesService {
 
     async sendMessage(assistantId:string, conversationId: string|null, prompt: string): Promise<Message> {
         try {
-        const response = await fetch(`${PAIOS_API_URL}/messages`, {
+        const response = await fetch(`${API_URL}/messages`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -51,7 +52,7 @@ class messagesService {
     async getConversations(assistantId: string): Promise<conversation[]> {
         const filter = JSON.stringify({ assistant_id: assistantId });
         try {
-          const response = await fetch(`${PAIOS_API_URL}/conversations?filter=${filter}`);
+          const response = await fetch(`${API_URL}/conversations?filter=${filter}`);
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
           }
@@ -64,7 +65,7 @@ class messagesService {
 
     async getConversationMessages(conversationId: string): Promise<conversation> {
         try {
-          const response = await fetch(`${PAIOS_API_URL}/conversations/${conversationId}`);
+          const response = await fetch(`${API_URL}/conversations/${conversationId}`);
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
           }
@@ -77,7 +78,7 @@ class messagesService {
 
     async updateConversation(conversation: conversation, name: string): Promise<void> {
         try {
-          const response = await fetch(`${PAIOS_API_URL}/conversations/${conversation.id}`, {
+          const response = await fetch(`${API_URL}/conversations/${conversation.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -98,7 +99,7 @@ class messagesService {
 
     async deleteConversation(conversation: conversation): Promise<void> {
         try {
-          const response = await fetch(`${PAIOS_API_URL}/conversations/${conversation.id}`, {
+          const response = await fetch(`${API_URL}/conversations/${conversation.id}`, {
             method: "DELETE",
           });
           if (!response.ok) {
