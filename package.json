@@ -56,7 +56,6 @@
   },
   "proxy": "https://localhost:443",
   "devDependencies": {
-    "@types/uuid": "^10.0.0",
-    "prisma": "^5.16.0"
+    "@types/uuid": "^10.0.0"  
   }
 }
