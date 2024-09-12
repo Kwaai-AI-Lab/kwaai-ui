@@ -1,7 +1,6 @@
 import React from "react";
 import { Persona, Voices } from "../../../data/types";
 import OptionSelect from "../optionSelect/optionSelect";
-import VoiceIcon from "../../../assets/voice-icon.png";
 import VoiceList from "../../../assets/voices.json";
 import "./voice.css";
 
@@ -16,10 +15,22 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
     bot.voice_id || null
   );
   const selectedVoice = voiceList.find((voice) => voice.id === selectedVoiceId);
+  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
 
   const handleSelect = (voice: Voices) => {
     setSelectedVoiceId(voice.id);
     setBot((prevBot) => ({ ...prevBot, voice_id: voice.id }));
+
+    if (voice.sampleURL) {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+
+      const newAudio = new Audio(voice.sampleURL);
+      setAudio(newAudio);
+      newAudio.play().catch((error) => console.error("Error playing audio:", error));
+    }
   };
 
   return (
@@ -32,8 +43,7 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
             isSelected={voice.id === selectedVoiceId}
             onSelect={() => handleSelect(voice)}
           />
-        ))
-        }
+        ))}
       </div>
 
       <div className="voice-right-container">
@@ -47,7 +57,7 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
               />
             ) : (
               <div className="voice-placeholder">
-                <img src={voiceIcon} alt="Voice Icon" className="voice-icon" />
+                <img src={VoiceIcon} alt="Voice Icon" className="voice-icon" />
               </div>
             )
           ) : null}
@@ -56,6 +66,6 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Voice;

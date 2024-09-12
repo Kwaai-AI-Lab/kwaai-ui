@@ -1,20 +1,30 @@
 [
     {
-        "id": "a1b2c3d4-e5f6-4789-ab01-23456789abcd",
+        "id": "a5c9d8e7-f123-4abc-89de-123456789abc",
         "name": "Voice 1",
         "imageURL": "/voice-icon.png",
-        "videoURL": ""
+        "videoURL": "",
+        "sampleURL": "/voice1.mp3"
     },
     {
-        "id": "f1e2d3c4-b5a6-4789-ab01-23456789abcd",
+        "id": "b6d1e2f3-4567-4def-8abc-23456789abcd",
         "name": "Voice 2",
         "imageURL": "/voice-icon.png",
-        "videoURL": "asdasdasd"
+        "videoURL": "asdasdasd",
+        "sampleURL": "/voice2.mp3"
     },
     {
-        "id": "12345678-9abc-def0-1234-56789abcdef0",
+        "id": "c7e8f9a1-1234-4fab-9bcd-3456789abcde",
         "name": "Voice 3",
         "imageURL": "/voice-icon.png",
-        "videoURL": "asdasdasd"
+        "videoURL": "asdasdasd",
+        "sampleURL": "/voice3.mp3"
+    },
+    {
+        "id": "d8f1a2b3-6789-4cde-abcd-456789abcdef",
+        "name": "Voice 4",
+        "imageURL": "/voice-icon.png",
+        "videoURL": "asdasdasd",
+        "sampleURL": "/voice4.mp3"
     }
 ]
