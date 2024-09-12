@@ -79,7 +79,9 @@ class PersonasService {
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        const errorData = await response.json();
+        const errorMessage = errorData.error || response.statusText;
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Error deleting persona:", error);
