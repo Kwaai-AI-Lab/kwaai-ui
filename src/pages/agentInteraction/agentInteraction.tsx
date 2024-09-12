@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Bot, conversation, Message, Persona } from "../../data/types";
 import backIcon from "../../assets/back-button-icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,9 +27,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); 
-  const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]); 
 
   useEffect(() => {
     const fetchPersonas = async () => {
@@ -54,22 +52,13 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
           setMessages(Array.isArray(response.messages) ? response.messages : []);
         } catch (error) {
           console.error("Error fetching messages:", error);
-          setMessages([]);
+          setMessages([]); 
         }
       }
     };
 
     fetchMessages();
   }, [conversationId]);
-
-  const resetStateToInitial = () => {
-    setConversationId(null);
-    setMessages([]);
-  };
-
-  const fetchConversations = useCallback(() => {
-    setRefreshTrigger((prev) => prev + 1);
-  }, []);
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
@@ -79,50 +68,27 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     setConversationId(item.id);
   };
 
-  const handleNewConversation = () => {
-    setConversationId(null);
-    setMessages([]);
-  };
-
   const handleMessages = async (inputValue: string): Promise<string> => {
-    if (isSendingMessage || !inputValue.trim()) {
-      return "No message to send.";
-    }
-  
-    setIsSendingMessage(true);
-  
     try {
       const messagesServiceInstance = new messagesService();
       let currentConversationId = conversationId;
-  
+
       if (!currentConversationId) {
         const conversation = await messagesServiceInstance.createConversation(inputValue, bot.id);
         currentConversationId = conversation.id;
         setConversationId(currentConversationId);
-  
-        await fetchConversations();
       }
-  
+
       const message = await messagesServiceInstance.sendMessage(bot.id, currentConversationId, inputValue);
-  
-      setMessages((prevMessages) => {
-        const messageExists = prevMessages.some((msg) => msg.id === message.id);
-        if (!messageExists) {
-          return [...prevMessages, message];
-        }
-        return prevMessages;
-      });
-  
+
+      setMessages((prevMessages) => Array.isArray(prevMessages) ? [...prevMessages, message] : [message]);
+
       return message.chat_response;
     } catch (error) {
       console.error("Error sending message:", error);
       return "There was an error sending your message.";
-    } finally {
-      setIsSendingMessage(false);
     }
-  };  
-  
-  
+  };
 
   const personaImageUrl = persona && personaImages[persona.face_id] ? personaImages[persona.face_id] : "/default-image.png";
 
@@ -160,14 +126,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
             </button>
           </div>
           <div className="historyContent">
-          <ChatLog 
-            botId={bot.id} 
-            logItemClickConversationHandler={logItemClickConversationHandler} 
-            handleNewConversation={handleNewConversation} 
-            refreshTrigger={refreshTrigger} 
-            resetStateToInitial={resetStateToInitial} 
-            currentConversationId={conversationId}
-          />
+            <ChatLog botId={bot.id} logItemClickConversationHandler={logItemClickConversationHandler} />
           </div>
         </div>
       </div>
