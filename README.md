@@ -111,10 +111,3 @@ Before you begin, make sure you have access to:
 
 ## Tutorial Video
 https://github.com/user-attachments/assets/a599102e-a13a-40d5-8f1b-e955fb176c1b
-
-
-## Conclusion
-
-Congratulations! You have successfully created and deployed your own personal assistant. Feel free to explore and customize it further to meet your needs. If you encounter any issues, refer to the project documentation or visit our support channels.
-
-Happy Learning!
