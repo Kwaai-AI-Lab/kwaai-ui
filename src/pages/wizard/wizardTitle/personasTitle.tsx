@@ -36,8 +36,8 @@ const PersonaTitle: React.FC<WizardTitleProps> = ({ currentStep }) => {
         return "Step 1: Set the new persona";
       case 1:
         return "Step 2: Choose a face to the persona ";
-      // case 2:
-      //   return "Step 3: Choose a voice";
+      case 2:
+        return "Step 3: Choose a voice";
       default:
         return "Step 4: Deploy!";
     }
