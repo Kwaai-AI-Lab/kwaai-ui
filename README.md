@@ -50,6 +50,7 @@ PAI-Assistant allows users to create personal assistants that retrieve informati
 
 Before you begin, make sure you have access to:
 - PAI OS project Donwloaded and Running. https://github.com/pAI-OS/paios/
+- Ollama installed in your computer. https://ollama.com/
 - Any documents or knowledge base content you wish to upload.
 
 ---
