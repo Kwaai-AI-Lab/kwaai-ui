@@ -16,9 +16,10 @@ interface BotItemProps {
   onBotSelect: (bot: Bot | Persona) => void;
   onEditBot: (bot: Bot | Persona) => void;
   onBotDelete: (botId: string) => void;
+  onError: (message: string) => void;
 }
 
-const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, onBotDelete }) => {
+const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, onBotDelete, onError }) => {
   const { removeToMyAgent, agentViewType } = useAgents();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -68,6 +69,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error deleting assistant:", error);
+      onError("Error deleting assistant");
     }
   };
 
@@ -77,11 +79,11 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
       await personasService.deletePersona(botItemData.id);
       onBotDelete(botItemData.id);
       setIsModalOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting persona:", error);
+      onError(`Error deleting persona ${error.message.toLowerCase()}`);
     }
   };
-
   const handleDelete = () => {
     if ('uri' in botItemData) {
       handleDeleteBot();

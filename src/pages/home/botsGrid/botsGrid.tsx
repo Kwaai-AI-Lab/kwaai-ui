@@ -8,6 +8,8 @@ import useAssistants from "../../../hooks/assistants.hook";
 import { DotLoader } from "react-spinners";
 import usePersonas from "../../../hooks/personas.hook";
 import { AgentViewType } from "../../../context/botsContext";
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface BotsGridProps {
   viewType: AgentViewType;
@@ -30,6 +32,10 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
     }
   }, [assistants, personas]);
 
+  const handleError = (message: string) => {
+    toast.error(message);
+  };
+
   useEffect(() => {
     if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
       setLocalItems(assistants);
@@ -44,6 +50,7 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
 
   return (
     <>
+      <ToastContainer/>
       <BotListTitle viewType={viewType} onAddNewAgent={handleAddNewAgent} />
       {loading ? (
         <div className="loader-container">
@@ -60,6 +67,7 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
               onBotSelect={onBotSelect}
               onEditBot={onEditBot}
               onBotDelete={handleBotDelete}
+              onError={handleError}
             />
           ))}
         </div>
