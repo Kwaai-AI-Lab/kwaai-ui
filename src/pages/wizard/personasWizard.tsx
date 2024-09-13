@@ -3,7 +3,6 @@ import Details from "./details/details";
 import { Persona } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
 import ContinueModal from "../../components/continueModal";
-import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
 import PersonaTitle from "./wizardTitle/personasTitle";
@@ -21,7 +20,6 @@ interface WizardProps {
 }
 
 const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, setShowWizard }) => {
-  const { addToMyAgent, updateAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -172,7 +170,6 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
         console.error("Error creating or updating assistant:", error);
       }
     }
-    addToMyAgent(newBot);
     resetBot();
     setShowWizard(false);
     showList();

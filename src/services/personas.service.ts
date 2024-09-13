@@ -72,14 +72,16 @@ class PersonasService {
     }
   }
 
-  async deletePersona(id: string): Promise<void> {
+  async deletePersona(id: string | undefined): Promise<void> {
     try {
       const response = await fetch(`${API_URL}/personas/${id}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        const errorData = await response.json();
+        const errorMessage = errorData.error || response.statusText;
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Error deleting persona:", error);
