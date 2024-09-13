@@ -72,7 +72,7 @@ class PersonasService {
     }
   }
 
-  async deletePersona(id: string): Promise<void> {
+  async deletePersona(id: string | undefined): Promise<void> {
     try {
       const response = await fetch(`${API_URL}/personas/${id}`, {
         method: "DELETE",

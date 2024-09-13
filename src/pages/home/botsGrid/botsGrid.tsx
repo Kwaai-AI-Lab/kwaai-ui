@@ -13,9 +13,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 interface BotsGridProps {
   viewType: AgentViewType;
-  bots: Bot[] | Persona[];
   handleAddNewAgent: () => void;
-  onBotSelect: (bot: Bot) => void;
+  onBotSelect: (bot: Bot | Persona) => void;
   onEditBot: (bot: Bot | Persona) => void;
 }
 
