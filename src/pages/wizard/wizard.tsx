@@ -7,7 +7,6 @@ import Test from "./test/test";
 import { Bot } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
 import ContinueModal from "../../components/continueModal";
-import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
 import WizardTitle from "./wizardTitle/wizardTitle";
@@ -24,7 +23,6 @@ interface WizardProps {
 const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
   const [isIndexing, setIsIndexing] = useState(false);
   const [isIndexingMode, setIsIndexingMode] = useState(false);
-  const { addToMyAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
   const [docsFiles, setDocsFiles] = useState<File[]>([]);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
@@ -256,7 +254,6 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     } catch (error) {
       console.error("Error creating or updating assistant:", error);
     }
-    addToMyAgent(newBot);
     resetBot();
     setShowWizard(false);
     showList();

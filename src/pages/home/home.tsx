@@ -11,7 +11,7 @@ import "./home.css";
 import { Bot, Persona } from "../../data/types";
 
 export default function Home() {
-  const { myAgents, personas, shareAgents, setAgentViewType } = useAgents();
+  const { setAgentViewType } = useAgents();
   const [showWizard, setShowWizard] = useState(false);
   const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
   const [editBot, setEditBot] = useState<Bot | null>(null);
@@ -68,12 +68,6 @@ export default function Home() {
     setShowWizard(true);
   };
 
-  const agentsToShow = viewType === AgentViewType.MyAgents
-    ? myAgents
-    : viewType === AgentViewType.Personas
-    ? personas
-    : shareAgents;
-
   const handleConfirmModal = () => {
     setIsModalOpen(false);
     if (pendingViewType !== null) {
@@ -116,7 +110,6 @@ export default function Home() {
           ) : (
         <BotsGrid
           viewType={viewType}
-          bots={agentsToShow}
           handleAddNewAgent={newAgentHandler}
           onBotSelect={handleBotSelect}
           onEditBot={viewType === AgentViewType.Personas ? handleEditPersona : handleEditBot}

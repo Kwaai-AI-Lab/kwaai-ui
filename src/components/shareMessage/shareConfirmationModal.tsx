@@ -3,14 +3,14 @@ import Modal from "react-modal";
 import PrimaryButton from "../../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../../components/buttons/secondaryButton/secondaryButton";
 import roundCrossIcon from "../../assets/round-box-icon.png";
-import { Bot } from "../../data/types";
+import { Bot, Persona } from "../../data/types";
 import "./shareConfirmationModal.css"; // Reuse the existing styles or create new ones
 
 interface ShareConfirmationModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
   onConfirm: () => void;
-  bot: Bot | null;
+  bot: Bot | null | Persona;
 }
 
 const ShareConfirmationModal: React.FC<ShareConfirmationModalProps> = ({

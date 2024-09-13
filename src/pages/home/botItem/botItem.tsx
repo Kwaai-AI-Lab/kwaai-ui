@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bot, Persona } from "../../../data/types";
 import botIcon from "../../../assets/bot-icon.png";
 import shareIcon from "../../../assets/share-icon.png";
-import { useAgents, AgentViewType } from "../../../context/botsContext";
+import { AgentViewType, useAgents } from "../../../context/botsContext";
 import DeleteConfirmationModal from "../../../components/deleteMessage/deleteConfirmationModal";
 import ShareConfirmationModal from "../../../components/shareMessage/shareConfirmationModal";
 import PrimaryButton from "../../../components/buttons/primaryButton/primaryButton";
@@ -15,12 +15,12 @@ interface BotItemProps {
   botItemData: Bot | Persona;
   onBotSelect: (bot: Bot | Persona) => void;
   onEditBot: (bot: Bot | Persona) => void;
-  onBotDelete: (botId: string) => void;
+  onBotDelete: (botId: string | undefined) => void;
   onError: (message: string) => void;
 }
 
 const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, onBotDelete, onError }) => {
-  const { removeToMyAgent, agentViewType } = useAgents();
+  const { agentViewType } = useAgents();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [personaImage, setPersonaImage] = useState(botIcon);
@@ -59,10 +59,14 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
     };
 
     fetchPersonas();
-  }, [botItemData]);
+  }, [botItemData, personaImages]);
 
   const handleDeleteBot = async () => {
     try {
+      if (!botItemData.id) {
+        throw new Error("Bot ID is undefined");
+      }
+  
       const assistantsService = new AssistantsService();
       await assistantsService.deleteAssistant(botItemData.id);
       onBotDelete(botItemData.id);
