@@ -61,6 +61,8 @@
   }
   
   .error-message {
+    font-family: 'Poppins', sans-serif;
+    max-width: 61.5%;
     color: red;
     font-size: 14px;
     margin-top: 10px;
