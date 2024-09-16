@@ -88,12 +88,12 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
   
     const updateFileLists = () => {
       setAllFiles((prevAllFiles) => prevAllFiles.filter((_, i) => i !== index));
-      
+  
       setLocalFiles((prevLocalFiles) => prevLocalFiles.filter((file) => file.name !== fileToRemove.name));
-      
+  
       onFilesChange(localfiles.filter((file) => file.name !== fileToRemove.name));
   
-      if(allFiles.length - 1 === 0){
+      if (allFiles.length - 1 === 0) {
         onFilesAdded(false);
       }
     };
@@ -103,7 +103,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
         const assistantsService = new AssistantsService();
         await assistantsService.deleteFiles(assistantId!, [fileToRemove.id]);
         console.log("File deleted from server:", fileToRemove.id);
- 
+  
         updateFileLists();
       } catch (error) {
         console.error("Error deleting file from server:", error);
