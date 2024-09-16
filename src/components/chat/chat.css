@@ -44,13 +44,3 @@
     outline: none; /* Remove the border that appears when focused */
   }
   
-
-  .chat-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: #888;
-    font-size: 16px;
-    text-align: center;
-  }
