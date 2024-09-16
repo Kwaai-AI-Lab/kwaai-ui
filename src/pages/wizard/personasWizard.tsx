@@ -27,7 +27,7 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
     id: botToEdit ? botToEdit.id : uuidv4(),
     name: "",
     description: "",
-    voice_id: "a1b2c3d4-e5f6-4789-ab01-23456789abcd", // ID hardcodeado
+    voice_id: "",
     face_id: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,8 +45,7 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
   const steps = [
     <Details key="details" bot={newBot} setBot={setNewBot} errors={errors} viewType={viewType} />,
     <Face key="persona" bot={newBot} setBot={setNewBot} errors={errors} />,
-    // Comentado el paso de Voice ya que no se necesita actualmente
-    // <Voice key="voice" bot={newBot} setBot={setNewBot} errors={errors} />,
+    <Voice key="voice" bot={newBot} setBot={setNewBot} errors={errors} />,
   ];
 
   const validateFields = (): boolean => {
@@ -142,7 +141,7 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
       id: uuidv4(),
       name: "",
       description: "",
-      voice_id: "a1b2c3d4-e5f6-4789-ab01-23456789abcd", // ID hardcodeado
+      voice_id: "",
       face_id: "",
     });
     setIsUpdateMode(false);
@@ -171,7 +170,6 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
         console.error("Error creating or updating assistant:", error);
       }
     }
-
     resetBot();
     setShowWizard(false);
     showList();
