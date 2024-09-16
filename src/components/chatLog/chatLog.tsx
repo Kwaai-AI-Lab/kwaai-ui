@@ -3,25 +3,35 @@ import LogGroup from "./logGroup/logGroup";
 import "./chatLog.css";
 import { useState, useEffect } from "react";
 import messagesService from "../../services/messages.service";
+import PrimaryButton from "../buttons/primaryButton/primaryButton";
 
 interface ChatLogProps {
   botId: string;
   logItemClickConversationHandler: (item: conversation) => void;
+  handleNewConversation: () => void;
+  refreshTrigger: number;
+  resetStateToInitial: () => void;
+  currentConversationId: string | null;
 }
 
-const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandler }) => {
+const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandler, handleNewConversation, refreshTrigger, resetStateToInitial, currentConversationId }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [conversations, setConversations] = useState<conversation[]>([]);
 
-  useEffect(() => {
-    const fetchConversations = async () => {
+
+  const fetchConversations = async () => {
+    try {
       const messagesServiceInstance = new messagesService();
       const group = await messagesServiceInstance.getConversations(botId);
       setConversations(group);
-    };
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchConversations();
-  }, [botId]);
+  }, [botId, refreshTrigger]);
 
   const logItemClickHandler = (item: conversation) => {
     if (selectedItemId === item.id) {
@@ -53,6 +63,10 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
       setConversations((prevConversations) =>
         prevConversations.filter((conv) => conv.id !== item.id)
       );
+      if (currentConversationId === item.id) {
+        setSelectedItemId(null);
+        resetStateToInitial();
+      }
     } catch (error) {
       console.error("Error deleting conversation:", error);
     }
@@ -96,18 +110,21 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
   const groupedConversations = groupConversationsByTimestamp(conversations);
 
   return (
-    <div className="logGroupContainer">
-      {groupedConversations.map((group) => (
-        <LogGroup
-          key={group.title}
-          group={group}
-          selectedItemId={selectedItemId}
-          logItemClickHandler={logItemClickHandler}
-          logItemClickConversationHandler={logItemClickConversationHandler}
-          onChangeName={handleChangeName}
-          onDelete={handleDelete}
-        />
-      ))}
+    <div className="chatLogContainer">
+      <PrimaryButton text="New conversation" enabled onClick={handleNewConversation} />
+      <div className="logGroupContainer">
+        {groupedConversations.map((group) => (
+          <LogGroup
+            key={group.title}
+            group={group}
+            selectedItemId={selectedItemId}
+            logItemClickHandler={logItemClickHandler}
+            logItemClickConversationHandler={logItemClickConversationHandler}
+            onChangeName={handleChangeName}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </div>
   );
 };

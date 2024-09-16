@@ -54,6 +54,11 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
   return (
     <div className="chat-container">
       <div className="chat-history">
+      {messages.length === 0 && !loading && (
+          <div className="chat-placeholder">
+            <p>No messages yet. Start the conversation!</p>
+          </div>
+        )}
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
