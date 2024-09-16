@@ -88,6 +88,19 @@ class PersonasService {
       throw error;
     }
   }
+
+  async getVoices(): Promise<string[]> {
+    try {
+      const response = await fetch(`${API_URL}/voices`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching voices:", error);
+      return [];
+    }
+  }
 }
 
 export default PersonasService;
