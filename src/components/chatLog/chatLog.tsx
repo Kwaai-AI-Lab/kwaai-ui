@@ -74,7 +74,7 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
 
   const groupConversationsByTimestamp = (conversations: conversation[]) => {
     const sortedConversations = [...conversations].sort(
-      (a, b) => new Date(b.created_timestamp).getTime() - new Date(a.created_timestamp).getTime()
+      (a, b) => new Date(b.last_updated_timestamp).getTime() - new Date(a.last_updated_timestamp).getTime()
     );
   
     const today = new Date();
