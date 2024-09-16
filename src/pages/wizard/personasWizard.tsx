@@ -3,7 +3,6 @@ import Details from "./details/details";
 import { Persona } from "../../data/types";
 import ConfirmationModal from "../../components/confirmationModal";
 import ContinueModal from "../../components/continueModal";
-import { useAgents } from "../../context/botsContext";
 import { v4 as uuidv4 } from "uuid";
 import "./wizard.css";
 import PersonaTitle from "./wizardTitle/personasTitle";
@@ -11,7 +10,7 @@ import WizardBottom from "./wizardBottom/wizardBottom";
 import Face from "./face/face";
 import PersonasService from "../../services/personas.service";
 import { AgentViewType } from "../../context/botsContext";
-// import Voice from "./voice/voice"; // Comentado ya que no se necesita actualmente
+import Voice from "./voice/voice"; 
 
 interface WizardProps {
   showList: () => void;
@@ -21,7 +20,6 @@ interface WizardProps {
 }
 
 const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, setShowWizard }) => {
-  const { addToMyAgent, updateAgent } = useAgents();
   const [currentStep, setCurrentStep] = useState(0);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -66,12 +64,11 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
         newErrors.face_id = "Face selection is required";
       }
     } 
-    // Eliminada la validación para el voice_id ya que es hardcodeado
-    // else if (currentStep === 2) {
-    //   if (!newBot.voice_id) {
-    //     newErrors.voice_id = "Voice selection is required";
-    //   }
-    // }
+    else if (currentStep === 2) {
+      if (!newBot.voice_id) {
+        newErrors.voice_id = "Voice selection is required";
+      }
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -83,7 +80,6 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
     }
 
     try {
-      const personasService = new PersonasService();
       let response: Persona;
 
       if (currentStep === 2) {
@@ -168,14 +164,14 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
         await personasService.updatePersona(newBot.id || "", {
           name: newBot.name,
           description: newBot.description,
-          voice_id: newBot.voice_id, // Sigue usando el ID hardcodeado
+          voice_id: newBot.voice_id,
           face_id: newBot.face_id,
         });
       } catch (error) {
         console.error("Error creating or updating assistant:", error);
       }
     }
-    addToMyAgent(newBot);
+
     resetBot();
     setShowWizard(false);
     showList();

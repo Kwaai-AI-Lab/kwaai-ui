@@ -78,6 +78,7 @@ export interface Voices {
   name: string;
   imageURL: string;
   videoURL: string;
+  sampleURL: string;
 }
 
 export interface HistoryLog {

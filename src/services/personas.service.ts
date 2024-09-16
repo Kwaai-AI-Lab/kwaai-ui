@@ -1,10 +1,11 @@
-import { PAIOS_API_URL } from "../config/env";
 import { Persona } from "../data/types";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 class PersonasService {
   static async getPersonas(): Promise<Persona[]> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/personas`);
+      const response = await fetch(`${API_URL}/personas`);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
@@ -17,7 +18,7 @@ class PersonasService {
 
   async getPersona(id: string): Promise<Persona> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/personas/${id}`);
+      const response = await fetch(`${API_URL}/personas/${id}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
@@ -31,7 +32,7 @@ class PersonasService {
 
   async createPersona(persona: Persona): Promise<Persona> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/personas`, {
+      const response = await fetch(`${API_URL}/personas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +53,7 @@ class PersonasService {
 
   async updatePersona(id: string, persona: Persona): Promise<Persona> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/personas/${id}`, {
+      const response = await fetch(`${API_URL}/personas/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -71,18 +72,33 @@ class PersonasService {
     }
   }
 
-  async deletePersona(id: string): Promise<void> {
+  async deletePersona(id: string | undefined): Promise<void> {
     try {
-      const response = await fetch(`${PAIOS_API_URL}/personas/${id}`, {
+      const response = await fetch(`${API_URL}/personas/${id}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        const errorData = await response.json();
+        const errorMessage = errorData.error || response.statusText;
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Error deleting persona:", error);
       throw error;
+    }
+  }
+
+  async getVoices(): Promise<string[]> {
+    try {
+      const response = await fetch(`${API_URL}/voices`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching voices:", error);
+      return [];
     }
   }
 }
