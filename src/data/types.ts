@@ -1,4 +1,3 @@
-
 export interface LlmOption {
   id: string;
   name: string;
@@ -24,7 +23,7 @@ export interface Persona {
   name: string;
   description: string;
   voice_id: string;
-  face_id: string;  
+  face_id: string;
 }
 
 export interface conversation {
@@ -90,10 +89,5 @@ export interface AssistantFile {
   name: string;
   num_chunks: string | null;
   id: string | null;
-}
-
-export interface AssistantFile {
-  name: string;
-  num_chunks: string | null;
-  id: string | null;
+  file_id: string | null;
 }
