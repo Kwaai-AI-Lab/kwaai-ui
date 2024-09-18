@@ -1,21 +1,25 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import downloadIcon from "../../assets/download-icon.png";
-import { AssistantFile} from "../../data/types";
+import { AssistantFile } from "../../data/types";
 import AssistantsService from "../../services/assistants.service";
 import "./knowledge.css";
 
 interface KnowledgeProps {
   onFilesChange: (files: File[]) => void;
   assistantId: string | undefined;
-  onFilesAdded: (isIndexig:boolean) => void;
+  onFilesAdded: (isIndexig: boolean) => void;
 }
 
-const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFilesAdded }) => {
+const Knowledge: React.FC<KnowledgeProps> = ({
+  onFilesChange,
+  assistantId,
+  onFilesAdded,
+}) => {
   const [localfiles, setLocalFiles] = useState<File[]>([]);
   const [allFiles, setAllFiles] = useState<AssistantFile[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
- 
+
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: any[]) => {
       if (acceptedFiles.length > 0) {
@@ -31,7 +35,8 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
       const newAssistantFiles: AssistantFile[] = acceptedFiles.map((file) => ({
         name: file.name,
         num_chunks: null,
-        id: ""
+        id: "",
+        file_id: "",
       }));
 
       const updatedAllFiles = [...allFiles, ...newAssistantFiles];
@@ -64,12 +69,14 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
   }, [assistantId]);
 
   function duplicateNameValidator(file: File) {
-    const isDuplicate = allFiles.some(existingFile => existingFile.name === file.name);
+    const isDuplicate = allFiles.some(
+      (existingFile) => existingFile.name === file.name
+    );
     if (isDuplicate) {
       console.log(`File with name "${file.name}" already exists.`);
       return {
         code: "name-duplicate",
-        message: `File with name "${file.name}" already exists.`
+        message: `File with name "${file.name}" already exists.`,
       };
     }
     return null;
@@ -78,32 +85,38 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      "application/pdf": [".pdf"]
+      "application/pdf": [".pdf"],
     },
-    validator: duplicateNameValidator
+    validator: duplicateNameValidator,
   });
 
   const handleRemoveFile = async (index: number) => {
     const fileToRemove = allFiles[index];
-  
+
     const updateFileLists = () => {
       setAllFiles((prevAllFiles) => prevAllFiles.filter((_, i) => i !== index));
-      
-      setLocalFiles((prevLocalFiles) => prevLocalFiles.filter((file) => file.name !== fileToRemove.name));
-      
-      onFilesChange(localfiles.filter((file) => file.name !== fileToRemove.name));
-  
-      if(allFiles.length - 1 === 0){
+
+      setLocalFiles((prevLocalFiles) =>
+        prevLocalFiles.filter((file) => file.name !== fileToRemove.name)
+      );
+
+      onFilesChange(
+        localfiles.filter((file) => file.name !== fileToRemove.name)
+      );
+
+      if (allFiles.length - 1 === 0) {
         onFilesAdded(false);
       }
     };
-  
-    if (fileToRemove.id) {
+
+    if (fileToRemove.file_id) {
       try {
         const assistantsService = new AssistantsService();
-        await assistantsService.deleteFiles(assistantId!, [fileToRemove.id]);
-        console.log("File deleted from server:", fileToRemove.id);
- 
+        await assistantsService.deleteFiles(assistantId!, [
+          fileToRemove.file_id,
+        ]);
+        console.log("File deleted from server:", fileToRemove.file_id);
+
         updateFileLists();
       } catch (error) {
         console.error("Error deleting file from server:", error);
@@ -113,8 +126,6 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
       updateFileLists();
     }
   };
-  
-  
 
   return (
     <div className="details-container">
@@ -131,20 +142,20 @@ const Knowledge: React.FC<KnowledgeProps> = ({ onFilesChange, assistantId, onFil
       <aside className="file-list">
         <ul>
           {allFiles.map((file: AssistantFile, index: number) => (
-              <li key={index} className="file-item">
-                {file.name}
-                <button
-                  className="remove-file-button"
-                  onClick={() => handleRemoveFile(index)}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
+            <li key={index} className="file-item">
+              {file.name}
+              <button
+                className="remove-file-button"
+                onClick={() => handleRemoveFile(index)}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
         </ul>
       </aside>
     </div>
   );
-}
+};
 
 export default Knowledge;

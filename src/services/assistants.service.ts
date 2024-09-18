@@ -17,27 +17,33 @@ interface CreateAssistantResponse {
 const API_URL = process.env.REACT_APP_API_URL;
 
 class AssistantsService {
-
   async createAssistant(
     name: string,
     description: string,
     kind: string,
-    { uri, resource_llm_id, persona_id, files, status, allow_edit, icon }: 
-    { 
-      uri: string, 
-      resource_llm_id: string, 
-      persona_id: string, 
-      files: string[], 
-      status: string, 
-      allow_edit: string, 
-      icon: string 
+    {
+      uri,
+      resource_llm_id,
+      persona_id,
+      files,
+      status,
+      allow_edit,
+      icon,
+    }: {
+      uri: string;
+      resource_llm_id: string;
+      persona_id: string;
+      files: string[];
+      status: string;
+      allow_edit: string;
+      icon: string;
     }
   ): Promise<CreateAssistantResponse> {
     try {
       const response = await fetch(`${API_URL}/resources`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: name,
@@ -49,7 +55,7 @@ class AssistantsService {
           files: files,
           status: status,
           allow_edit: allow_edit,
-          icon: icon
+          icon: icon,
         }),
       });
 
@@ -64,7 +70,10 @@ class AssistantsService {
     }
   }
 
-  async updateAssistant(assistantId: string, assistantData: Bot): Promise<CreateAssistantResponse> {
+  async updateAssistant(
+    assistantId: string,
+    assistantData: Bot
+  ): Promise<CreateAssistantResponse> {
     try {
       const response = await fetch(`${API_URL}/resources/${assistantId}`, {
         method: "PUT",
@@ -122,7 +131,9 @@ class AssistantsService {
 
   static async getAssistants(kind: string): Promise<Bot[]> {
     try {
-      const response = await fetch(`${API_URL}/resources?filter={"kind":"${kind}"}`);
+      const response = await fetch(
+        `${API_URL}/resources?filter={"kind":"${kind}"}`
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
@@ -138,7 +149,10 @@ class AssistantsService {
     }
   }
 
-  async createConversation(name:string, assistantId: string): Promise<conversation> {
+  async createConversation(
+    name: string,
+    assistantId: string
+  ): Promise<conversation> {
     try {
       const response = await fetch(`${API_URL}/conversations/${assistantId}`, {
         method: "POST",
@@ -159,7 +173,12 @@ class AssistantsService {
     }
   }
 
-  async sendMessage(assistantId:string, conversationId: string|null, prompt: string, test:string): Promise<Message> {
+  async sendMessage(
+    assistantId: string,
+    conversationId: string | null,
+    prompt: string,
+    test: string
+  ): Promise<Message> {
     try {
       const response = await fetch(`${API_URL}/messages`, {
         method: "POST",
@@ -202,8 +221,9 @@ class AssistantsService {
       if (!Array.isArray(data)) {
         throw new Error("Unexpected response format");
       }
-
-      return data as AssistantFile[];
+      const files = data as AssistantFile[];
+      console.log("Files = ", files);
+      return files;
     } catch (error) {
       console.error("Error fetching files:", error);
       throw error;
@@ -219,7 +239,7 @@ class AssistantsService {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          file_ids: fileIds
+          file_ids: fileIds,
         }),
       });
 
