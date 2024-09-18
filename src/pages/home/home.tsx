@@ -5,7 +5,7 @@ import Wizard from "../wizard/wizard";
 import BotsGrid from "./botsGrid/botsGrid";
 import AgentInteraction from "../agentInteraction/agentInteraction";
 import SideBar from "../../components/sideBar/sideBar";
-import PersonasWizard from "../wizard/personasWizard"; // Ensure correct import capitalization
+import PersonasWizard from "../wizard/personasWizard";
 import ConfirmationModal from "../../components/confirmationModal";
 import "./home.css";
 import { Bot, Persona } from "../../data/types";

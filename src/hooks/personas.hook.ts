@@ -1,27 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import PersonasService from '../services/personas.service';
 import { Persona } from '../data/types';
 
-const usePersonas = () => {
+interface UsePersonasResult {
+  personas: Persona[];
+  loading: boolean;
+  error: string | null;
+  refetchPersonas: () => void;
+}
+
+const usePersonas = (): UsePersonasResult => {
   const [personas, setPersonas] = useState<Persona[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAssistants = async () => {
-      try {
-        const personasData = await PersonasService.getPersonas();
-        setPersonas(personasData);
-      } catch (error) {
-        setError('Failed to fetch personas');
-        console.error('Error fetching personas:', error);
-      }
-    };
-  
-    fetchAssistants();
+  const fetchPersonas = useCallback(async () => {
+    setLoading(true);
+    try {
+      const personasData = await PersonasService.getPersonas();
+      setPersonas(personasData);
+    } catch (error) {
+      setError('Failed to fetch personas');
+      console.error('Error fetching personas:', error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
-  
 
-  return { personas, error };
+  useEffect(() => {
+    fetchPersonas();
+  }, [fetchPersonas]);
+
+  return { personas, loading, error, refetchPersonas: fetchPersonas };
 };
 
 export default usePersonas;

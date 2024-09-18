@@ -92,7 +92,7 @@ class AssistantsService {
     }
   }
 
-  async deleteAssistant(id: string): Promise<void> {
+  static async deleteAssistant(id: string): Promise<void> {
     try {
       const response = await fetch(`${API_URL}/resources/${id}`, {
         method: "DELETE",
@@ -202,7 +202,6 @@ class AssistantsService {
     }
   }
 
-  // Method to get files associated with an assistant
   async getFiles(assistantId: string): Promise<AssistantFile[]> {
     try {
       const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {
@@ -230,7 +229,6 @@ class AssistantsService {
     }
   }
 
-  // Method to delete files associated with an assistant
   async deleteFiles(assistantId: string, fileIds: string[]): Promise<void> {
     try {
       const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {

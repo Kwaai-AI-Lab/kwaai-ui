@@ -41,6 +41,14 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
     fetchData();
   }, [bot.id]);
 
+  useEffect(() => {
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    };
+  }, [audio]);
 
   const handleSelect = (voice: Voices) => {
     setSelectedVoiceId(voice.id);

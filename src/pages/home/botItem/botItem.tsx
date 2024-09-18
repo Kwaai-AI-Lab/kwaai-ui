@@ -7,7 +7,6 @@ import DeleteConfirmationModal from "../../../components/deleteMessage/deleteCon
 import ShareConfirmationModal from "../../../components/shareMessage/shareConfirmationModal";
 import PrimaryButton from "../../../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../../../components/buttons/secondaryButton/secondaryButton";
-import AssistantsService from "../../../services/assistants.service";
 import "./botItem.css";
 import PersonasService from "../../../services/personas.service";
 
@@ -15,7 +14,7 @@ interface BotItemProps {
   botItemData: Bot | Persona;
   onBotSelect: (bot: Bot | Persona) => void;
   onEditBot: (bot: Bot | Persona) => void;
-  onBotDelete: (botId: string | undefined) => void;
+  onBotDelete: (botId: string) => void;
   onError: (message: string) => void;
 }
 
@@ -48,7 +47,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
           }
         } catch (error) {
           console.error("Error fetching persona:", error);
-          setPersonaImage(botIcon); // Fallback image
+          setPersonaImage(botIcon);
         }
       } else if ('face_id' in botItemData && botItemData.face_id) {
         const imageUrl = personaImages[botItemData.face_id] || botIcon;
@@ -61,55 +60,17 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
     fetchPersonas();
   }, [botItemData, personaImages]);
 
-  const handleDeleteBot = async () => {
-    try {
-      if (!botItemData.id) {
-        throw new Error("Bot ID is undefined");
-      }
-  
-      const assistantsService = new AssistantsService();
-      await assistantsService.deleteAssistant(botItemData.id);
-      onBotDelete(botItemData.id);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error deleting assistant:", error);
-      onError("Error deleting assistant");
-    }
-  };
-
-  const handleDeletePersona = async () => {
-    try {
-      const personasService = new PersonasService();
-      await personasService.deletePersona(botItemData.id);
-      onBotDelete(botItemData.id);
-      setIsModalOpen(false);
-    } catch (error: any) {
-      console.error("Error deleting persona:", error);
-      onError(`Error deleting persona ${error.message.toLowerCase()}`);
-    }
-  };
   const handleDelete = () => {
-    if ('uri' in botItemData) {
-      handleDeleteBot();
-    } else {
-      handleDeletePersona();
-    }
-  };
-
-  const handleShareClick = () => {
-    setIsShareModalOpen(true);
-  };
-
-  const handleDeleteClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleEditClick = () => {
-    onEditBot(botItemData);
-  };
-
-  const handleGoToCourseClick = () => {
-    onBotSelect(botItemData);
+  const confirmDelete = () => {
+    if (!botItemData.id) {
+      onError("Bot ID is missing");
+      return;
+    }
+    onBotDelete(botItemData.id);
+    setIsModalOpen(false);
   };
 
   return (
@@ -121,7 +82,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
         <div className="bot-card-header-with-button">
           <h2 className="bot-card-name">{botItemData.name}</h2>
           {agentViewType === AgentViewType.MyAgents && (
-            <button className="share-button" onClick={handleShareClick}>
+            <button className="share-button" onClick={() => setIsShareModalOpen(true)}>
               <img src={shareIcon} alt="Share" />
             </button>
           )}
@@ -129,24 +90,24 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
         <p className="bot-card-description">{botItemData.description}</p>
       </div>
       <div className="bot-buttons-area">
-        {agentViewType === AgentViewType.MyAgents || agentViewType === AgentViewType.Personas ? (
+        {(agentViewType === AgentViewType.MyAgents || agentViewType === AgentViewType.Personas) ? (
           <>
-            <SecondaryButton text="Delete" onClick={handleDeleteClick} enabled={true} />
-            <PrimaryButton text="Edit" onClick={handleEditClick} enabled={!!('uri' in botItemData || AgentViewType.Personas)} />
+            <SecondaryButton text="Delete" onClick={handleDelete} enabled={true} />
+            <PrimaryButton text="Edit" onClick={() => onEditBot(botItemData)} enabled={true} />
           </>
         ) : (
-          <PrimaryButton text="Go to Course" onClick={handleGoToCourseClick} enabled={true} />
+          <PrimaryButton text="Go to Course" onClick={() => onBotSelect(botItemData)} enabled={true} />
         )}
       </div>
       <DeleteConfirmationModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={confirmDelete}
       />
       <ShareConfirmationModal
         isOpen={isShareModalOpen}
         onRequestClose={() => setIsShareModalOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={() => { /* Implement share logic if needed */ }}
         bot={botItemData}
       />
     </div>

@@ -6,29 +6,32 @@ import "./logItem.css";
 
 interface LogItemProps {
   item: conversation;
-  isActive: boolean;
-  logItemClickHandler: (item: conversation) => void;
   logItemClickConversationHandler: (item: conversation) => void;
   onChangeName: (item: conversation, newName: string) => void;
   onDelete: (item: conversation) => void;
+  isActive?: boolean;
+  logItemClickHandler: (item: conversation) => void;
 }
 
 const LogItem: React.FC<LogItemProps> = ({
   item,
-  isActive,
-  logItemClickHandler,
   logItemClickConversationHandler,
   onChangeName,
   onDelete,
+  isActive,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(item.name);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const toggleMenu = () => {
-    logItemClickHandler(item);
+    setIsMenuVisible((prev) => !prev);
   };
 
   const toggleGetConversation = () => {
+    if (isActive) {
+      return; // No hace nada si está activa
+    }
     logItemClickConversationHandler(item);
   };
 
@@ -37,7 +40,6 @@ const LogItem: React.FC<LogItemProps> = ({
   };
 
   const handleSaveName = () => {
-    console.log(item)
     onChangeName(item, newName);
     setIsEditing(false);
   };
@@ -49,7 +51,7 @@ const LogItem: React.FC<LogItemProps> = ({
   };
 
   return (
-    <div className="logItemContent">
+    <div className={`logItemContent ${isActive ? "active" : ""}`}>
       {isEditing ? (
         <input
           type="text"
@@ -60,10 +62,12 @@ const LogItem: React.FC<LogItemProps> = ({
           className="editNameInput"
         />
       ) : (
-        <span className="textContent" onClick={toggleGetConversation}>{item.name}</span>
+        <span className="textContent" onClick={toggleGetConversation}>
+          {item.name}
+        </span>
       )}
       <FontAwesomeIcon icon={faEllipsis} className="ellipsisIcon" onClick={toggleMenu} />
-      {isActive && (
+      {isMenuVisible && (
         <div className="logItemMenu">
           <ul>
             <li onClick={handleChangeName}>
