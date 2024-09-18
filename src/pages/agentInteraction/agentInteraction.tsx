@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Bot, conversation, Message, Persona } from "../../data/types";
 import backIcon from "../../assets/back-button-icon.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -30,6 +30,8 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState(0); 
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const fetchPersonas = async () => {
@@ -65,45 +67,67 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   const resetStateToInitial = () => {
     setConversationId(null);
     setMessages([]);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
   };
 
   const fetchConversations = useCallback(() => {
     setRefreshTrigger((prev) => prev + 1);
   }, []);
 
+  const updateConversationOrder = () => {
+    setRefreshTrigger((prev) => prev + 1);
+  };
+
   const toggleMute = () => {
     setIsMuted(!isMuted);
   };
 
   const logItemClickConversationHandler = (item: conversation) => {
+    if (conversationId === item.id) {
+      return;
+    }
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
     setConversationId(item.id);
+    setMessages([]);
   };
+  
 
   const handleNewConversation = () => {
     setConversationId(null);
     setMessages([]);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
   };
 
   const handleMessages = async (inputValue: string): Promise<string> => {
     if (isSendingMessage || !inputValue.trim()) {
       return "No message to send.";
     }
-
+  
     setIsSendingMessage(true);
     try {
       const messagesServiceInstance = new messagesService();
       let currentConversationId = conversationId;
-
+  
       if (!currentConversationId) {
         const conversation = await messagesServiceInstance.createConversation(inputValue, bot.id);
         currentConversationId = conversation.id;
         setConversationId(currentConversationId);
       }
-
-      await fetchConversations();
-      
-      const message = await messagesServiceInstance.sendMessage(bot.id, currentConversationId, inputValue);
-
+  
+      const message = await messagesServiceInstance.sendMessage(
+        bot.id,
+        currentConversationId,
+        inputValue,
+        { signal: abortControllerRef.current?.signal }
+      );
+  
       setMessages((prevMessages) => {
         const messageExists = prevMessages.some((msg) => msg.id === message.id);
         if (!messageExists) {
@@ -111,14 +135,25 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         }
         return prevMessages;
       });
-      
+
+      fetchConversations();
+      if (conversationId !== currentConversationId) {
+        updateConversationOrder();
+      }
+
       return message.chat_response;
-    } catch (error) {
-      console.error("Error sending message:", error);
-      return "There was an error sending your message.";
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+      } else {
+        console.error("Error sending message:", error);
+        return "There was an error sending your message.";
+      }
     } finally {
       setIsSendingMessage(false);
     }
+  
+    return "";
   };
 
   const personaImageUrl = persona && personaImages[persona.face_id] ? personaImages[persona.face_id] : "/default-image.png";
@@ -157,14 +192,14 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
             </button>
           </div>
           <div className="historyContent">
-          <ChatLog 
-            botId={bot.id} 
-            logItemClickConversationHandler={logItemClickConversationHandler} 
-            handleNewConversation={handleNewConversation} 
-            refreshTrigger={refreshTrigger} 
-            resetStateToInitial={resetStateToInitial} 
-            currentConversationId={conversationId}
-          />
+            <ChatLog 
+              botId={bot.id} 
+              logItemClickConversationHandler={logItemClickConversationHandler} 
+              handleNewConversation={handleNewConversation} 
+              refreshTrigger={refreshTrigger} 
+              resetStateToInitial={resetStateToInitial} 
+              currentConversationId={conversationId}
+            />
           </div>
         </div>
       </div>

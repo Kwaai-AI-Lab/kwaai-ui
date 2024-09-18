@@ -26,28 +26,36 @@ class messagesService {
         }
       }
 
-    async sendMessage(assistantId:string, conversationId: string|null, prompt: string): Promise<Message> {
+      async sendMessage(assistantId: string, conversationId: string | null, prompt: string, options?: { signal?: AbortSignal }): Promise<Message> {
         try {
-        const response = await fetch(`${API_URL}/messages`, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-            assistant_id: assistantId,
-            conversation_id: conversationId,
-            prompt: prompt,
-            }),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        return response.json();
-        } catch (error) {
-        console.error(error);
-        throw error;
+            const response = await fetch(`${API_URL}/messages`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    assistant_id: assistantId,
+                    conversation_id: conversationId,
+                    prompt: prompt,
+                }),
+                signal: options?.signal,
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+    
+            return response.json();
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                console.log('Request was aborted');
+            } else {
+                console.error(error);
+            }
+            throw error;
         }
     }
+    
 
     async getConversations(assistantId: string): Promise<conversation[]> {
         const filter = JSON.stringify({ assistant_id: assistantId });

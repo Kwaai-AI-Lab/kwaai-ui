@@ -80,6 +80,9 @@ const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
           />
           <span>Yes, allow editing</span>
         </label>
+        <p className='caption'>
+          * If you allow editing, others can make changes to this agent. *
+        </p>
       </div>
     </div>
   );

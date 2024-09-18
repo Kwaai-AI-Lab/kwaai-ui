@@ -1,3 +1,33 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:900&display=swap");
+
+body {
+    margin: 0px;
+}
+
+#container {
+    position: absolute;
+    margin: auto;
+    width: 100vw;
+    height: 80pt;
+    top: 0;
+    bottom: 0;
+    filter: url(#threshold) blur(0.6px);
+}
+
+#text1,
+#text2 {
+    position: absolute;
+    width: 100%;
+    display: inline-block;
+    font-family: "Raleway", sans-serif;
+    font-size: 80pt;
+    text-align: center;
+    user-select: none;
+    transition: filter 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+/* ... Estilos restantes del chat */
+
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -8,9 +38,9 @@
     border-radius: 4px;
     margin-bottom: 30px;
     box-sizing: border-box; /* Include padding and border in element's total width and height */
-  }
+}
   
-  .chat-history {
+.chat-history {
     flex: 1;
     height: 450px; /* Fixed height for the chat history */
     overflow-y: auto; /* Add vertical scrolling */
@@ -19,9 +49,9 @@
     border-radius: 5px;
     background-color: #F0F3FF; /* Set background color to match container */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
-  }
+}
   
-  .chat-input-container {
+.chat-input-container {
     display: flex;
     align-items: center; /* Align items to center vertically */
     background-color: white;
@@ -29,27 +59,63 @@
     border-radius: 8px;
     padding-right: 20px;
     box-sizing: border-box; /* Include padding and border in element's total width and height */
-  }
+}
   
-  .chat-textarea {
+.chat-textarea {
     flex: 1;
     padding: 10px;
     resize: none; /* Prevent resizing */
     border: none; /* Remove border */
     background-color: white; /* Set background color to match container */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
-  }
+}
   
-  .chat-textarea:focus {
+.chat-textarea:focus {
     outline: none; /* Remove the border that appears when focused */
-  }
+}
   
 .chat-placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: #888;
-  font-size: 16px;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+}
+
+.animate-charcter {
+    background-image: linear-gradient(-225deg, #4728b4 0%, #5967F1 29%, #8f2cff 67%, #000000 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    padding-left: 20px;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2s linear infinite;
+    display: inline-block;
+    font-weight: 700;
+    font-size: 18px;
+    font-family: "Raleway", sans-serif; /* Add Raleway font here */
+}
+
+/* Text animation for "Thinking..." and "Searching for references" */
+@keyframes textclip {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* Transition for the text */
+#text1,
+#text2 {
+    transition: filter 1s ease-in-out, opacity 1s ease-in-out;
 }

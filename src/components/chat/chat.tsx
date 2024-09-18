@@ -19,11 +19,25 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
   const [messages, setMessages] = useState<MessageLocal[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingText, setLoadingText] = useState<string>("Thinking...");
 
   useEffect(() => {
     console.log('Setting Messages:', incomingMessages);
     setMessages(incomingMessages);
   }, [incomingMessages]);
+
+  useEffect(() => {
+    if (loading) {
+      const texts = ["Thinking...", "Searching for references..."];
+      setLoadingText(texts[0]);
+
+      const timeout = setTimeout(() => {
+        setLoadingText(texts[1]);
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [loading]);
 
   const handleSend = async () => {
     if (inputValue.trim() === "") {
@@ -67,7 +81,10 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
           />
         ))}
         {loading && (
-          <DotLoader color="#5967F1" size={30} />
+          <div className="loading-container">
+            <DotLoader color="#5967F1" size={30} />
+            <p className="animate-charcter">{loadingText}</p>
+          </div>
         )}
       </div>
       <div className="chat-input-container">

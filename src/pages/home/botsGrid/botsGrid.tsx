@@ -8,8 +8,10 @@ import useAssistants from "../../../hooks/assistants.hook";
 import { DotLoader } from "react-spinners";
 import usePersonas from "../../../hooks/personas.hook";
 import { AgentViewType } from "../../../context/botsContext";
-import {ToastContainer, toast} from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AssistantsService from "../../../services/assistants.service";
+import PersonasService from "../../../services/personas.service";
 
 interface BotsGridProps {
   viewType: AgentViewType;
@@ -19,21 +21,14 @@ interface BotsGridProps {
 }
 
 const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotSelect, onEditBot }) => {
-  const { assistants } = useAssistants("assistant");
-  const { personas } = usePersonas();
+  const { assistants, loading: loadingAssistants, refetchAssistants } = useAssistants("assistant");
+  const { personas, loading: loadingPersonas, refetchPersonas } = usePersonas();
   const [localItems, setLocalItems] = useState<Array<Bot | Persona>>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (assistants.length > 0 || personas.length > 0) {
-      setLocalItems([...assistants, ...personas]);
-      setLoading(false);
-    }
-  }, [assistants, personas]);
-
-  const handleError = (message: string) => {
-    toast.error(message);
-  };
+    setLoading(loadingAssistants || loadingPersonas);
+  }, [loadingAssistants, loadingPersonas]);
 
   useEffect(() => {
     if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
@@ -41,15 +36,31 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
     } else if (viewType === AgentViewType.Personas) {
       setLocalItems(personas);
     }
-  }, [viewType, assistants, personas]);
+  }, [viewType, assistants, personas, loading]);
 
-  const handleBotDelete = (botId: string) => {
-    setLocalItems((prevItems) => prevItems.filter((item) => item.id !== botId));
+  const handleError = (message: string) => {
+    toast.error(message);
+  };
+
+  const handleBotDelete = async (botId: string) => {
+    try {
+      if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
+        await AssistantsService.deleteAssistant(botId);
+        refetchAssistants();
+      } else if (viewType === AgentViewType.Personas) {
+        await PersonasService.deletePersona(botId);
+        refetchPersonas();
+      }
+      
+      setLocalItems((prevItems) => prevItems.filter((item) => item.id !== botId));
+    } catch (error) {
+      handleError(`Error deleting bot: ${error}`);
+    }
   };
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <BotListTitle viewType={viewType} onAddNewAgent={handleAddNewAgent} />
       {loading ? (
         <div className="loader-container">
@@ -74,6 +85,5 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
     </>
   );
 };
-
 
 export default BotsGrid;

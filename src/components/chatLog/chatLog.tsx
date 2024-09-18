@@ -14,10 +14,10 @@ interface ChatLogProps {
   currentConversationId: string | null;
 }
 
-const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandler, handleNewConversation, refreshTrigger, resetStateToInitial, currentConversationId }) => {
+const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandler, currentConversationId, refreshTrigger, resetStateToInitial, handleNewConversation }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [conversations, setConversations] = useState<conversation[]>([]);
-
+  
 
   const fetchConversations = async () => {
     try {
@@ -34,12 +34,13 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
   }, [botId, refreshTrigger]);
 
   const logItemClickHandler = (item: conversation) => {
-    if (selectedItemId === item.id) {
-      setSelectedItemId(null);
+    if (currentConversationId === item.id) {
       return;
     }
     setSelectedItemId(item.id);
+    logItemClickConversationHandler(item);
   };
+  
 
   const handleChangeName = (item: conversation, newName: string) => {
     try {
@@ -51,8 +52,7 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
         )
       );
     } catch (error) {
-      console.error("Error updating conversation name:",
-        error);
+      console.error("Error updating conversation name:", error);
     }
   };
 
@@ -89,7 +89,7 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
     const lastThirtyDaysGroup: conversation[] = [];
   
     sortedConversations.forEach((conversation) => {
-      const timestamp = new Date(conversation.created_timestamp);
+      const timestamp = new Date(conversation.last_updated_timestamp);
       if (timestamp >= today) {
         todayGroup.push(conversation);
       } else if (timestamp >= lastSevenDays) {
@@ -106,24 +106,23 @@ const ChatLog: React.FC<ChatLogProps> = ({ botId, logItemClickConversationHandle
     ];
   };
   
-
   const groupedConversations = groupConversationsByTimestamp(conversations);
 
   return (
     <div className="chatLogContainer">
       <PrimaryButton text="New conversation" enabled onClick={handleNewConversation} />
       <div className="logGroupContainer">
-        {groupedConversations.map((group) => (
-          <LogGroup
-            key={group.title}
-            group={group}
-            selectedItemId={selectedItemId}
-            logItemClickHandler={logItemClickHandler}
-            logItemClickConversationHandler={logItemClickConversationHandler}
-            onChangeName={handleChangeName}
-            onDelete={handleDelete}
-          />
-        ))}
+      {groupedConversations.map((group) => (
+        <LogGroup
+          key={group.title}
+          group={group}
+          selectedItemId={selectedItemId}
+          logItemClickHandler={logItemClickHandler}
+          logItemClickConversationHandler={logItemClickConversationHandler}
+          onChangeName={handleChangeName}
+          onDelete={handleDelete}
+        />
+      ))}
       </div>
     </div>
   );
