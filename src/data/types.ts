@@ -90,5 +90,4 @@ export interface AssistantFile {
   num_chunks: string | null;
   id: string | null;
   file_id: string | null;
-  indexing_status: string;
 }
