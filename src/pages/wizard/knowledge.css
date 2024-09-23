@@ -46,7 +46,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%; /* Full width */
-    max-width: 400px; /* Limit maximum width */
+    max-width: 61%; /* No limitar el ancho */
     margin: 5px auto; /* Center the item horizontally */
   }
   
