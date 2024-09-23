@@ -110,16 +110,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
       return "No message to send.";
     }
   
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      prompt: inputValue,
-      chat_response: "",
-    };
-  
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-  
     setIsSendingMessage(true);
-  
     try {
       const messagesServiceInstance = new messagesService();
       let currentConversationId = conversationId;
@@ -128,8 +119,6 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         const conversation = await messagesServiceInstance.createConversation(inputValue, bot.id);
         currentConversationId = conversation.id;
         setConversationId(currentConversationId);
-  
-        setMessages((prevMessages) => [...prevMessages]);
       }
   
       const message = await messagesServiceInstance.sendMessage(
@@ -139,17 +128,19 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         { signal: abortControllerRef.current?.signal }
       );
   
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg.id === userMessage.id ? { ...msg, chat_response: message.chat_response } : msg
-        )
-      );
-  
+      setMessages((prevMessages) => {
+        const messageExists = prevMessages.some((msg) => msg.id === message.id);
+        if (!messageExists) {
+          return [...prevMessages, message];
+        }
+        return prevMessages;
+      });
+
       fetchConversations();
       if (conversationId !== currentConversationId) {
         updateConversationOrder();
       }
-  
+
       return message.chat_response;
     } catch (error: any) {
       if (error.name === 'AbortError') {
@@ -164,30 +155,21 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   
     return "";
   };
-  
-  
-  
 
   const personaImageUrl = persona && personaImages[persona.face_id] ? personaImages[persona.face_id] : "/default-image.png";
 
   const mappedMessages = Array.isArray(messages)
-  ? messages.flatMap((message) => {
-      const mappedUserMessage = {
-        sender: "user" as const,
-        text: message.prompt,
-      };
-      
-      const mappedBotMessage = message.chat_response
-        ? {
-            sender: "ai" as const,
-            text: message.chat_response,
-          }
-        : null;
-
-      return mappedBotMessage ? [mappedUserMessage, mappedBotMessage] : [mappedUserMessage];
-    })
-  : [];
-
+    ? messages.flatMap((message) => [
+        {
+          sender: "user" as const,
+          text: message.prompt,
+        },
+        {
+          sender: "ai" as const,
+          text: message.chat_response,
+        },
+      ])
+    : [];
 
   return (
     <div className="agentInteractionContainer">
