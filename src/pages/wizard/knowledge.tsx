@@ -168,19 +168,13 @@ const Knowledge: React.FC<KnowledgeProps> = ({
               >
                 Remove
               </button>
-              <span
-                className={
-                  file.indexing_status === "Uploading" ? "animate-charcter" : ""
-                }
-              >
-            {file.indexing_status === "Uploading" ? "Uploading..." : capitalizeFirstLetter(file.indexing_status)}
-            </span>
+              <span>{capitalizeFirstLetter(file.indexing_status)}</span>
             </li>
           ))}
         </ul>
       </aside>
     </div>
-  );  
-}
-  
+  );
+};
+
 export default Knowledge;
