@@ -111,6 +111,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     }
   
     setIsSendingMessage(true);
+  
     try {
       const messagesServiceInstance = new messagesService();
       let currentConversationId = conversationId;
@@ -119,6 +120,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         const conversation = await messagesServiceInstance.createConversation(inputValue, bot.id);
         currentConversationId = conversation.id;
         setConversationId(currentConversationId);
+  
       }
   
       const message = await messagesServiceInstance.sendMessage(
@@ -135,12 +137,12 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         }
         return prevMessages;
       });
-
+  
       fetchConversations();
       if (conversationId !== currentConversationId) {
         updateConversationOrder();
       }
-
+  
       return message.chat_response;
     } catch (error: any) {
       if (error.name === 'AbortError') {
@@ -155,21 +157,24 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   
     return "";
   };
+  
+  
+  
 
   const personaImageUrl = persona && personaImages[persona.face_id] ? personaImages[persona.face_id] : "/default-image.png";
 
   const mappedMessages = Array.isArray(messages)
-    ? messages.flatMap((message) => [
-        {
-          sender: "user" as const,
-          text: message.prompt,
-        },
-        {
-          sender: "ai" as const,
-          text: message.chat_response,
-        },
-      ])
-    : [];
+  ? messages.flatMap((message) => [
+    {
+      sender: "user" as const,
+      text: message.prompt,
+    },
+    {
+      sender: "ai" as const,
+      text: message.chat_response,
+    },
+  ])
+: [];
 
   return (
     <div className="agentInteractionContainer">

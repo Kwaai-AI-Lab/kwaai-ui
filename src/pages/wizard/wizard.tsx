@@ -42,6 +42,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isContinueModalOpen, setIsContinueModalOpen] = useState(false);
+  const [buttonState, setButtonState ] = useState<string>("");
 
   useEffect(() => {
     if (botToEdit) {
@@ -75,7 +76,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       selectedLlmOption={{ id: newBot.resource_llm_id, name: newBot.name, image: "" }} 
       errors={errors}
     />,
-    <Knowledge key="knowledge" assistantId={newBot.id} onFilesChange={setDocsFiles} onFilesAdded={handleFilesAdded} />,
+    <Knowledge key="knowledge" 
+      assistantId={newBot.id} 
+      onFilesChange={setDocsFiles} 
+      onFilesAdded={handleFilesAdded}
+      buttonState={buttonState}
+    />,
     <Test key="test" handleMessage={handleMessage} />,
     <Status key="status" bot={newBot} setBot={setNewBot} />,
   ];
@@ -222,10 +228,13 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       setIsIndexing(true);
       const assistantsService = new AssistantsService();
       console.log("start Indexing assistant");
+      setButtonState("Uploading");
       await assistantsService.uploadFiles(newBot.id || "", docsFiles);
+      setButtonState("Done");
       console.log("End Indexing assistant");
       setIsIndexing(false);
       setIsIndexingMode(false);  // Switch back to "Continue" after indexing is done
+
     } catch (error) {
       console.error("Error indexing assistant:", error);
     }
