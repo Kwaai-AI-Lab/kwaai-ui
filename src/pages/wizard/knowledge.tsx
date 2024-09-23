@@ -8,26 +8,29 @@ import "./knowledge.css";
 interface KnowledgeProps {
   onFilesChange: (files: File[]) => void;
   assistantId: string | undefined;
-  onFilesAdded: (isIndexig: boolean) => void;
+  onFilesAdded: (isIndexing: boolean) => void;
+  buttonState: string;
 }
 
 const Knowledge: React.FC<KnowledgeProps> = ({
   onFilesChange,
   assistantId,
   onFilesAdded,
+  buttonState,
 }) => {
-  const [localfiles, setLocalFiles] = useState<File[]>([]);
+  const [localFiles, setLocalFiles] = useState<File[]>([]);
   const [allFiles, setAllFiles] = useState<AssistantFile[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: any[]) => {
       if (acceptedFiles.length > 0) {
-        onFilesAdded(true); // Trigger the prop when files are added
+        onFilesAdded(true);
       }
+
       if (fileRejections.length > 0) {
-        const firstError = fileRejections[0].errors[0];
-        setErrorMessage(firstError.message);
+        const firstError = fileRejections[0]?.errors[0];
+        setErrorMessage(firstError?.message || "File rejected");
       } else {
         setErrorMessage(null);
       }
@@ -37,50 +40,72 @@ const Knowledge: React.FC<KnowledgeProps> = ({
         num_chunks: null,
         id: "",
         file_id: "",
+        indexing_status: "To upload",
       }));
 
-      const updatedAllFiles = [...allFiles, ...newAssistantFiles];
-      setAllFiles(updatedAllFiles);
-
-      const newFiles = [...localfiles, ...acceptedFiles];
+      setAllFiles((prevAllFiles) => [...prevAllFiles, ...newAssistantFiles]);
+      const newFiles = [...localFiles, ...acceptedFiles];
       setLocalFiles(newFiles);
       onFilesChange(newFiles);
     },
-    [localfiles, onFilesChange, allFiles, onFilesAdded]
+    [localFiles, onFilesChange, onFilesAdded]
   );
 
   useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        console.log("fetching Files assistanId = " + assistantId);
-        const assistantsService = new AssistantsService();
-        if (!assistantId) {
-          return;
-        }
-        const filesFromServer = await assistantsService.getFiles(assistantId);
-        console.log("filesFromServer = " + filesFromServer);
-        setAllFiles(filesFromServer);
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      }
+    const updateIndexingStatus = (fromStatus: string, toStatus: string) => {
+      setAllFiles((prevFiles) =>
+        prevFiles.map((file) =>
+          file.indexing_status === fromStatus
+            ? { ...file, indexing_status: toStatus }
+            : file
+        )
+      );
     };
 
-    fetchFiles();
+    if (buttonState === "Uploading") {
+      updateIndexingStatus("To upload", "Uploading");
+    } else if (buttonState === "Done") {
+      updateIndexingStatus("Uploading", "Done");
+    }
+  }, [buttonState]);
+
+  const fetchFiles = useCallback(async () => {
+    if (!assistantId) return;
+
+    try {
+      const assistantsService = new AssistantsService();
+      const filesFromServer = await assistantsService.getFiles(assistantId);
+      setAllFiles(filesFromServer);
+    } catch (error) {
+      console.error("Error fetching files:", error);
+    }
   }, [assistantId]);
 
-  function duplicateNameValidator(file: File) {
+  useEffect(() => {
+    fetchFiles();
+  }, [fetchFiles]);
+
+  useEffect(() => {
+    if (buttonState === "Done") {
+      fetchFiles();
+    }
+  }, [buttonState, fetchFiles]);
+
+  const capitalizeFirstLetter = (str: string): string =>
+    str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+
+  const duplicateNameValidator = (file: File) => {
     const isDuplicate = allFiles.some(
       (existingFile) => existingFile.name === file.name
     );
     if (isDuplicate) {
-      console.log(`File with name "${file.name}" already exists.`);
       return {
         code: "name-duplicate",
         message: `File with name "${file.name}" already exists.`,
       };
     }
     return null;
-  }
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -92,18 +117,14 @@ const Knowledge: React.FC<KnowledgeProps> = ({
 
   const handleRemoveFile = async (index: number) => {
     const fileToRemove = allFiles[index];
-
-    const updateFileLists = () => {
-      setAllFiles((prevAllFiles) => prevAllFiles.filter((_, i) => i !== index));
-
+    const removeLocalFile = () => {
+      setAllFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
       setLocalFiles((prevLocalFiles) =>
         prevLocalFiles.filter((file) => file.name !== fileToRemove.name)
       );
-
       onFilesChange(
-        localfiles.filter((file) => file.name !== fileToRemove.name)
+        localFiles.filter((file) => file.name !== fileToRemove.name)
       );
-
       if (allFiles.length - 1 === 0) {
         onFilesAdded(false);
       }
@@ -115,15 +136,12 @@ const Knowledge: React.FC<KnowledgeProps> = ({
         await assistantsService.deleteFiles(assistantId!, [
           fileToRemove.file_id,
         ]);
-        console.log("File deleted from server:", fileToRemove.file_id);
-
-        updateFileLists();
+        removeLocalFile();
       } catch (error) {
         console.error("Error deleting file from server:", error);
       }
     } else {
-      console.log("Removing local file:", fileToRemove.name);
-      updateFileLists();
+      removeLocalFile();
     }
   };
 
@@ -141,7 +159,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <aside className="file-list">
         <ul>
-          {allFiles.map((file: AssistantFile, index: number) => (
+          {allFiles.map((file, index) => (
             <li key={index} className="file-item">
               {file.name}
               <button
@@ -150,6 +168,7 @@ const Knowledge: React.FC<KnowledgeProps> = ({
               >
                 Remove
               </button>
+              <span>{capitalizeFirstLetter(file.indexing_status)}</span>
             </li>
           ))}
         </ul>
