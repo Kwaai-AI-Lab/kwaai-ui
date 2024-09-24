@@ -9,7 +9,8 @@
 }
 
 .llm-list-grid {
-  display: grid;
+  display: flex;
+  flex-direction: row;
   grid-template-columns: repeat(auto-fit, minmax(3, 1fr));
   gap: 20px;
   width: 100%;
