@@ -26,7 +26,7 @@ class messagesService {
         }
       }
 
-      async sendMessage(assistantId: string, conversationId: string | null, prompt: string, options?: { signal?: AbortSignal }): Promise<Message> {
+      async sendMessage(assistantId: string, conversationId: string | null, prompt: string, voice_active: string, options?: { signal?: AbortSignal }): Promise<Message> {
         try {
             const response = await fetch(`${API_URL}/messages`, {
                 method: "POST",
@@ -37,6 +37,7 @@ class messagesService {
                     assistant_id: assistantId,
                     conversation_id: conversationId,
                     prompt: prompt,
+                    voice_active: voice_active || "False",
                 }),
                 signal: options?.signal,
             });
