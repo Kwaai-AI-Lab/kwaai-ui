@@ -137,6 +137,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         bot.id,
         currentConversationId,
         inputValue,
+        "True", 
         { signal: abortControllerRef.current?.signal }
       );
   
