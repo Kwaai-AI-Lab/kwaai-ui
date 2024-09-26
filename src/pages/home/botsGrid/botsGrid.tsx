@@ -61,7 +61,16 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
   return (
     <>
       <ToastContainer />
-      <BotListTitle viewType={viewType} onAddNewAgent={handleAddNewAgent} />
+      <BotListTitle 
+        viewType={viewType} 
+        onAddNewAgent={() => {
+          if ((viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) && personas.length === 0) {
+            toast.error("Cannot create a assistant: please create a persona first");
+          } else {
+            handleAddNewAgent();
+          }
+        }} 
+      />
       {loading ? (
         <div className="loader-container">
           <DotLoader color="#5967F1" size={60} />
