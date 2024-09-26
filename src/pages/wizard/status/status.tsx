@@ -30,7 +30,7 @@ const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
 
   return (
     <div className="status-container">
-      <span className="status-title">Are you ready to share {bot.name} Agent?</span>
+      <span className="status-title">Are you ready to share {bot.name} assistant?</span>
       <div className="status-radio-buttons">
         <div className={`status-radio-wrapper ${bot.status === "private" ? "active" : ""}`}>
           <label>
@@ -81,7 +81,7 @@ const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
           <span>Yes, allow editing</span>
         </label>
         <p className='caption'>
-          * If you allow editing, others can make changes to this agent. *
+          * If you allow editing, others can make changes to this assistant. *
         </p>
       </div>
     </div>
