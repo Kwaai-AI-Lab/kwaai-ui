@@ -47,22 +47,16 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     fetchPersonas();
   }, [bot.persona_id]);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (conversationId) {
+    const fetchMessages = async (itemId: string) => {
         try {
           const messagesServiceInstance = new messagesService();
-          const response = await messagesServiceInstance.getConversationMessages(conversationId);
+          const response = await messagesServiceInstance.getConversationMessages(itemId);
           setMessages(Array.isArray(response.messages) ? response.messages : []);
         } catch (error) {
           console.error("Error fetching messages:", error);
           setMessages([]); 
         }
-      }
     };
-
-    fetchMessages();
-  }, [conversationId]);
 
   const resetStateToInitial = () => {
     setConversationId(null);
@@ -85,18 +79,14 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   };
 
   const logItemClickConversationHandler = (item: conversation) => {
-    if (conversationId === item.id) {
-      return;
-    }
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
     abortControllerRef.current = new AbortController();
     setConversationId(item.id);
-    setMessages([]);
+    fetchMessages(item.id);
   };
   
-
   const handleNewConversation = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
