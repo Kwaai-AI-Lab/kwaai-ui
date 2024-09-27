@@ -49,7 +49,7 @@ export interface Message {
   timestamp: string;
   prompt: string;
   chat_response: string;
-  voice_active: string;
+  is_voice_active: string;
   test: string;
 }
 
