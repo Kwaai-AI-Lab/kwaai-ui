@@ -42,6 +42,10 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
     toast.error(message);
   };
 
+  const canCreateAgent = () => {
+    return (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) && personas.length === 0;
+  };
+
   const handleBotDelete = async (botId: string) => {
     try {
       if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
@@ -64,7 +68,7 @@ const BotsGrid: React.FC<BotsGridProps> = ({ viewType, handleAddNewAgent, onBotS
       <BotListTitle 
         viewType={viewType} 
         onAddNewAgent={() => {
-          if ((viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) && personas.length === 0) {
+          if (canCreateAgent()) {
             toast.error("Cannot create a assistant: please create a persona first");
           } else {
             handleAddNewAgent();

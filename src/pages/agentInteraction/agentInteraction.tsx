@@ -47,16 +47,16 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     fetchPersonas();
   }, [bot.persona_id]);
 
-    const fetchMessages = async (itemId: string) => {
-        try {
-          const messagesServiceInstance = new messagesService();
-          const response = await messagesServiceInstance.getConversationMessages(itemId);
-          setMessages(Array.isArray(response.messages) ? response.messages : []);
-        } catch (error) {
-          console.error("Error fetching messages:", error);
-          setMessages([]); 
-        }
-    };
+  const fetchMessages = async (conversationId: string) => {
+    try {
+      const messagesServiceInstance = new messagesService();
+      const response = await messagesServiceInstance.getConversationMessages(conversationId);
+      setMessages(Array.isArray(response.messages) ? response.messages : []);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      setMessages([]); 
+    }
+  };
 
   const resetStateToInitial = () => {
     setConversationId(null);
@@ -108,7 +108,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
       assistant_id: "",
       conversation_id: null,
       timestamp: "",
-      voice_active: "",
+      is_voice_active: "",
       test: ""
     };
   
