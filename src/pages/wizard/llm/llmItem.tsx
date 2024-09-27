@@ -6,13 +6,21 @@ interface LlmItemProps {
   llmItemData: LlmOption;
   isSelected: boolean;
   onSelect: (option: LlmOption) => void;
+  isActive: boolean;
 }
 
-const LlmItem: React.FC<LlmItemProps> = ({ llmItemData, isSelected, onSelect }) => {
+const LlmItem: React.FC<LlmItemProps> = ({ llmItemData, isSelected, onSelect, isActive }) => {
+  const handleClick = () => {
+    if (isActive) {
+      onSelect(llmItemData);
+    }
+  };
+
   return (
     <div 
-      className={`llm-card ${isSelected ? 'selected' : ''}`} 
-      onClick={() => onSelect(llmItemData)}
+      className={`llm-card ${isSelected ? 'selected' : ''} ${!isActive ? 'inactive' : ''}`} 
+      onClick={handleClick}
+      style={{ opacity: isActive ? 1 : 0.5 }}
     >
       <div className="llm-card-top">
         <img
@@ -27,7 +35,8 @@ const LlmItem: React.FC<LlmItemProps> = ({ llmItemData, isSelected, onSelect }) 
             name="llm-option"
             value={llmItemData.name}
             checked={isSelected}
-            onChange={() => onSelect(llmItemData)}
+            onChange={handleClick}
+            disabled={!isActive}
           />
           <span className="llm-card-title">{llmItemData.name}</span>
         </label>

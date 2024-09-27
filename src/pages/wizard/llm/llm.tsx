@@ -21,12 +21,14 @@ const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
     resource_llm_id: assistant.resource_llm_id || null,
     persona_id: assistant.persona_id || null,
     files: assistant.files || [],
-    image: "https://imgs.search.brave.com/3IT2B1Qx6MpLlcvpcU0zzTToEviB5NlO1OmSmRV1CP8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzhz/azdmOC9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl94NWU2djM4N2pm/OGMxLnBuZw",
+    image:
+      "https://imgs.search.brave.com/3IT2B1Qx6MpLlcvpcU0zzTToEviB5NlO1OmSmRV1CP8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzhz/azdmOC9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl94NWU2djM4N2pm/OGMxLnBuZw",
     status: assistant.status || null,
     allow_edit: assistant.allow_edit || null,
     kind: assistant.kind || "llm",
     icon: assistant.icon || null,
     id: assistant.id || "",
+    isActive: assistant.is_active !== "False",
   }));
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
               llmItemData={llm}
               isSelected={selectedLlmOption.id === llm.id}
               onSelect={onSelect}
+              isActive={llm.isActive}
             />
           ))
         ) : (
