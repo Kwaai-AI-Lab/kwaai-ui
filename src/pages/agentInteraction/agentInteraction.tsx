@@ -105,6 +105,11 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
       id: Date.now().toString(),
       prompt: inputValue,
       chat_response: "",
+      assistant_id: "",
+      conversation_id: null,
+      timestamp: "",
+      voice_active: "",
+      test: ""
     };
   
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -122,7 +127,12 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
   
         setMessages((prevMessages) => [...prevMessages]);
       }
-  
+      
+      fetchConversations();
+      if (conversationId !== currentConversationId) {
+        updateConversationOrder();
+      }
+
       const message = await messagesServiceInstance.sendMessage(
         bot.id,
         currentConversationId,
@@ -130,17 +140,13 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         "True", 
         { signal: abortControllerRef.current?.signal }
       );
-  
+      
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
           msg.id === userMessage.id ? { ...msg, chat_response: message.chat_response } : msg
         )
       );
   
-      fetchConversations();
-      if (conversationId !== currentConversationId) {
-        updateConversationOrder();
-      }
   
       return message.chat_response;
     } catch (error: any) {
