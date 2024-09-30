@@ -26,36 +26,71 @@ class messagesService {
         }
       }
 
-      async sendMessage(assistantId: string, conversationId: string | null, prompt: string, voice_active: string, options?: { signal?: AbortSignal }): Promise<Message> {
+      async sendMessage(
+        assistantId: string,
+        conversationId: string | null,
+        prompt: string,
+        voice_active: string,
+        options?: { signal?: AbortSignal }
+      ): Promise<{ messageData: Message; audioUrl?: string }> {
         try {
-            const response = await fetch(`${API_URL}/messages`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    assistant_id: assistantId,
-                    conversation_id: conversationId,
-                    prompt: prompt,
-                    voice_active: voice_active || "False",
-                }),
-                signal: options?.signal,
+          const response = await fetch(`${API_URL}/messages`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              assistant_id: assistantId,
+              conversation_id: conversationId,
+              prompt: prompt,
+              voice_active: voice_active || "False",
+            }),
+            signal: options?.signal,
+          });
+      
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+      
+          const messageData = await response.json();
+      
+          let audioUrl: string | undefined = undefined;
+      
+          if (voice_active === "True") {
+            const voiceResponse = await fetch(`${API_URL}/voices`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                msg_id: messageData.id,
+              }),
+              signal: options?.signal,
             });
-    
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-    
-            return response.json();
-        } catch (error: any) {
-            if (error.name === 'AbortError') {
-                console.log('Request was aborted');
+      
+            const contentType = voiceResponse.headers.get("Content-Type");
+      
+            if (contentType && contentType.includes("audio/mpeg")) {
+              const audioBlob = await voiceResponse.blob();
+              audioUrl = window.URL.createObjectURL(audioBlob);
+            } else if (voiceResponse.ok && voiceResponse.status === 201) {
+              const voiceData = await voiceResponse.json();
+              audioUrl = voiceData.audio_msg_path;
             } else {
-                console.error(error);
+              throw new Error(`Error en la conversión de voz: ${voiceResponse.statusText}`);
             }
-            throw error;
+          }
+      
+          return { messageData, audioUrl };
+        } catch (error: any) {
+          if (error.name === "AbortError") {
+            console.log("Request was aborted");
+          } else {
+            console.error(error);
+          }
+          throw error;
         }
-    }
+      }      
     
 
     async getConversations(assistantId: string): Promise<conversation[]> {
@@ -109,6 +144,20 @@ class messagesService {
     async deleteConversation(conversation: conversation): Promise<void> {
         try {
           const response = await fetch(`${API_URL}/conversations/${conversation.id}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+    }
+
+    async deleteAudioMessage(messageId: string): Promise<void> {
+        try {
+          const response = await fetch(`${API_URL}/voices/${messageId}`, {
             method: "DELETE",
           });
           if (!response.ok) {
