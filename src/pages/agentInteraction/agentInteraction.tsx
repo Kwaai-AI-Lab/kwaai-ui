@@ -55,6 +55,15 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     }
   }, [isMuted]);
 
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
   const fetchMessages = async (conversationId: string) => {
     try {
       const messagesServiceInstance = new messagesService();
@@ -95,6 +104,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     fetchMessages(item.id);
     if (audioRef.current) {
       audioRef.current.pause();
+      audioRef.current = null;
     }
   };
 
@@ -107,6 +117,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     setMessages([]);
     if (audioRef.current) {
       audioRef.current.pause();
+      audioRef.current = null;
     }
   };
 
