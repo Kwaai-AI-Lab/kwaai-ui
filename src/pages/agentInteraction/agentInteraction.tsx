@@ -21,15 +21,17 @@ const personaImages: { [key: string]: string } = {
   "7bea4732-214f-40e7-9161-4e7241a2b97b": "/DrEvelyn.png",
   "7bea4732-214f-40e7-9161-4e7241a2b97c": "/DrMarcus.png",
   "7bea4732-214f-40e7-9161-4e7241a2b97d": "/DrLinda.png",
-};
+};  
 
 const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); 
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -47,6 +49,12 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     fetchPersonas();
   }, [bot.persona_id]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : 1;
+    }
+  }, [isMuted]);
+
   const fetchMessages = async (conversationId: string) => {
     try {
       const messagesServiceInstance = new messagesService();
@@ -54,7 +62,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
       setMessages(Array.isArray(response.messages) ? response.messages : []);
     } catch (error) {
       console.error("Error fetching messages:", error);
-      setMessages([]); 
+      setMessages([]);
     }
   };
 
@@ -86,7 +94,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     setConversationId(item.id);
     fetchMessages(item.id);
   };
-  
+
   const handleNewConversation = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -100,7 +108,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     if (isSendingMessage || !inputValue.trim()) {
       return "No message to send.";
     }
-  
+
     const userMessage: Message = {
       id: Date.now().toString(),
       prompt: inputValue,
@@ -111,44 +119,50 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
       is_voice_active: "",
       test: ""
     };
-  
+
     setMessages((prevMessages) => [...prevMessages, userMessage]);
-  
+
     setIsSendingMessage(true);
-  
+
     try {
       const messagesServiceInstance = new messagesService();
       let currentConversationId = conversationId;
-  
+
       if (!currentConversationId) {
         const conversation = await messagesServiceInstance.createConversation(inputValue, bot.id);
         currentConversationId = conversation.id;
         setConversationId(currentConversationId);
-  
+
         setMessages((prevMessages) => [...prevMessages]);
       }
-      
+
       fetchConversations();
       if (conversationId !== currentConversationId) {
         updateConversationOrder();
       }
 
-      const message = await messagesServiceInstance.sendMessage(
+      const { messageData, audioUrl } = await messagesServiceInstance.sendMessage(
         bot.id,
         currentConversationId,
         inputValue,
-        "True", 
+        isMuted ? "False" : "True",
         { signal: abortControllerRef.current?.signal }
       );
-      
+
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
-          msg.id === userMessage.id ? { ...msg, chat_response: message.chat_response } : msg
+          msg.id === userMessage.id ? { ...msg, chat_response: messageData.chat_response } : msg
         )
       );
-  
-  
-      return message.chat_response;
+
+      if (audioUrl) {
+        const audio = new Audio(audioUrl);
+        audioRef.current = audio;
+        audio.volume = isMuted ? 0 : 1;
+        audio.play();
+      }
+
+      return messageData.chat_response;
     } catch (error: any) {
       if (error.name === 'AbortError') {
         console.log('Fetch aborted');
@@ -159,33 +173,29 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     } finally {
       setIsSendingMessage(false);
     }
-  
+
     return "";
   };
-  
-  
-  
 
   const personaImageUrl = persona && personaImages[persona.face_id] ? personaImages[persona.face_id] : "/default-image.png";
 
   const mappedMessages = Array.isArray(messages)
-  ? messages.flatMap((message) => {
+    ? messages.flatMap((message) => {
       const mappedUserMessage = {
         sender: "user" as const,
         text: message.prompt,
       };
-      
+
       const mappedBotMessage = message.chat_response
         ? {
-            sender: "ai" as const,
-            text: message.chat_response,
-          }
+          sender: "ai" as const,
+          text: message.chat_response,
+        }
         : null;
 
       return mappedBotMessage ? [mappedUserMessage, mappedBotMessage] : [mappedUserMessage];
     })
-  : [];
-
+    : [];
 
   return (
     <div className="agentInteractionContainer">
@@ -204,16 +214,16 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
           <div className="imageContainer">
             <img src={personaImageUrl} alt="Bot" className="botImage" />
             <button onClick={toggleMute} className="muteButton">
-              <FontAwesomeIcon icon={isMuted ? faVolumeUp : faVolumeMute} className="muteIcon" />
+              <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} className="muteIcon" />
             </button>
           </div>
           <div className="historyContent">
-            <ChatLog 
-              botId={bot.id} 
-              logItemClickConversationHandler={logItemClickConversationHandler} 
-              handleNewConversation={handleNewConversation} 
-              refreshTrigger={refreshTrigger} 
-              resetStateToInitial={resetStateToInitial} 
+            <ChatLog
+              botId={bot.id}
+              logItemClickConversationHandler={logItemClickConversationHandler}
+              handleNewConversation={handleNewConversation}
+              refreshTrigger={refreshTrigger}
+              resetStateToInitial={resetStateToInitial}
               currentConversationId={conversationId}
             />
           </div>
