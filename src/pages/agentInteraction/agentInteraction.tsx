@@ -105,6 +105,9 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
     abortControllerRef.current = new AbortController();
     setConversationId(null);
     setMessages([]);
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
   };
 
   const handleMessages = async (inputValue: string): Promise<string> => {
