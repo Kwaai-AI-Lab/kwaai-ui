@@ -130,11 +130,12 @@ const Knowledge: React.FC<KnowledgeProps> = ({
       }
     };
 
-    if (fileToRemove.file_id) {
+    console.log("fileToRemove", fileToRemove.id);
+    if (fileToRemove.id) {
       try {
         const assistantsService = new AssistantsService();
         await assistantsService.deleteFiles(assistantId!, [
-          fileToRemove.file_id,
+          fileToRemove.id,
         ]);
         removeLocalFile();
       } catch (error) {
