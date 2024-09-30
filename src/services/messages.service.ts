@@ -154,6 +154,20 @@ class messagesService {
           throw error;
         }
     }
+
+    async deleteAudioMessage(messageId: string): Promise<void> {
+        try {
+          const response = await fetch(`${API_URL}/voices/${messageId}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+    }
 }
 
 export default messagesService;

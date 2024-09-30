@@ -159,7 +159,8 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
         const audio = new Audio(audioUrl);
         audioRef.current = audio;
         audio.volume = isMuted ? 0 : 1;
-        audio.play();
+        await audio.play();
+        await messagesServiceInstance.deleteAudioMessage(messageData.id);
       }
 
       return messageData.chat_response;
