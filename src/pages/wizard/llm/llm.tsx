@@ -28,7 +28,7 @@ const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
     kind: assistant.kind || "llm",
     icon: assistant.icon || null,
     id: assistant.id || "",
-    isActive: assistant.is_active !== "False",
+    isActive: assistant.active !== "False",
   }));
 
   useEffect(() => {
