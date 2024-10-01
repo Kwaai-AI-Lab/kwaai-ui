@@ -16,6 +16,7 @@ export interface Bot {
   allow_edit: string;
   kind: string;
   icon: string;
+  active: string;
 }
 
 export interface Persona {
