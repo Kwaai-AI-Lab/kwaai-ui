@@ -1,26 +1,27 @@
 .secondary-button {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
-    text-align: center;
-    padding: 10px 28px;
-    border: 1px solid #5967F1; /* Border with specified color */
-    background-color: white; /* Background color white */
-    color: #5967F1; /* Text color */
-    border-radius: 6px; /* Border radius */
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .secondary-button.enabled {
-    background-color: white; /* Background color white when enabled */
-    color: #5967F1; /* Text color when enabled */
-  }
-  
-  .secondary-button.disabled {
-    background-color: white; /* Background color white when disabled */
-    color: grey; /* Grey text color when disabled */
-    cursor: not-allowed;
-  }
-  
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  padding: 13px 28px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 14px;
+  width: 220px;
+  height: 54px;
+}
+
+.secondary-button.enabled {
+  background-color: #F0F0F0;
+  color: #333;
+  border-radius: 40px; 
+  border: 0px;
+}
+
+.secondary-button.disabled {
+  background-color: #D3D3D3;
+  color: grey;
+  border-radius: 40px;
+  cursor: not-allowed;
+}

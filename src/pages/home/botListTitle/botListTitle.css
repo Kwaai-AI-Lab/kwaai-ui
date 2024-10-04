@@ -15,11 +15,14 @@
   .addButton {
     display: flex;
     align-items: center;
-    background-color: #5967F1;
+    background-color: #045CE2;
     color: white;
+    box-shadow: 0px 0px 18.6px 0px #045CE266;
     padding: 10px 20px;
-    border: 1px solid #5967F1;
-    border-radius: 6px;
+    border: 1px solid #045CE2;
+    border-radius: 40px;
+    width: 220px;
+    height: 54px;
     cursor: pointer;
     font-size: 14px;
     font-family: 'Poppins', sans-serif;

@@ -5,6 +5,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  
+  background: 
+    radial-gradient(32.85% 32.85% at 50% -10%, rgba(4, 92, 226, 0.3) 0%, rgba(255, 255, 255, 0.3) 100%) top,
+    radial-gradient(32.85% 32.85% at 50% 110%, rgba(4, 92, 226, 0.3) 0%, rgba(255, 255, 255, 0.3) 100%) bottom;
+  
+  background-size: 100% 50%;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: top, bottom;
+  min-height: 100vh;
+
+  scrollbar-color: #D9D9D9 #ffffff00;
+  scrollbar-width: thin;
 }
 
 code {

@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SideMenuItem from "./sideMenuItem/sideMenuItem";
-import agentIcon from "../../assets/agent-icon.png";
+import AgentIcon from "../../assets/agent-icon.svg"
 import UserIcon from "../../assets/user-regular.svg";
 import "./sideMenu.css";
 import { AgentViewType } from "../../context/botsContext";
 
 interface SideMenuProps {
   onItemClick: (viewType: AgentViewType) => void;
-  viewType: AgentViewType | null;
+  assistantsCount: number;
+  personasCount: number;
 }
 
 const menuItems = [
-  { text: "My assistant", imageSrc: agentIcon, viewType: AgentViewType.MyAgents },
-  { text: "Shared assistants", imageSrc: agentIcon, viewType: AgentViewType.SharedAgents },
+  { text: "My assistant", imageSrc: AgentIcon, viewType: AgentViewType.MyAgents },
+  { text: "Shared assistants", imageSrc: AgentIcon, viewType: AgentViewType.SharedAgents },
   { text: "Personas", imageSrc: UserIcon, viewType: AgentViewType.Personas },
 ];
 
-const SideMenu: React.FC<SideMenuProps> = ({ onItemClick, viewType }) => {
-  const [selectedItem, setSelectedItem] = useState<AgentViewType | null>(viewType);
-
-  useEffect(() => {
-    setSelectedItem(viewType);
-  }, [viewType]);
+const SideMenu: React.FC<SideMenuProps> = ({ onItemClick, assistantsCount, personasCount }) => {
+  const [selectedItem, setSelectedItem] = useState<AgentViewType | null>(null);
 
   const handleItemClick = (itemViewType: AgentViewType) => {
     onItemClick(itemViewType);
+    setSelectedItem(itemViewType);
   };
 
   return (
@@ -33,7 +31,8 @@ const SideMenu: React.FC<SideMenuProps> = ({ onItemClick, viewType }) => {
         <SideMenuItem 
           key={index} 
           text={item.text} 
-          imageSrc={item.imageSrc} 
+          imageSrc={item.imageSrc}
+          count={item.viewType === AgentViewType.Personas ? personasCount : assistantsCount} 
           onClick={() => handleItemClick(item.viewType)}
           selected={selectedItem === item.viewType}
         />

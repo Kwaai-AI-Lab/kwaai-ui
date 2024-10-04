@@ -10,8 +10,8 @@ interface OptionSelectProps {
 
 const OptionSelect: React.FC<OptionSelectProps> = ({ feature, isSelected, onSelect }) => {
   return (
-    <div className="persona-item" onClick={onSelect}>
-        <img src={feature.imageURL} alt={feature.name} className="feature-image" />
+    <div className={`persona-item ${isSelected ? "selected" : ""}`} onClick={onSelect}>
+      <img src={feature.imageURL} alt={feature.name} className="feature-image" />
       <div className="radio-button-container">
         <input
           type="radio"

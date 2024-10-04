@@ -17,9 +17,10 @@ interface WizardProps {
   botToEdit?: Persona | null;
   setShowWizard: React.Dispatch<React.SetStateAction<boolean>>;
   viewType: AgentViewType;
+  refetchPersonas: () => void;
 }
 
-const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, setShowWizard }) => {
+const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, setShowWizard, refetchPersonas }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -154,6 +155,7 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
         const personasService = new PersonasService();
         const { id, ...personaData } = newBot;
         await personasService.createPersona(personaData);
+        await refetchPersonas();
       } catch (error) {
         console.error("Error creating or updating assistant:", error);
       }

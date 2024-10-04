@@ -52,13 +52,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   }, [botToEdit]);
 
   const handleFilesAdded = (isIndexing: boolean) => {
-    setIsIndexingMode(isIndexing);  // Switch to "Index" mode when files are dropped
+    setIsIndexingMode(isIndexing);
   };
 
   const handleMessage = async (inputValue: string): Promise<string> => {
     try {
       const assistantsService = new AssistantsService();
-      //const message = await assistantsService.sendMessage(newBot.id || "", "", inputValue, "True");
       const answer = await assistantsService.getAnswer(newBot.id || "", inputValue);
       return answer;
     } catch (error: any) {
@@ -131,7 +130,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
             persona_id: newBot.persona_id,
             files: newBot.files,
             status: newBot.status,
-            allow_edit: newBot.allow_edit === "True" ? "True" : "False", // Ensure proper assignment
+            allow_edit: newBot.allow_edit === "True" ? "True" : "False",
             icon: newBot.icon,
           }
         );
@@ -142,7 +141,6 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
         }));
         setIsUpdateMode(true);
       } else if (currentStep === 4) {
-        //setIsContinueModalOpen(true);
         setCurrentStep(currentStep + 1);
         return;
       } else if (isUpdateMode) {
@@ -233,7 +231,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       setButtonState("Done");
       console.log("End Indexing assistant");
       setIsIndexing(false);
-      setIsIndexingMode(false);  // Switch back to "Continue" after indexing is done
+      setIsIndexingMode(false);
 
     } catch (error) {
       console.error("Error indexing assistant:", error);

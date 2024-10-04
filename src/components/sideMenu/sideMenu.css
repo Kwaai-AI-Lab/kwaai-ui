@@ -1,5 +1,9 @@
 .sideMenu-container {
     display: flex;
     flex-direction: column;
-    /* Other styles as needed */
+    width: 299px;
+    height: 1006px;
+    gap: 0px;
+    padding-top: 30px;
+    background: #F7F7F7;
 }

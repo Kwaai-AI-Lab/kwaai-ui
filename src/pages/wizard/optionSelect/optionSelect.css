@@ -1,19 +1,34 @@
 .persona-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     border: 2px solid #F0F0F0;
-    width: 224px;
-    height: 241px;
-    border-radius: 8px;
+    width: 225px;
+    height: 230px;
+    gap: 0px;
+    border-radius: 18px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    cursor: pointer; /* Make it look clickable */
+    cursor: pointer;
+    background-color: white;
 }
 
 .feature-image {
-    width: 100%;
-    height: 165px;
+    width: 142px;
+    height: 142px;
+    border-radius: 50%;
     object-fit: cover;
+    margin-top: 20px;
+    border: 3px solid transparent;
+    object-fit: cover;
+}
+
+.persona-item.selected .feature-image {
+    border-radius: 50%;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient( #045CE2, #b0caff) border-box;
+    box-shadow: 0px 0px 18.6px 0px #045CE266;
 }
 
 .placeholder {
@@ -26,27 +41,62 @@
 }
 
 .voice-icon-option {
-    width: 118px; /* Adjust as needed */
-    height: 118px; /* Adjust as needed */
+    width: 142px;
+    height: 142px;
+    object-fit: cover;
 }
 
 .radio-button-container {
-    height: 76px; /* Fixed height */
+    height: 76px;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    justify-content: center;
+    align-items: center;
 }
 
 .radio-button-container input[type="radio"] {
     margin-right: 10px;
-    transform: translateY(1px); /* Adjust for better vertical alignment */
+    transform: translateY(1px);
 }
 
 .radio-button-container label {
     margin: 0;
-    line-height: 1.2; /* Adjust line-height to vertically center the text */
+    line-height: 1.2;
     font-family: Poppins;
     font-size: 16px;
     font-weight: 400;
     text-align: left;
+    color: black;
+}
+
+.radio-button-container input[type="radio"]:checked + label {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.persona-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #007bff;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.check-icon img {
+    width: 18px;
+    height: 18px;
+    display: block;
 }

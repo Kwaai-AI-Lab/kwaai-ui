@@ -11,14 +11,21 @@
   top: 0;
   bottom: 0;
   left: 0;
+  display: block; /* El valor por defecto */
+  transition: all 0.3s ease;
+}
+
+.sidebar.hidden {
+  display: none; /* Oculta completamente el sidebar cuando no sea necesario */
 }
 
 .contentContainer {
-  margin-left: 295px;
+  margin-left: 0; /* Se cambiará dinámicamente desde JSX */
   margin-top: 100px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  transition: margin-left 0.3s; /* Para que el cambio sea más suave */
 }
 
 .loader-container {

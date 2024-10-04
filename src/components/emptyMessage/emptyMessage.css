@@ -7,17 +7,52 @@
     width: 100%;
     text-align: center;
   }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-width: 612px;
+    text-align: center;
+  }
   
   .empty-message img {
     margin-bottom: 20px; /* Adjust as needed */
   }
   
+  .empty-avatar{
+    width: 112px;
+    height: 112px;
+    gap: 0px;
+    opacity: 0px;
+    border-radius: 56px;
+  }
+
   .empty-message span {
     display: block;
     margin-bottom: 10px; /* Adjust as needed */
     font-weight: 600;
     font-size: 32px;
-    color: #595959;
+    color: #000000;
     font-family: 'Poppins', sans-serif;
+  }
+  
+  .caption {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: center;    
+    display: inline;
+  }
+  
+  .blue-caption {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;  
+    color: #045CE2;  
+    display: inline;
   }
   

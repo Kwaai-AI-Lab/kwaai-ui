@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../navBar/navbar";
 import { useAgents, AgentViewType } from "../../context/botsContext";
 import Wizard from "../wizard/wizard";
@@ -9,31 +9,77 @@ import PersonasWizard from "../wizard/personasWizard";
 import ConfirmationModal from "../../components/confirmationModal";
 import "./home.css";
 import { Bot, Persona } from "../../data/types";
+import useAssistants from "../../hooks/assistants.hook";
+import usePersonas from "../../hooks/personas.hook";
+import AssistantsService from "../../services/assistants.service";
+import PersonasService from "../../services/personas.service";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const { setAgentViewType } = useAgents();
   const [showWizard, setShowWizard] = useState(false);
-  const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
+  const [selectedBot, setSelectedBot] = useState<Bot | Persona | null>(null);
   const [editBot, setEditBot] = useState<Bot | null>(null);
   const [editPersona, setEditPersona] = useState<Persona | null>(null);
   const [viewType, setViewType] = useState<AgentViewType>(AgentViewType.MyAgents);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingViewType, setPendingViewType] = useState<AgentViewType | null>(null);
+  const [hasBots, setHasBots] = useState(false);
+  const [localItems, setLocalItems] = useState<Array<Bot | Persona>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const newAgentHandler = () => {
-    setShowWizard(true);
-    setEditBot(null);
-    setEditPersona(null);
-  };
+  const { assistants, loading: loadingAssistants, refetchAssistants } = useAssistants("assistant");
+  const { personas, loading: loadingPersonas, refetchPersonas } = usePersonas();
 
-  const handleBotSelect = (bot: Bot) => {
+  const assistantsCount = assistants.length;
+  const personasCount = personas.length;
+
+  useEffect(() => {
+    setLoading(loadingAssistants || loadingPersonas);
+  }, [loadingAssistants, loadingPersonas]);
+
+  useEffect(() => {
+    if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
+      setLocalItems(assistants);
+    } else if (viewType === AgentViewType.Personas) {
+      setLocalItems(personas);
+    }
+  }, [viewType, assistants, personas]);
+
+  useEffect(() => {
+    setHasBots(localItems.length > 0);
+  }, [localItems]);
+
+  const handleBotSelect = (bot: Bot | Persona) => {
     setSelectedBot(bot);
     console.log(bot);
+  };
+
+  const handleBotDelete = async (botId: string) => {
+    try {
+      if (viewType === AgentViewType.MyAgents || viewType === AgentViewType.SharedAgents) {
+        await AssistantsService.deleteAssistant(botId);
+        refetchAssistants();
+      } else if (viewType === AgentViewType.Personas) {
+        await PersonasService.deletePersona(botId);
+        refetchPersonas();
+      }
+      setLocalItems((prevItems) => prevItems.filter((item) => item.id !== botId));
+    } catch (error) {
+      toast.error(`Error deleting bot: ${error}`);
+    }
   };
 
   const handleBackToList = () => {
     setSelectedBot(null);
     setShowWizard(false);
+  };
+
+  const newAgentHandler = () => {
+    setShowWizard(true);
+    setEditBot(null);
+    setEditPersona(null);
   };
 
   const handleSideMenuItemClick = (viewType: AgentViewType) => {
@@ -81,14 +127,23 @@ export default function Home() {
     setPendingViewType(null);
   };
 
+  const shouldShowSidebar = () => {
+    if (assistantsCount === 0 && personasCount === 0 && !selectedBot && !showWizard) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <>
-      <NavBar />
+      {hasBots && <NavBar />}
+
       <div className="mainContainer">
-        <div className="sidebar">
-          <SideBar onItemClick={handleSideMenuItemClick} />
+        <div className={`sidebar ${shouldShowSidebar() ? '' : 'hidden'}`}>
+          <SideBar onItemClick={handleSideMenuItemClick} assistantsCount={assistantsCount} personasCount={personasCount} />
         </div>
-        <div className="contentContainer">
+
+        <div className="contentContainer" style={{ marginLeft: shouldShowSidebar() ? "295px" : "0" }}>
           {selectedBot ? (
             <AgentInteraction bot={selectedBot} onBack={handleBackToList} />
           ) : showWizard ? (
@@ -97,6 +152,7 @@ export default function Home() {
                 viewType={viewType}
                 showList={handleBackToList}
                 botToEdit={editPersona}
+                refetchPersonas={refetchPersonas}
                 setShowWizard={setShowWizard}
               />
             ) : (
@@ -108,20 +164,26 @@ export default function Home() {
               />
             )
           ) : (
-        <BotsGrid
-          viewType={viewType}
-          handleAddNewAgent={newAgentHandler}
-          onBotSelect={handleBotSelect}
-          onEditBot={viewType === AgentViewType.Personas ? handleEditPersona : handleEditBot}
-        />
+            <BotsGrid
+              viewType={viewType}
+              localItems={localItems}
+              loading={loading}
+              handleAddNewAgent={newAgentHandler}
+              onBotSelect={handleBotSelect}
+              onEditBot={viewType === AgentViewType.Personas ? handleEditPersona : handleEditBot}
+              onBotDelete={handleBotDelete}
+            />
           )}
         </div>
       </div>
+
       <ConfirmationModal
         isOpen={isModalOpen}
         onRequestClose={handleCancelModal}
         onConfirm={handleConfirmModal}
       />
+
+      <ToastContainer />
     </>
   );
 }

@@ -7,17 +7,20 @@
     padding: 13px 28px;
     cursor: pointer;
     transition: background-color 0.3s;
-    border: none; /* Ensure no border is applied */
-    border-radius: 6px;
+    border-radius: 14px;
   }
   
   .primary-button.enabled {
-    background-color: #5967F1;
-    color: white;
+    border: 1px solid #045CE2;
+    border-radius: 40px;
+    width: 220px;
+    height: 54px;
   }
   
   .primary-button.disabled {
     background-color: grey;
-    color: white;
+    border-radius: 40px;
+    width: 220px;
+    height: 54px;
   }
   

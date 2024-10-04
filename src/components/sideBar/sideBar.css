@@ -1,11 +1,19 @@
 .sidebar-container{
-    width: 100%;
+    width: 299px;
     height: 100%;
 }
 
 .sidebar-top{
     width: 100%;
-    height: 90px;
+    height: 140px;
+    background: #F7F7F7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-top img{
+    width: 150px;
 }
 
 .sidebar-bottom{
