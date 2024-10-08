@@ -26,48 +26,81 @@ body {
     transition: filter 1s ease-in-out, opacity 1s ease-in-out;
 }
 
-/* ... Estilos restantes del chat */
 
 .chat-container {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 10px;
-    background-color: #F0F3FF;
-    width: 100%; /* Set width to 100% */
-    border-radius: 4px;
+    padding: 40px;
+    background: #F5F9FF;
+    width: 100%;
+    border-radius: 12px;
     margin-bottom: 30px;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    box-sizing: border-box;
 }
   
 .chat-history {
     flex: 1;
-    height: 450px; /* Fixed height for the chat history */
-    overflow-y: auto; /* Add vertical scrolling */
+    height: 450px;
+    overflow-y: auto;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    background-color: #F0F3FF; /* Set background color to match container */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-}
-  
-.chat-input-container {
-    display: flex;
-    align-items: center; /* Align items to center vertically */
-    background-color: white;
-    border: 1px solid white;
-    border-radius: 8px;
-    padding-right: 20px;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    background: #F5F9FF;
+    box-sizing: border-box;
 }
   
 .chat-textarea {
     flex: 1;
-    padding: 10px;
-    resize: none; /* Prevent resizing */
-    border: none; /* Remove border */
-    background-color: white; /* Set background color to match container */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    border: none;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 18px 30px;
+    height: 63px;
+    font-size: 14px;
+    border-radius: 8px;
+    resize: none;
+    line-height: 20px;
+    overflow: hidden;
+}
+
+.chat-textarea::placeholder {
+    color: #888;
+    opacity: 1;
+    line-height: 20px;
+}
+
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 12px;
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+
+.send-button {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.send-button:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
+}
+
+.send-button img {
+    width: 20px;
+    height: 20px;
 }
   
 .chat-textarea:focus {
@@ -97,7 +130,6 @@ body {
     padding-left: 20px;
     color: #fff;
     background-clip: text;
-    text-fill-color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textclip 2s linear infinite;

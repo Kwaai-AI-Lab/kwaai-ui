@@ -19,6 +19,11 @@
     background-color: rgba(0, 0, 255, 0.1);
 }
 
+.sideMenuItem-container.disabled {
+    opacity: 0.5; /* Reduce la opacidad para hacer que el botón parezca deshabilitado */
+    pointer-events: none; /* Desactiva la interacción con el botón */
+}
+
 .sideMenuItem-image {
     width: 24px;
     height: 24px;
@@ -44,4 +49,10 @@
     border-radius: 8px;
     min-width: 24px;
     text-align: center;
+}
+
+/* Estilos para los contenedores deshabilitados */
+.sideMenuItem-container.disabled .sideMenuItem-text,
+.sideMenuItem-container.disabled .sideMenuItem-count {
+    color: #999; /* Color gris para denotar que está deshabilitado */
 }

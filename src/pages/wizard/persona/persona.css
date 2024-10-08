@@ -5,7 +5,6 @@
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -26,65 +25,60 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 80%;
-  padding-bottom: 20px;
+  width: 80%; /* Igual que .face-container */
 }
 
 .persona-left-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* Igual que .face-left-container */
   gap: 20px;
   justify-content: space-evenly;
   align-content: start;
-  width: 50%;
-  max-height: calc(2 * 250px + 20px);
-  padding: 10px;
+  width: 50%; /* Igual que .face-left-container */
+  max-height: 540px; /* Ajustado a la altura de .face-left-container */
+  padding: 30px; /* Igual que .face-left-container */
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .persona-right-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 55%;
+  align-items: start;
+  width: 50%; /* Igual que .face-right-container */
   height: 100%;
+  padding: 0 0 0 50px;
 }
 
 .persona-preview-container {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 8px;
-  border: 2px solid #F0F0F0;
-  overflow: hidden;
-  background-color: #f9f9f9;
-  padding-bottom: 10px;
+  width: 219px; /* Ajustado igual que .selected-face-image */
+  height: 253px; /* Ajustado igual que .selected-face-image */
+  border-radius: 19px; /* Igual que .face-preview-container */
+  border: 2px solid #F0F0F0; /* Borde consistente con .face-preview-container */
 }
 
 .selected-persona-image {
   width: 100%;
-  height: 400px;
+  height: 100%; /* Para ajustarse al contenedor .persona-preview-container */
   object-fit: cover;
-  border-radius: 8px 8px 0 0;
-}
-
-.selected-persona-description {
-  font-family: 'Poppins', sans-serif;
-  margin: 15px 15px 0 15px;
-  font-size: 14px;
-  text-align: center;
-  color: #333;
+  border-radius: 19px; /* Igual que .selected-face-image */
 }
 
 .selected-persona-text {
   font-family: 'Poppins', sans-serif;
-  margin-top: 10px;
-  font-size: 20px;
-  text-align: center;
-  font-weight: bold;
-  color: #000;
+  font-size: 24px;
+  text-align: start;
+  font-weight: 500;
+  width: 100%;
+}
+
+.selected-persona-description{
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  text-align: left;
 }
 
 .persona-option-container {
@@ -121,6 +115,4 @@
   align-items: center;
   height: 100%;
   width: 100%;
-  top: 0;
-  left: 0;
 }

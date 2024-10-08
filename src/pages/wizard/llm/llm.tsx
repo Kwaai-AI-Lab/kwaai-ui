@@ -55,7 +55,7 @@ const Llm: React.FC<LlmProps> = ({ onSelect, selectedLlmOption, errors }) => {
           ))
         ) : (
           <div className="loader-container">
-            <DotLoader color="#5967F1" size={60} />
+            <DotLoader color="#045CE2" size={60} />
           </div>
         )}
       </div>

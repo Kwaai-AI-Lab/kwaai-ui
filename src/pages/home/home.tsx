@@ -25,7 +25,6 @@ export default function Home() {
   const [viewType, setViewType] = useState<AgentViewType>(AgentViewType.MyAgents);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingViewType, setPendingViewType] = useState<AgentViewType | null>(null);
-  const [hasBots, setHasBots] = useState(false);
   const [localItems, setLocalItems] = useState<Array<Bot | Persona>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -47,10 +46,6 @@ export default function Home() {
     }
   }, [viewType, assistants, personas]);
 
-  useEffect(() => {
-    setHasBots(localItems.length > 0);
-  }, [localItems]);
-
   const handleBotSelect = (bot: Bot | Persona) => {
     setSelectedBot(bot);
     console.log(bot);
@@ -62,7 +57,8 @@ export default function Home() {
         await AssistantsService.deleteAssistant(botId);
         refetchAssistants();
       } else if (viewType === AgentViewType.Personas) {
-        await PersonasService.deletePersona(botId);
+        const personaInstance = new PersonasService();
+        await personaInstance.deletePersona(botId);
         refetchPersonas();
       }
       setLocalItems((prevItems) => prevItems.filter((item) => item.id !== botId));
@@ -136,13 +132,11 @@ export default function Home() {
 
   return (
     <>
-      {hasBots && <NavBar />}
-
+      <NavBar />
       <div className="mainContainer">
         <div className={`sidebar ${shouldShowSidebar() ? '' : 'hidden'}`}>
           <SideBar onItemClick={handleSideMenuItemClick} assistantsCount={assistantsCount} personasCount={personasCount} />
         </div>
-
         <div className="contentContainer" style={{ marginLeft: shouldShowSidebar() ? "295px" : "0" }}>
           {selectedBot ? (
             <AgentInteraction bot={selectedBot} onBack={handleBackToList} />
@@ -161,6 +155,7 @@ export default function Home() {
                 showList={handleBackToList}
                 botToEdit={editBot}
                 setShowWizard={setShowWizard}
+                refecthAssistants={refetchAssistants}
               />
             )
           ) : (

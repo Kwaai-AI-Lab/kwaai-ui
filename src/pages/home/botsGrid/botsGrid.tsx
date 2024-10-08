@@ -37,12 +37,12 @@ const BotsGrid: React.FC<BotsGridProps> = ({
       <ToastContainer />
       {loading ? (
         <div className="loader-container">
-          <DotLoader color="#5967F1" size={60} />
+          <DotLoader color="#045CE2" size={60} />
         </div>
       ) : localItems.length === 0 ? (
-        <EmptyMessage onAddNewAgent={handleAddNewAgent} />
+        <EmptyMessage onAddNewAgent={handleAddNewAgent} viewType={viewType}/>
       ) : (
-        <div className="botsListGrid">
+        <div className="botsGridWrapper">
           <BotListTitle 
             viewType={viewType} 
             onAddNewAgent={() => {
@@ -53,16 +53,18 @@ const BotsGrid: React.FC<BotsGridProps> = ({
               }
             }} 
           />
-          {localItems.map((item) => (
-            <BotItem
-              key={item.id}
-              onError={() => toast.error("Error deleting bot")}
-              botItemData={item}
-              onBotSelect={onBotSelect}
-              onEditBot={onEditBot}
-              onBotDelete={onBotDelete}
-            />
-          ))}
+          <div className="botsListGrid">
+            {localItems.map((item) => (
+              <BotItem
+                key={item.id}
+                onError={() => toast.error("Error deleting bot")}
+                botItemData={item}
+                onBotSelect={onBotSelect}
+                onEditBot={onEditBot}
+                onBotDelete={onBotDelete}
+              />
+            ))}
+          </div>
         </div>
       )}
     </>

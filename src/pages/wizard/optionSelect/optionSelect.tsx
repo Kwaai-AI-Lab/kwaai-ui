@@ -1,28 +1,27 @@
 import React from "react";
-import { Feature, Face, Voices } from "../../../data/types";
+import checkIcon from "../../../assets/check-icon.svg"; 
 import "./optionSelect.css";
 
 interface OptionSelectProps {
-  feature: Feature | Face | Voices;
+  feature: {
+    id: string;
+    name: string;
+    imageURL: string;
+  };
   isSelected: boolean;
   onSelect: () => void;
 }
 
 const OptionSelect: React.FC<OptionSelectProps> = ({ feature, isSelected, onSelect }) => {
   return (
-    <div className={`persona-item ${isSelected ? "selected" : ""}`} onClick={onSelect}>
+    <div className={`persona-item ${isSelected ? 'selected' : ''}`} onClick={onSelect}>
       <img src={feature.imageURL} alt={feature.name} className="feature-image" />
-      <div className="radio-button-container">
-        <input
-          type="radio"
-          id={feature.id}
-          name="feature"
-          value={feature.name}
-          checked={isSelected}
-          readOnly
-        />
-        <label htmlFor={feature.id}>{feature.name}</label>
-      </div>
+      <div className="persona-name">{feature.name}</div>
+      {isSelected && (
+        <div className="check-icon">
+          <img src={checkIcon} alt="Selected" />
+        </div>
+      )}
     </div>
   );
 };

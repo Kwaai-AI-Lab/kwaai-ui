@@ -15,7 +15,7 @@ interface ConfirmationModalProps {
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onRequestClose, onConfirm }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="overlay">
-      <h2 className="modal-title">Are you sure?</h2>
+      <h3 className="modal-title">Are you sure?</h3>
       <p className="modal-text">Your progress will be lost if you exit.</p>
       <div className="modal-buttons">
         <SecondaryButton text="Cancel" onClick={onRequestClose} enabled={true} />

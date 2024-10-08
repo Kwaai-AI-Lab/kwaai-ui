@@ -157,7 +157,7 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
         await personasService.createPersona(personaData);
         await refetchPersonas();
       } catch (error) {
-        console.error("Error creating or updating assistant:", error);
+        console.error("Error creating persona:", error);
       }
     } else {
       try {
@@ -168,18 +168,21 @@ const PersonasWizard: React.FC<WizardProps> = ({ viewType, showList, botToEdit, 
           voice_id: newBot.voice_id,
           face_id: newBot.face_id,
         });
+        await refetchPersonas();
       } catch (error) {
-        console.error("Error creating or updating assistant:", error);
+        console.error("Error updating persona:", error);
       }
     }
+    
     resetBot();
     setShowWizard(false);
     showList();
   };
+  
 
   return (
     <div className="wizard-container">
-      <PersonaTitle currentStep={currentStep} />
+      <PersonaTitle currentStep={currentStep} totalSteps={steps.length} />
       <div className="sections-container">
         <div className="right-section-wizard">{steps[currentStep]}</div>
       </div>

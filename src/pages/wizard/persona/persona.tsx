@@ -49,7 +49,7 @@ const Persona: React.FC<PersonaProps> = ({ bot, setBot, errors }) => {
     <div className="persona-wrapper">
       {loading ? (
         <div className="loader-container">
-          <DotLoader color="#5967F1" size={60} />
+          <DotLoader color="#045CE2" size={60} />
         </div>
       ) : error ? (
         <div className="error-message top-error">{error}</div>
@@ -80,10 +80,10 @@ const Persona: React.FC<PersonaProps> = ({ bot, setBot, errors }) => {
                     alt={selectedPersona.name}
                     className="selected-persona-image"
                   />
+                  <p className="selected-persona-text">{selectedPersona.name}</p>
                   <p className="selected-persona-description">
                     {selectedPersona.description}
                   </p>
-                  <p className="selected-persona-text">{selectedPersona.name}</p>
                 </div>
               )}
             </div>

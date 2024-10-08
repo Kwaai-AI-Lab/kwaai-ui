@@ -1,0 +1,31 @@
+.card-button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    padding: 8px 28px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 14px;
+    border: 1px solid #045CE2;
+  }
+  
+  .card-button.enabled {
+    background-color: #ffffff00;
+    color: #045CE2;
+    border-radius: 40px; 
+  }
+
+  .card-button:hover {
+    background-color: #045CE2;
+    color: white;
+  }
+  
+  .card-button.disabled {
+    background-color: #D3D3D3;
+    color: grey;
+    border-radius: 40px;
+    cursor: not-allowed;
+  }
+  

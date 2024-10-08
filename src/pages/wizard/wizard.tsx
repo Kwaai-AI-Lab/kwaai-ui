@@ -18,9 +18,10 @@ interface WizardProps {
   showList: () => void;
   botToEdit?: Bot | null;
   setShowWizard: React.Dispatch<React.SetStateAction<boolean>>;
+  refecthAssistants: () => void;
 }
 
-const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
+const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard, refecthAssistants }) => {
   const [isIndexing, setIsIndexing] = useState(false);
   const [isIndexingMode, setIsIndexingMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -189,6 +190,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       try {
         const assistantsService = new AssistantsService();
         await assistantsService.deleteAssistant(newBot.id || "");
+        refecthAssistants();
       } catch (error) {
         console.error("Error deleting assistant:", error);
       }
@@ -252,11 +254,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
           persona_id: newBot.persona_id,
           files: newBot.files,
           status: newBot.status,
-          allow_edit: newBot.allow_edit === "True" ? "True" : "False", // Ensure proper assignment
+          allow_edit: newBot.allow_edit === "True" ? "True" : "False",
           kind: newBot.kind,
           icon: newBot.icon || "",
         }
       );
+      refecthAssistants();
   
     } catch (error) {
       console.error("Error creating or updating assistant:", error);
@@ -268,7 +271,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
 
   return (
     <div className="wizard-container">
-      <WizardTitle currentStep={currentStep} />
+      <WizardTitle currentStep={currentStep} totalSteps={steps.length} />
       <div className="sections-container">
         <div className="right-section-wizard">{steps[currentStep]}</div>
       </div>

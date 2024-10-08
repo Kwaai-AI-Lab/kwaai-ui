@@ -1,9 +1,8 @@
 .bot-card {
-  width: 329px;
-  height: 420px;
-  border-radius: 8px;
-  background-color: white;
-  border: 2px solid #F0F0F0;
+  width: 252px;
+  height: 363px;
+  border-radius: 19px;
+  background: linear-gradient(180deg, rgba(242, 242, 242, 0.8) 0%, rgba(255, 255, 255, 0.8) 181.74%);
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Ensure content doesn't overflow */
@@ -17,16 +16,16 @@
 }
 
 .bot-card-header img {
-  width: 329px;
-  height: 185px;
+  width: 252px;
+  height: 183px;
   border-radius: 8px 8px 0 0;
   object-fit: cover;
   object-position: center;
 }
 
 .bot-card-body {
-  flex-grow: 1;
-  padding: 10px;
+  flex-grow: .6;
+  padding: 10px 10px 0 10px;
   display: flex;
   flex-direction: column;
 }
@@ -40,37 +39,33 @@
 .bot-card-name {
   font-family: 'Poppins', sans-serif;
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 30px;
   text-align: left;
-  margin-bottom: 10px;
   padding-left: 10px;
+  margin-bottom: 0px;
 }
 
 .bot-card-description {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 24px;
   text-align: left;
   padding-left: 10px;
+  color: #565656;
   max-height: 60px; /* Set a maximum height for the description */
   overflow-y: auto; /* Scroll if the description is too long */
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .bot-buttons-area {
   display: flex;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px 20px 20px;
-  border-top: 1px solid #F0F0F0;
-  flex-shrink: 0; /* Prevent buttons from shrinking */
-  background-color: white; /* Ensure it stays visible */
 }
 
 .bot-button {
-  color: white;
   background-color: black;
   border: none;
   border-radius: 5px;
@@ -84,6 +79,7 @@
   cursor: pointer;
   padding: 0;
   margin-right: 10px;
+  margin-top: 10px;
 }
 
 .share-button img {

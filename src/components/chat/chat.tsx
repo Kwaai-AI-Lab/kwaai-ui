@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./chat.css";
 import ChatMessage from "./chatMessage/chatMessage";  
-import PrimaryButton from "../buttons/primaryButton/primaryButton"; 
 import { DotLoader } from "react-spinners";
+import sendPlane from "../../assets/send-plane.png";
 
 interface MessageLocal {
   sender: "user" | "ai";
@@ -82,7 +82,7 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
         ))}
         {loading && (
           <div className="loading-container">
-            <DotLoader color="#5967F1" size={30} />
+            <DotLoader color="#045CE2" size={30} />
             <p className="animate-charcter">{loadingText}</p>
           </div>
         )}
@@ -95,11 +95,13 @@ const Chat: React.FC<ChatProps> = ({ handleMessage, messages: incomingMessages }
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
-        <PrimaryButton
-          text="Send"
+        <button
           onClick={handleSend}
-          enabled={!loading}
-        />
+          disabled={loading}
+          className="send-button"
+        >
+          <img src={sendPlane} alt="Send" />
+        </button>
       </div>
     </div>
   );

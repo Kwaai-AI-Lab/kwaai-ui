@@ -7,15 +7,15 @@ import type { Persona, Face } from "../../../data/types";
 interface FaceProps {
   bot: Persona;
   setBot: React.Dispatch<React.SetStateAction<Persona>>;
+  errors?: { [key: string]: string };
 }
 
-const Faces: React.FC<FaceProps> = ({ bot, setBot }) => {
-    const faceList = facesList;
-    console.log("faceList",faceList);
-    const [selectedFaceId, setSelectedFaceId] = React.useState<string | null>(
-        bot.face_id || null
-    );
-  
+const Faces: React.FC<FaceProps> = ({ bot, setBot, errors }) => {
+  const faceList = facesList;
+  const [selectedFaceId, setSelectedFaceId] = React.useState<string | null>(
+    bot.face_id || null
+  );
+
   const selectedFace = faceList.find((face) => face.id === selectedFaceId);
 
   const handleSelect = (face: Face) => {
@@ -48,6 +48,7 @@ const Faces: React.FC<FaceProps> = ({ bot, setBot }) => {
             </>
           )}
         </div>
+        {errors && errors.face_id && <p className="error-text">{errors.face_id}</p>}
       </div>
     </div>
   );

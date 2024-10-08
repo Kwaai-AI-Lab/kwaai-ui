@@ -1,103 +1,157 @@
 .details-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .download-icon {
-    width: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .browse-text {
-    margin-top: 10px;
-  }
-  
-  .browse-link {
-    color: #3f51b5;
-    cursor: pointer;
-    margin-left: 5px;
-  }
-  
-  .file-list {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Center the list */
-  }
-  
-  .file-list ul {
-    list-style: none;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    text-align: center; /* Center the text inside the list */
-  }
-  
-  .file-item {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 10px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Full width */
-    max-width: 61%; /* No limitar el ancho */
-    margin: 5px auto; /* Center the item horizontally */
-  }
-  
-  .remove-file-button {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-
-    background: none;
-    border: none;
-    color: #d32f2f;
-    cursor: pointer;
-    margin-left: 10px;
-    font-weight: bold;
-  }
-  
-  .error-message {
-    font-family: 'Poppins', sans-serif;
-    max-width: 61.5%;
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-
-
-  .animate-charcter {
-    background-image: linear-gradient(-225deg, #4728b4 0%, #5967F1 29%, #8f2cff 67%, #000000 100%);
-    background-size: auto auto;
-    background-clip: border-box;
-    background-size: 200% auto;
-    padding-left: 20px;
-    color: #fff;
-    background-clip: text;
-    text-fill-color: transparent;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: textclip 2s linear infinite;
-    display: inline-block;
-    font-weight: 300;
-    font-family: "Raleway", sans-serif; /* Add Raleway font here */
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 70px;
 }
 
-/* Text animation for "Thinking..." and "Searching for references" */
-@keyframes textclip {
-    to {
-        background-position: 200% center;
-    }
+.download-icon {
+  width: 60px;
 }
 
-/* Transition for the text */
-#text1,
-#text2 {
-    transition: filter 1s ease-in-out, opacity 1s ease-in-out;
+.browse-link {
+  color: #045CE2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.browse-link:hover {
+  color: #003e9b;
+}
+
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #d32f2f;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 0.875em;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+.file-list {
+  width: 100%;
+  max-width: 810px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 230px;
+  overflow-y: scroll;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+  margin-bottom: 40px;
+}
+
+.file-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.file-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.file-list::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color de la barra de desplazamiento */
+  border-radius: 10px;
+}
+
+.file-list::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color de la barra de desplazamiento cuando se pasa el cursor */
+}
+
+/* Evita que el botón de eliminación interfiera con la scrollbar */
+.file-item {
+  padding-right: 20px; /* Añadir espacio adicional en el lado derecho */
+}
+
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff00;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.file-icon {
+  width: 22px;
+  padding-right: 10px;
+}
+
+.file-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.file-name {
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.spinner-bar-container {
+  width: 100%;
+  background-color: #EEF5FF;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 6px;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.spinner-bar {
+  height: 100%;
+  background-color: #007bff;
+  border-radius: 10px;
+  position: absolute;
+}
+
+.spinner-bar-done {
+  width: 100%;
+  background-color: #00e676;
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+    left: -30%;
+  }
+  50% {
+    width: 50%;
+    left: 30%;
+  }
+  100% {
+    width: 0;
+    left: 100%;
+  }
+}
+
+.remove-file-button {
+  background-color: transparent;
+  color: #f44336;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.file-status {
+  justify-content: flex-end;
+  display: flex;
+  font-size: 12px;
+  color: gray;
+}
+
+.remove-file-button:disabled {
+  color: gray;
+  cursor: not-allowed;
 }

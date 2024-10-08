@@ -1,7 +1,14 @@
+.botsGridWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .botsListGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(329px, 1fr));
-  grid-gap: 20px;
-  width: calc(100% - 40px);
-  padding: 0px 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0 60px;
+  justify-items: center;
+  align-items: start;
 }

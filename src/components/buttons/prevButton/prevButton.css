@@ -1,4 +1,4 @@
-.secondary-button {
+.prev-button {
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
   font-size: 14px;
@@ -10,21 +10,21 @@
   border-radius: 14px;
   width: 220px;
   height: 54px;
-  border: 2px solid #045CE2;
 }
 
-.secondary-button.enabled {
-  background-color: #ffffff00;
-  color: #045CE2;
+.prev-button.enabled {
+  background-color: #F0F0F0;
+  color: #333;
   border-radius: 40px; 
+  border: 0px;
 }
 
-.secondary-button:hover {
+.prev-button:hover {
   background-color: #045CE2;
   color: white;
 }
 
-.secondary-button.disabled {
+.prev-button.disabled {
   background-color: #D3D3D3;
   color: grey;
   border-radius: 40px;

@@ -1,4 +1,5 @@
 import React from "react";
+import checkIcon from "../../../assets/check-icon.svg";
 import { LlmOption } from "../../../data/types";
 import "./llmItem.css";
 
@@ -27,22 +28,19 @@ const LlmItem: React.FC<LlmItemProps> = ({ llmItemData, isSelected, onSelect, is
           src={llmItemData.image}
           alt="llm-logo"
         />
+        {isSelected && (
+          <div className="check-icon">
+            <img src={checkIcon} alt="Selected" />
+          </div>
+        )}
       </div>
       <div className="llm-card-bottom">
         <label className="llm-card-radio">
-          <input
-            type="radio"
-            name="llm-option"
-            value={llmItemData.name}
-            checked={isSelected}
-            onChange={handleClick}
-            disabled={!isActive}
-          />
           <span className="llm-card-title">{llmItemData.name}</span>
         </label>
       </div>
     </div>
   );
-}
+};
 
 export default LlmItem;

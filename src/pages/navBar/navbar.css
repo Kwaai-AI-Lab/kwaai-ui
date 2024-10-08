@@ -1,14 +1,15 @@
 .navbar {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0);
   padding: 1rem;
   position: fixed;
   top: 0;
-  left: 295px; /* Position it to the right of the sidebar */
-  width: calc(100% - 295px); /* Width minus the sidebar width */
-  height: 60px;
+  width: calc(100% - 295px);
+  height: 90px;
   display: flex;
-  z-index: 1000; /* Ensure it stays above other elements */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo {
+  min-width: 139px;
 }
 
 .navbar-menu {

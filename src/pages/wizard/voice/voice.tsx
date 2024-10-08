@@ -7,6 +7,7 @@ import "./voice.css";
 interface VoiceProps {
   bot: Persona;
   setBot: React.Dispatch<React.SetStateAction<Persona>>;
+  errors?: { [key: string]: string };
 }
 
 const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
@@ -16,7 +17,6 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
   );
   const selectedVoice = voiceList.find((voice) => voice.id === selectedVoiceId);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = React.useState(false); // Controlar la animación de ondas
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +43,14 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
   }, [bot.id]);
 
   useEffect(() => {
+    if (!bot.voice_id && voiceList.length > 0) {
+      const firstVoice = voiceList[0];
+      setSelectedVoiceId(firstVoice.id);
+      setBot((prevBot) => ({ ...prevBot, voice_id: firstVoice.id }));
+    }
+  }, [bot.voice_id, voiceList, setBot]);
+
+  useEffect(() => {
     return () => {
       if (audio) {
         audio.pause();
@@ -65,10 +73,7 @@ const Voice: React.FC<VoiceProps> = ({ bot, setBot }) => {
       setAudio(newAudio);
       
       newAudio.play()
-        .then(() => setIsPlaying(true)) // Empieza la animación cuando el audio se reproduce
-        .catch((error) => console.error("Error playing audio:", error));
       
-      newAudio.onended = () => setIsPlaying(false); // Detiene la animación cuando el audio termina
     }
   };
 

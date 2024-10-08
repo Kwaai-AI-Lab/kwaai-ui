@@ -20,3 +20,10 @@
 .wizard-button + .wizard-button {
   margin-left: 10px;
 }
+
+.primary-button.disabled {
+  background-color: #d3d3d3;
+  color: #8a8a8a;
+  pointer-events: none;
+  box-shadow: #8a8a8a;
+}

@@ -1,12 +1,11 @@
 .wizard-title {
-    padding: 0px; /* Optional: Add some padding for better spacing */
+    padding: 60px 0 0 70px;
   }
   
   .wizard-title-content {
     display: flex;
-    flex-direction: column; /* Arrange children in a column */
-    align-items: flex-start; /* Align text to the left */
-    padding: 0px 15px; 
+    flex-direction: column;
+    align-items: flex-start;
   }
   
   .wizard-title span {
@@ -14,19 +13,14 @@
     font-weight: 700;
     font-size: 32px;
     line-height: 48px;
-    color: #000000; /* Corrected color to be black */
-    margin-bottom: 10px; /* Add some space between text and image */
-  }
-  
-  .wizard-title img {
-    display: block;
-    margin: 0 auto; /* Center image horizontally */
+    color: #000000;
+    margin-bottom: 10px;
   }
 
   .wizard-sub-title{
-    text-align: center; /* Align text to the center */
-    padding-top: 30px;
+    text-align: flex-start;
   }
+
   .wizard-sub-title span{
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
@@ -34,5 +28,55 @@
     line-height: 24px;
     color: #000000; /* Corrected color to be black */
     margin-bottom: 10px; /* Add some space between text and image */
+  }
+  
+
+  .progress-container {
+    display: flex;
+    justify-content:start;
+    align-items: center;
+    margin: 0 0 30px 0;
+  }
+  
+  .progress-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dot-wrapper {
+    padding: 4px;
+    border: 2px solid #B8B8B8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border 0.3s ease;
+  }
+
+  .dot-wrapper.active {
+    border: 2px solid #007bff;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #B8B8B8;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dot.active {
+    background-color: #007bff;
+  }
+  
+  .line {
+    width: 21px;
+    height: 1px;
+    background-color: #B8B8B8;
+    transition: background-color 0.3s ease;
+  }
+  
+  .line.active-line {
+    background-color: #007bff;
   }
   

@@ -9,6 +9,7 @@ import PrimaryButton from "../../../components/buttons/primaryButton/primaryButt
 import SecondaryButton from "../../../components/buttons/secondaryButton/secondaryButton";
 import "./botItem.css";
 import PersonasService from "../../../services/personas.service";
+import CardButton from "../../../components/buttons/cardButton/cardButton";
 
 interface BotItemProps {
   botItemData: Bot | Persona;
@@ -92,11 +93,11 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
       <div className="bot-buttons-area">
         {(agentViewType === AgentViewType.MyAgents || agentViewType === AgentViewType.Personas) ? (
           <>
-            <SecondaryButton text="Delete" onClick={handleDelete} enabled={true} />
-            <PrimaryButton text="Edit" onClick={() => onEditBot(botItemData)} enabled={true} />
+            <CardButton text="Delete" onClick={handleDelete} enabled={true} />
+            <CardButton text="Edit" onClick={() => onEditBot(botItemData)} enabled={true} />
           </>
         ) : (
-          <PrimaryButton text="Go to Course" onClick={() => onBotSelect(botItemData)} enabled={true} />
+          <CardButton text="Go to Course" onClick={() => onBotSelect(botItemData)} enabled={true} />
         )}
       </div>
       <DeleteConfirmationModal

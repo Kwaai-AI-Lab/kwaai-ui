@@ -12,6 +12,7 @@
     overflow: hidden;
     cursor: pointer;
     background-color: white;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .feature-image {
@@ -21,82 +22,56 @@
     object-fit: cover;
     margin-top: 20px;
     border: 3px solid transparent;
-    object-fit: cover;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .persona-item.selected .feature-image {
-    border-radius: 50%;
-    background: linear-gradient(white, white) padding-box,
+    background: linear-gradient(white, white) padding-box, 
                 linear-gradient( #045CE2, #b0caff) border-box;
+    border: 3px solid transparent;
+    border-radius: 50%;
     box-shadow: 0px 0px 18.6px 0px #045CE266;
 }
 
-.placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 165px;
-    background-color: #F0F3FF;
-}
-
-.voice-icon-option {
-    width: 142px;
-    height: 142px;
-    object-fit: cover;
-}
-
-.radio-button-container {
-    height: 76px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.radio-button-container input[type="radio"] {
-    margin-right: 10px;
-    transform: translateY(1px);
-}
-
-.radio-button-container label {
-    margin: 0;
-    line-height: 1.2;
-    font-family: Poppins;
-    font-size: 16px;
-    font-weight: 400;
-    text-align: left;
-    color: black;
-}
-
-.radio-button-container input[type="radio"]:checked + label {
-    color: #007bff;
-    font-weight: 500;
+.persona-item:hover {
+    box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.2);
 }
 
 .persona-name {
     font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.persona-item.selected .persona-name{
     font-weight: 600;
     font-size: 16px;
     color: #007bff;
     margin-top: 10px;
-    text-align: center;
 }
 
 .check-icon {
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 30px;
-    height: 30px;
+    width: 37px;
+    height: 37px;
     background-color: rgba(0, 123, 255, 0.1);
-    border-radius: 50%;
+    border-radius: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .check-icon img {
-    width: 18px;
-    height: 18px;
+    width: 25px;
+    height: 25px;
     display: block;
+}
+
+.persona-item.selected .check-icon {
+    opacity: 1;
 }
