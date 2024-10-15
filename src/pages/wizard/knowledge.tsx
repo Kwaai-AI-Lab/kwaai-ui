@@ -75,6 +75,8 @@ const Knowledge: React.FC<KnowledgeProps> = ({
     try {
       const assistantsService = new AssistantsService();
       const filesFromServer = await assistantsService.getFiles(assistantId);
+      setLocalFiles([]);
+      onFilesChange([]);
       setAllFiles(filesFromServer);
     } catch (error) {
       console.error("Error fetching files:", error);
