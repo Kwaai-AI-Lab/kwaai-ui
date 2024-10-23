@@ -1,12 +1,21 @@
 import { Persona } from "../data/types";
+import { getAuthToken } from "../utils/auth.helper";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 class PersonasService {
   static async getPersonas(): Promise<Persona[]> {
+    console.log("getPersonas()");
     try {
-      const response = await fetch(`${API_URL}/personas`);
+      const response = await fetch(`${API_URL}/personas`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
+      });
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error details:", errorData);  // Log detailed error for debugging
         throw new Error(`Error: ${response.statusText}`);
       }
       return await response.json();
@@ -18,8 +27,14 @@ class PersonasService {
 
   async getPersona(id: string): Promise<Persona> {
     try {
-      const response = await fetch(`${API_URL}/personas/${id}`);
+      const response = await fetch(`${API_URL}/personas/${id}`, {
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
+      });
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error details:", errorData);  // Log detailed error for debugging
         throw new Error(`Error: ${response.statusText}`);
       }
       return await response.json();
@@ -36,6 +51,7 @@ class PersonasService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify(persona),
       });
@@ -57,6 +73,7 @@ class PersonasService {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify(persona),
       });
@@ -76,6 +93,9 @@ class PersonasService {
     try {
       const response = await fetch(`${API_URL}/personas/${id}`, {
         method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
       });
 
       if (!response.ok) {
@@ -91,7 +111,11 @@ class PersonasService {
 
   async getVoices(): Promise<string[]> {
     try {
-      const response = await fetch(`${API_URL}/voices`);
+      const response = await fetch(`${API_URL}/voices`,{
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
