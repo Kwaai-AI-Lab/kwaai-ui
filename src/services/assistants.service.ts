@@ -1,4 +1,5 @@
 import { Bot, conversation, Message, AssistantFile } from "../data/types";
+import { getAuthToken } from "../utils/auth.helper";
 
 interface CreateAssistantResponse {
   name: string;
@@ -44,6 +45,7 @@ class AssistantsService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
           name: name,
@@ -79,6 +81,7 @@ class AssistantsService {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify(assistantData),
       });
@@ -96,6 +99,9 @@ class AssistantsService {
     try {
       const response = await fetch(`${API_URL}/resources/${id}`, {
         method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -117,6 +123,9 @@ class AssistantsService {
       const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {
         method: "POST",
         body: formData,
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
       });
 
       if (!response.ok) {
@@ -132,7 +141,12 @@ class AssistantsService {
   static async getAssistants(kind: string): Promise<Bot[]> {
     try {
       const response = await fetch(
-        `${API_URL}/resources?filter={"kind":"${kind}"}`
+        `${API_URL}/resources?filter={"kind":"${kind}"}`,{
+          headers: {
+            method: "GET",
+            "Authorization": `Bearer ${getAuthToken()}`,
+          },
+        }
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -158,6 +172,7 @@ class AssistantsService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
           name: name,
@@ -184,6 +199,7 @@ class AssistantsService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
           assistant_id: assistantId,
@@ -208,6 +224,7 @@ class AssistantsService {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
       });
 
@@ -235,6 +252,7 @@ class AssistantsService {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
           file_ids: fileIds,
@@ -258,6 +276,7 @@ class AssistantsService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
           assistant_id: assistantId,

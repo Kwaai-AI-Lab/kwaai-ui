@@ -1,4 +1,5 @@
 import { conversation, Message } from "../data/types";
+import { getAuthToken } from "../utils/auth.helper";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -38,6 +39,7 @@ class messagesService {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${getAuthToken()}`,
             },
             body: JSON.stringify({
               assistant_id: assistantId,
@@ -61,6 +63,7 @@ class messagesService {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${getAuthToken()}`,
               },
               body: JSON.stringify({
                 msg_id: messageData.id,
@@ -96,7 +99,11 @@ class messagesService {
     async getConversations(assistantId: string): Promise<conversation[]> {
         const filter = JSON.stringify({ assistant_id: assistantId });
         try {
-          const response = await fetch(`${API_URL}/conversations?filter=${filter}`);
+          const response = await fetch(`${API_URL}/conversations?filter=${filter}`,{
+            headers: {
+              "Authorization": `Bearer ${getAuthToken()}`,
+            },
+          });
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
           }
@@ -109,7 +116,11 @@ class messagesService {
 
     async getConversationMessages(conversationId: string): Promise<conversation> {
         try {
-          const response = await fetch(`${API_URL}/conversations/${conversationId}`);
+          const response = await fetch(`${API_URL}/conversations/${conversationId}`,{
+            headers: {
+              "Authorization": `Bearer ${getAuthToken()}`,
+            },
+          });
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
           }
@@ -126,6 +137,7 @@ class messagesService {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${getAuthToken()}`,
             },
             body: JSON.stringify({
               name: name,
@@ -145,6 +157,9 @@ class messagesService {
         try {
           const response = await fetch(`${API_URL}/conversations/${conversation.id}`, {
             method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${getAuthToken()}`,
+            },
           });
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
@@ -159,6 +174,9 @@ class messagesService {
         try {
           const response = await fetch(`${API_URL}/voices/${messageId}`, {
             method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${getAuthToken()}`,
+            },
           });
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
