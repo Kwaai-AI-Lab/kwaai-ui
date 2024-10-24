@@ -143,7 +143,6 @@ class AssistantsService {
       const response = await fetch(
         `${API_URL}/resources?filter={"kind":"${kind}"}`,{
           headers: {
-            method: "GET",
             "Authorization": `Bearer ${getAuthToken()}`,
           },
         }
@@ -221,7 +220,6 @@ class AssistantsService {
   async getFiles(assistantId: string): Promise<AssistantFile[]> {
     try {
       const response = await fetch(`${API_URL}/rag-indexing/${assistantId}/`, {
-        method: "GET",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${getAuthToken()}`,

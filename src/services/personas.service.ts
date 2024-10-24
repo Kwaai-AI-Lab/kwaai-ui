@@ -8,7 +8,6 @@ class PersonasService {
     console.log("getPersonas()");
     try {
       const response = await fetch(`${API_URL}/personas`, {
-        method: "GET",
         headers: {
           "Authorization": `Bearer ${getAuthToken()}`,
         },
