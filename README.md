@@ -23,6 +23,34 @@ In the root of the project, create a `.env` file and add the following line with
 `
     npm start
 `
+
+## Running in Docker
+
+As an alternative to running the Kwaai UI on your host machine, if you have a Docker environment installed (e.g. [Docker Desktop](https://www.docker.com/products/docker-desktop/)), you
+can run the UI as a container instead.
+
+- Build the Docker image
+
+`
+    docker compose build
+`
+
+- Start the frontend
+
+`
+    docker compose up
+`
+
+### Building an image for production
+
+The above commands will build and run a development server, with the source code directoy bind-mounted to your host machine (any changes you make will immediately be re-built after saving). To create an image for production, with pre-built sources, no development dependencies etc., run the following...
+
+- Build a production Docker image
+
+`
+    docker build --tag kwaai-ui:latest .
+`
+
 # PAI-Assistant README
 
 Welcome to **PAI-Assistant**, a personal assistant project designed for students and professors to enhance their learning and teaching experiences. This guide will walk you through the steps to create, customize, and deploy your personal assistant using the PAI-Assistant UI.
