@@ -23,6 +23,16 @@ In the root of the project, create a `.env` file and add the following line with
 `
     npm start
 `
+### Building an image for production
+
+The above commands will build and run a development server, with the source code directoy bind-mounted to your host machine (any changes you make will immediately be re-built after saving). To create an image for production, with pre-built sources, no development dependencies etc., run the following...
+
+- Build a production Docker image
+
+`
+    docker build --tag kwaai-ui:latest .
+`
+
 # PAI-Assistant README
 
 Welcome to **PAI-Assistant**, a personal assistant project designed for students and professors to enhance their learning and teaching experiences. This guide will walk you through the steps to create, customize, and deploy your personal assistant using the PAI-Assistant UI.
