@@ -1,0 +1,10 @@
+services:
+  ui:
+    build:
+      context: .
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app/ui
+      - /app/ui/node_modules
