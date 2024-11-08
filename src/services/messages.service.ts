@@ -3,11 +3,12 @@ import { getAuthToken } from "../utils/auth.helper";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+const userId = localStorage.getItem("userId");
 class messagesService {
 
     async createConversation(name:string, assistantId: string): Promise<conversation> {
         try {
-          const response = await fetch(`${API_URL}/conversations/${assistantId}`, {
+          const response = await fetch(`${API_URL}/conversations/${assistantId}/${userId}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -95,10 +96,9 @@ class messagesService {
           throw error;
         }
       }      
-    
 
     async getConversations(assistantId: string): Promise<conversation[]> {
-        const filter = JSON.stringify({ assistant_id: assistantId });
+        const filter = JSON.stringify({ user_id: userId, assistant_id: assistantId });
         try {
           const response = await fetch(`${API_URL}/conversations?filter=${filter}`,{
             headers: {

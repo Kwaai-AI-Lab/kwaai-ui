@@ -17,6 +17,7 @@ export interface Bot {
   kind: string;
   icon: string;
   active: string;
+  user_id: string;
 }
 
 export interface Persona {
