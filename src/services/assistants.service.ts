@@ -13,6 +13,8 @@ interface CreateAssistantResponse {
   kind: string;
   icon: string;
   id: string;
+  active: string;
+  user_id: string;
 }
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -30,6 +32,8 @@ class AssistantsService {
       status,
       allow_edit,
       icon,
+      active,
+      user_id,
     }: {
       uri: string;
       resource_llm_id: string;
@@ -38,6 +42,8 @@ class AssistantsService {
       status: string;
       allow_edit: string;
       icon: string;
+      active: string;
+      user_id: string;
     }
   ): Promise<CreateAssistantResponse> {
     try {
@@ -48,16 +54,18 @@ class AssistantsService {
           "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
-          name: name,
-          description: description,
-          kind: kind,
-          uri: uri,
-          resource_llm_id: resource_llm_id,
-          persona_id: persona_id,
-          files: files,
-          status: status,
-          allow_edit: allow_edit,
-          icon: icon,
+          name,
+          description,
+          kind,
+          uri,
+          resource_llm_id,
+          persona_id,
+          files,
+          status,
+          allow_edit,
+          icon,
+          active,
+          user_id,
         }),
       });
 
@@ -72,10 +80,91 @@ class AssistantsService {
     }
   }
 
+  static async getSharedAssistants( userId: string ): Promise<Bot[]> {
+    try {
+      const response = await fetch(`${API_URL}/resources/${userId}/shared`, {
+        headers: {
+          "Authorization": `Bearer ${getAuthToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Unexpected response format");
+      }
+      return data;
+    } catch (error) {
+      console.error("Error fetching assistants:", error);
+      throw new Error(`Error fetching assistants: ${error}`);
+    }
+  }
+
+  static async shareAssistant(
+    assistantId: string,
+    expirationDate: string
+  ): Promise<{ id: string }> {
+    try {
+      const response = await fetch(`${API_URL}/shares`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+        body: JSON.stringify({
+          resource_id: assistantId,
+          expiration_dt: expirationDate,
+          is_revoked: false,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("Error sharing assistant:", error);
+      throw error;
+    }
+  }
+
+  static async updateShareAssistant(
+    id: string | undefined,
+    user_id: string | null,
+    expirationDate?: string
+  ): Promise<void> {
+    try {
+      const body: any = { user_id };
+      if (expirationDate) {
+        body.expiration_dt = expirationDate;
+      }
+
+      const response = await fetch(`${API_URL}/shares/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error updating share assistant:", error);
+      throw error;
+    }
+  }
+
   async updateAssistant(
     assistantId: string,
-    assistantData: Bot
+    assistantData: Bot & { active: string; user_id: string }
   ): Promise<CreateAssistantResponse> {
+    const { id, ...payload } = assistantData;
     try {
       const response = await fetch(`${API_URL}/resources/${assistantId}`, {
         method: "PUT",
@@ -83,7 +172,7 @@ class AssistantsService {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${getAuthToken()}`,
         },
-        body: JSON.stringify(assistantData),
+        body: JSON.stringify(payload),
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -94,6 +183,7 @@ class AssistantsService {
       throw error;
     }
   }
+  
 
   static async deleteAssistant(id: string): Promise<void> {
     try {

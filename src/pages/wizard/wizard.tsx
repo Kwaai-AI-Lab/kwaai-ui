@@ -21,6 +21,7 @@ interface WizardProps {
 }
 
 const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) => {
+  const user_id = localStorage.getItem("userId") || "";
   const [isIndexing, setIsIndexing] = useState(false);
   const [isIndexingMode, setIsIndexingMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -39,6 +40,8 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     allow_edit: botToEdit ? botToEdit.allow_edit : "False",
     kind: "assistant",
     icon: "",
+    active: "True",
+    user_id
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isContinueModalOpen, setIsContinueModalOpen] = useState(false);
@@ -52,13 +55,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   }, [botToEdit]);
 
   const handleFilesAdded = (isIndexing: boolean) => {
-    setIsIndexingMode(isIndexing);  // Switch to "Index" mode when files are dropped
+    setIsIndexingMode(isIndexing);
   };
 
   const handleMessage = async (inputValue: string): Promise<string> => {
     try {
       const assistantsService = new AssistantsService();
-      //const message = await assistantsService.sendMessage(newBot.id || "", "", inputValue, "True");
       const answer = await assistantsService.getAnswer(newBot.id || "", inputValue);
       return answer;
     } catch (error: any) {
@@ -83,7 +85,11 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       buttonState={buttonState}
     />,
     <Test key="test" handleMessage={handleMessage} />,
-    <Status key="status" bot={newBot} setBot={setNewBot} />,
+    <Status 
+        key="status" 
+        bot={newBot} 
+        setBot={setNewBot}
+      />
   ];
 
   const validateFields = (): boolean => {
@@ -115,11 +121,12 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
     if (!validateFields()) {
       return;
     }
-
+  
     try {
       const assistantsService = new AssistantsService();
+      const userId = localStorage.getItem("userId") || "";
       let response: Bot;
-
+  
       if (currentStep === 2 && !isUpdateMode) {
         response = await assistantsService.createAssistant(
           newBot.name,
@@ -131,49 +138,48 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
             persona_id: newBot.persona_id,
             files: newBot.files,
             status: newBot.status,
-            allow_edit: newBot.allow_edit === "True" ? "True" : "False", // Ensure proper assignment
+            allow_edit: newBot.allow_edit === "True" ? "True" : "False",
             icon: newBot.icon,
+            active: newBot.active,
+            user_id: userId,
           }
         );
+  
         setNewBot((prevBot) => ({
           ...prevBot,
           ...response,
-          id: response.id
+          id: response.id,
         }));
         setIsUpdateMode(true);
+  
       } else if (currentStep === 4) {
-        //setIsContinueModalOpen(true);
         setCurrentStep(currentStep + 1);
         return;
+  
       } else if (isUpdateMode) {
         response = await assistantsService.updateAssistant(
           newBot.id || "",
           {
-            name: newBot.name,
-            description: newBot.description,
-            uri: newBot.uri,
-            resource_llm_id: newBot.resource_llm_id,
-            persona_id: newBot.persona_id,
-            files: newBot.files,
-            status: newBot.status,
+            ...newBot,
             allow_edit: newBot.allow_edit === "True" ? "True" : "False",
-            kind: newBot.kind,
-            icon: newBot.icon || "",
+            user_id: userId,
           }
         );
+      
         setNewBot((prevBot) => ({
           ...prevBot,
           ...response,
         }));
       }
-
+      
+  
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
       }
     } catch (error) {
       console.error("Error creating or updating assistant:", error);
     }
-  };
+  };  
 
   const handleBack = () => {
     if (currentStep > 0) {
@@ -189,8 +195,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   const handleConfirmCancel = async () => {
     if (currentStep === 0 && isUpdateMode) {
       try {
-        const assistantsService = new AssistantsService();
-        await assistantsService.deleteAssistant(newBot.id || "");
+        await AssistantsService.deleteAssistant(newBot.id || "");
       } catch (error) {
         console.error("Error deleting assistant:", error);
       }
@@ -207,18 +212,20 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
 
   const resetBot = () => {
     setNewBot({
-      id: uuidv4(),
-      name: "",
-      description: "",
-      uri: "",
-      resource_llm_id: "",
-      persona_id: "",
-      files: [],
-      status: "public",
-      allow_edit: "True",
-      kind: "assistant",
-      icon: "",
-    });
+          id: uuidv4(),
+          name: "",
+          description: "",
+          uri: "",
+          resource_llm_id: "",
+          persona_id: "",
+          files: [],
+          status: "public",
+          allow_edit: "True",
+          kind: "assistant",
+          icon: "",
+          active: "True",
+          user_id
+        });
     setIsUpdateMode(false);
     setCurrentStep(0);
   };
@@ -233,7 +240,7 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
       setButtonState("Done");
       console.log("End Indexing assistant");
       setIsIndexing(false);
-      setIsIndexingMode(false);  // Switch back to "Continue" after indexing is done
+      setIsIndexingMode(false);
 
     } catch (error) {
       console.error("Error indexing assistant:", error);
@@ -243,22 +250,15 @@ const Wizard: React.FC<WizardProps> = ({ showList, botToEdit, setShowWizard }) =
   const handleDeploy = async () => {
     try {
       const assistantsService = new AssistantsService();
-  
       await assistantsService.updateAssistant(
         newBot.id || "",
         {
-          name: newBot.name,
-          description: newBot.description,
-          uri: newBot.uri,
-          resource_llm_id: newBot.resource_llm_id,
-          persona_id: newBot.persona_id,
-          files: newBot.files,
-          status: newBot.status,
-          allow_edit: newBot.allow_edit === "True" ? "True" : "False", // Ensure proper assignment
-          kind: newBot.kind,
-          icon: newBot.icon || "",
+          ...newBot,
+          allow_edit: newBot.allow_edit === "True" ? "True" : "False",
+          user_id,
         }
       );
+      
   
     } catch (error) {
       console.error("Error creating or updating assistant:", error);

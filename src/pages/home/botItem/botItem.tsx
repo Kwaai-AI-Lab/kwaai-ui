@@ -73,6 +73,8 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
     setIsModalOpen(false);
   };
 
+  console.log("BotItem.tsx", botItemData);
+
   return (
     <div className="bot-card">
       <div className="bot-card-header">
@@ -81,7 +83,7 @@ const BotItem: React.FC<BotItemProps> = ({ botItemData, onBotSelect, onEditBot, 
       <div className="bot-card-body">
         <div className="bot-card-header-with-button">
           <h2 className="bot-card-name">{botItemData.name}</h2>
-          {agentViewType === AgentViewType.MyAgents && (
+          {agentViewType === AgentViewType.MyAgents && "status" in botItemData && botItemData.status === "public" && (
             <button className="share-button" onClick={() => setIsShareModalOpen(true)}>
               <img src={shareIcon} alt="Share" />
             </button>

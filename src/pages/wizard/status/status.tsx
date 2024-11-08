@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Bot } from "../../../data/types";
 import "./status.css";
 
@@ -9,14 +9,6 @@ interface StatusProps {
 
 const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
 
-  useEffect(() => {
-    setBot((prevBot) => ({
-      ...prevBot,
-      status: prevBot.status || "private",
-      allow_edit: prevBot.allow_edit === "True" || prevBot.allow_edit === "False" ? prevBot.allow_edit : "False"
-    }));
-  }, [setBot]);
-
   function statusHandle(status: string) {
     setBot((prevBot) => ({ ...prevBot, status }));
   }
@@ -24,7 +16,7 @@ const Status: React.FC<StatusProps> = ({ bot, setBot }) => {
   function toggleAllowEdit() {
     setBot((prevBot) => ({
       ...prevBot,
-      allow_edit: prevBot.allow_edit === "True" ? "False" : "True"
+      allow_edit: prevBot.allow_edit === "True" ? "False" : "True",
     }));
   }
 

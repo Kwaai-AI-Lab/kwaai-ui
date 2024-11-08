@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Modal from "react-modal";
+import AssistantsService from "../../services/assistants.service";
 import PrimaryButton from "../../components/buttons/primaryButton/primaryButton";
 import SecondaryButton from "../../components/buttons/secondaryButton/secondaryButton";
 import roundCrossIcon from "../../assets/round-box-icon.png";
 import { Bot, Persona } from "../../data/types";
-import "./shareConfirmationModal.css"; // Reuse the existing styles or create new ones
+import { FaCalendarAlt } from "react-icons/fa";
+import {DotLoader} from "react-spinners";
+import "./shareConfirmationModal.css";
 
 interface ShareConfirmationModalProps {
   isOpen: boolean;
@@ -19,15 +24,41 @@ const ShareConfirmationModal: React.FC<ShareConfirmationModalProps> = ({
   onConfirm,
   bot,
 }) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [generatedLink, setGeneratedLink] = useState<string | null>(null);
+  const [linkHeader, setLinkHeader] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const url = window.location.href;
+    const urlParts = url.split("/");
+    const domain = urlParts[2];
+    setLinkHeader(`http://${domain}/share/`);
+  }, []);
+
+  const handleGenerateLinkClick = async () => {
+    if (bot && selectedDate) {
+      setLoading(true);
+      const expirationDate = selectedDate.toISOString();
+      try {
+        const response = await AssistantsService.shareAssistant(bot.id || "", expirationDate);
+        setGeneratedLink(`${linkHeader}${response.id}`);
+      } catch (error) {
+        console.error("Error generating link:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   const handleCopyClick = () => {
-    if (bot) {
-      const shareText = `https://www.kwaai.com/bot/${bot.id}`;
-      navigator.clipboard.writeText(shareText).then(
+    if (generatedLink) {
+      navigator.clipboard.writeText(generatedLink).then(
         () => {
-          console.log('Copied to clipboard successfully!');
+          console.log("Copied to clipboard successfully!");
         },
         (err) => {
-          console.error('Failed to copy the text to clipboard', err);
+          console.error("Failed to copy the text to clipboard", err);
         }
       );
     }
@@ -47,10 +78,41 @@ const ShareConfirmationModal: React.FC<ShareConfirmationModalProps> = ({
         </button>
       </div>
       <h2>Copy link to share {bot?.name} with students or professors.</h2>
-      <div className="share-div">
-        <p className="share-text">https://www.kwaai.com/bot/{bot?.id}</p>
-        <PrimaryButton text="Copy" onClick={handleCopyClick} enabled={true} />
+
+      <div className="date-picker-container">
+        <label>Select Expiration Date and Time:</label>
+        <div className="date-picker-input">
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            dateFormat="yyyy-MM-dd HH:mm"
+            placeholderText="Choose date and time"
+            className="date-picker-input-field"
+          />
+          <FaCalendarAlt className="date-picker-icon" />
+        </div>
       </div>
+
+      <div className="share-div">
+        <p className="share-text">
+          {generatedLink || "Link will be generated here"}
+        </p>
+        {loading ? (
+          <DotLoader color="#5967F1" size={24} />
+        ) : generatedLink ? (
+          <PrimaryButton text="Copy" onClick={handleCopyClick} enabled={true} />
+        ) : (
+          <PrimaryButton
+            text="Generate Link"
+            onClick={handleGenerateLinkClick}
+            enabled={!!selectedDate}
+          />
+        )}
+      </div>
+
       <div className="modal-buttons">
         <SecondaryButton text="Delete" onClick={onConfirm} enabled={true} />
         <PrimaryButton text="Cancel" onClick={onRequestClose} enabled={true} />
