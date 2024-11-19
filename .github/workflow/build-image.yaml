@@ -1,0 +1,27 @@
+name: Docker Image CI for GHCR
+
+on:
+  push:
+    branches : [ development ]
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set SHA_SHORT
+        id: set-sha
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: Login to github
+        id: login-github
+        env:
+          TOKEN-GITHUB: ${{ secrets.TOKEN-GITHUB }}
+          IMAGE_TAG: "${{ steps.set-sha.outputs.sha_short }}"
+        run: | 
+          docker login  --username melanie-ava --password ${{ env.TOKEN-GITHUB }} ghcr.io
+          docker build --platform linux/amd64 -t ghcr.io/kwaai-ai-lab/kwaai-ui:$IMAGE_TAG .
+          docker image tag ghcr.io/kwaai-ai-lab/kwaai-ui:$IMAGE_TAG ghcr.io/kwaai-ai-lab/kwaai-ui:latest
+          docker push ghcr.io/kwaai-ai-lab/kwaai-ui:latest
