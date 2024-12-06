@@ -48,7 +48,7 @@ const Login: React.FC = () => {
     return (
         <div className="auth-container">
             <ToastContainer />
-            <h1 className="paios-heading">pAI-OS</h1>
+            <h1 className="paios-heading">PAI-Assistant</h1>
             <img src={logo} alt="pAI-OS Logo" className="logo" />
             <h2>{isRegistering ? "Register" : "Login"}</h2>
             <form onSubmit={handleUser}>
