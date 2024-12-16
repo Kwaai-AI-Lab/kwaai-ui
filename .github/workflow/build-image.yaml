@@ -18,10 +18,10 @@ jobs:
       - name: Login to github
         id: login-github
         env:
-          TOKEN-GITHUB: ${{ secrets.TOKEN-GITHUB }}
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
           IMAGE_TAG: "${{ steps.set-sha.outputs.sha_short }}"
         run: | 
-          docker login  --username melanie-ava --password ${{ env.TOKEN-GITHUB }} ghcr.io
+          docker login  --username rquesada --password ${{ env.TOKEN_GITHUB }} ghcr.io
           docker build --platform linux/amd64 -t ghcr.io/kwaai-ai-lab/kwaai-ui:$IMAGE_TAG .
           docker image tag ghcr.io/kwaai-ai-lab/kwaai-ui:$IMAGE_TAG ghcr.io/kwaai-ai-lab/kwaai-ui:latest
           docker push ghcr.io/kwaai-ai-lab/kwaai-ui:latest
