@@ -57,6 +57,7 @@ class messagesService {
           }
       
           const messageData = await response.json();
+          console.log(messageData);
       
           let audioUrl: string | undefined = undefined;
       

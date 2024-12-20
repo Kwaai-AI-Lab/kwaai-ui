@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Bot, conversation, Message, Persona } from "../../data/types";
 import backIcon from "../../assets/back-button-icon.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import Chat from "../../components/chat/chat";
 import ChatLog from "../../components/chatLog/chatLog";
 import messagesService from "../../services/messages.service";
 import "./agentInteraction.css";
 import PersonasService from "../../services/personas.service";
+import AvatarAssistant from "../../components/avatarAssistant/avatarAssistant";
 
 interface AgentInteractionProps {
   bot: Bot;
@@ -229,12 +228,7 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
           <Chat handleMessage={handleMessages} messages={mappedMessages} />
         </div>
         <div className="rightContent">
-          <div className="imageContainer">
-            <img src={personaImageUrl} alt="Bot" className="botImage" />
-            <button onClick={toggleMute} className="muteButton">
-              <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} className="muteIcon" />
-            </button>
-          </div>
+          <AvatarAssistant personaImageUrl={personaImageUrl} toggleMuteHandler={toggleMute} isMuted={isMuted} />
           <div className="historyContent">
             <ChatLog
               botId={bot.id}

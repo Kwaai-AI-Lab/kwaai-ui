@@ -12,7 +12,6 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
                 <Route path="/share/:shareId" element={<ShareHandler />} />
-                <Route path="/asssitant/:assistantId" element={<ShareHandler />} />
                 <Route path="*" element={<Navigate to="/home" />} />
             </Routes>
         </AgentsProvider>
