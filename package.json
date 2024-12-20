@@ -60,6 +60,7 @@
   },
   "proxy": "https://localhost:443",
   "devDependencies": {
+    "@types/react-modal": "^3.16.3",
     "@types/uuid": "^10.0.0"
   },
   "packageManager": "pnpm@8.7.1+sha512.41bb77121614697152da4e052d003baf6fde633fc9a03786ebcd3fdd45c6d066b4dcb3ee6381a076f08b7beccedcced99d61b8548e1b03093b4292727ebe5ea8"

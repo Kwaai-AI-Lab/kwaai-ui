@@ -1,28 +1,39 @@
-/* Contenedor principal centrado */
-.centered-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la pantalla */
-    text-align: center;
-  }
-  
-  /* Título */
-  .centered-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 30px;
-    margin-bottom: 16px;
-  }
-  
-  /* Texto de ID compartido */
-  .centered-text {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21.92px;
-    margin-bottom: 24px;
-  }
-  
+/* Main container */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  text-align: center;
+}
+
+/* Título */
+.centered-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+  margin-bottom: 16px;
+}
+
+.sub-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  width: calc(100vw - 48px);
+  height: calc(100vh - 32px);
+  padding: 16px;
+  gap: 16px;
+}
+
+.chat-container {
+  display: flex;
+  flex: 3;
+  flex-direction: column;
+}
+
+.right-container {
+  flex: 1;
+}
+

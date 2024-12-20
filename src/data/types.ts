@@ -95,3 +95,11 @@ export interface AssistantFile {
   file_id: string | null;
   indexing_status: string;
 }
+
+export interface ShareSchema {
+  id: string;
+  resource_id: string | null;
+  user_id: string | null;
+  expiration_dt: string | null;
+  is_revoked: boolean;
+}

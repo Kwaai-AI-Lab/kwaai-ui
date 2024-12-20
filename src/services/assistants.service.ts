@@ -1,4 +1,4 @@
-import { Bot, conversation, Message, AssistantFile } from "../data/types";
+import { Bot, conversation, Message, AssistantFile, ShareSchema } from "../data/types";
 import { getAuthToken } from "../utils/auth.helper";
 
 interface CreateAssistantResponse {
@@ -80,6 +80,26 @@ class AssistantsService {
     }
   }
 
+  static async getShareDetails(shareId: string): Promise<ShareSchema> {
+    try {
+      const response = await fetch(`${API_URL}/shares/${shareId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data: ShareSchema = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching share details:", error);
+      throw error;
+    }
+  }
+
   static async getSharedAssistants( userId: string ): Promise<Bot[]> {
     try {
       const response = await fetch(`${API_URL}/resources/${userId}/shared`, {
@@ -151,12 +171,30 @@ class AssistantsService {
         body: JSON.stringify(body),
       });
 
+      console.log("response =", response);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
     } catch (error) {
       console.error("Error updating share assistant:", error);
       throw error;
+    }
+  }
+
+  static async getAssistant(id: string): Promise<Bot> {
+    try {
+      const response = await fetch(`${API_URL}/resources/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Error fetching assistant:", error);
+      throw new Error(`Error fetching assistant: ${error}`);
     }
   }
 
@@ -183,7 +221,6 @@ class AssistantsService {
       throw error;
     }
   }
-  
 
   static async deleteAssistant(id: string): Promise<void> {
     try {
@@ -364,7 +401,6 @@ class AssistantsService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${getAuthToken()}`,
         },
         body: JSON.stringify({
           assistant_id: assistantId,

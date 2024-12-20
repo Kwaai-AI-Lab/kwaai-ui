@@ -33,7 +33,7 @@ const ShareConfirmationModal: React.FC<ShareConfirmationModalProps> = ({
     const url = window.location.href;
     const urlParts = url.split("/");
     const domain = urlParts[2];
-    setLinkHeader(`http://${domain}/share/`);
+    setLinkHeader(`https://${domain}/share/`);
   }, []);
 
   const handleGenerateLinkClick = async () => {

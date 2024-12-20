@@ -6,13 +6,6 @@ import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/types';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-function decodeBase64URL(input: string): Uint8Array {
-  const base64 = input.replace(/-/g, "+").replace(/_/g, "/");
-  const pad = base64.length % 4 === 0 ? "" : "===".slice(0, 4 - (base64.length % 4));
-  return Uint8Array.from(atob(base64 + pad), (c) => c.charCodeAt(0));
-}
-
-
 export const login = async (email: string) => {
     try {
       const response = await fetch(
