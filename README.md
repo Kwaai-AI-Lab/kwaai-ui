@@ -1,5 +1,12 @@
 # Kwaai ai-assistant ui
 
+## With docker
+Run the command:
+`
+docker build --no-cache --build-arg APP_API_URL=https://0.0.0.0:8443/api/v1 -t paiassistant .
+`
+Where `APP_API_URL` is the url where is running the backend
+
 ## How to start the application
 
 - Install packages
