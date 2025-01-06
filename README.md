@@ -1,35 +1,5 @@
-# Kwaai ai-assistant ui
 
-## With docker
-Run the command:
-`
-docker build --no-cache --build-arg APP_API_URL=https://0.0.0.0:8443/api/v1 -t paiassistant .
-`
-Where `APP_API_URL` is the url where is running the backend
 
-## How to start the application
-
-- Install packages
-  
-`
-    npm i
-`
-
-- Download the backend (pAI-OS) from the following repository and run the instructions:
-
-[pAI-OS GitHub Repository](https://github.com/pAI-OS/paios)
-
-- Create .env file
-In the root of the project, create a `.env` file and add the following line with the correct value of the server URL:
-`
-    REACT_APP_API_URL=http://localhost:3080/api/v1
-`
-
-- Start the frontend
-
-`
-    npm start
-`
 ### Building an image for production
 
 The above commands will build and run a development server, with the source code directoy bind-mounted to your host machine (any changes you make will immediately be re-built after saving). To create an image for production, with pre-built sources, no development dependencies etc., run the following...
@@ -47,7 +17,10 @@ Welcome to **PAI-Assistant**, a personal assistant project designed for students
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)
-3. [Creating a Persona](#creating-a-persona)
+3. [Setup with docker](#setup-with-docker)
+4. [Setup without docker](#setup-without-docker)
+5. [Building an image for production](#building-an-image-for-production)
+6. [Creating a Persona](#creating-a-persona)
 4. [Creating an Assistant](#creating-an-assistant)
 5. [Managing Knowledge Base](#managing-knowledge-base)
 6. [Testing Your Assistant](#testing-your-assistant)
@@ -62,14 +35,54 @@ Welcome to **PAI-Assistant**, a personal assistant project designed for students
 PAI-Assistant allows users to create personal assistants that retrieve information from a personalized knowledge base using a persona of their choice. Follow these instructions to set up your assistant.
 
 ---
-
 ## Prerequisites
 
 Before you begin, make sure you have access to:
-- PAI OS project Donwloaded and Running. https://github.com/pAI-OS/paios/
+- PAI OS project Donwloaded and Running. https://github.com/Kwaai-AI-Lab/assistant
 - Ollama installed in your computer. https://ollama.com/
 - Any documents or knowledge base content you wish to upload.
 
+---
+
+## Setup with docker
+
+Build the app with the following command:
+
+`
+docker build --no-cache --build-arg APP_API_URL=https://0.0.0.0:8443/api/v1 -t paiassistant .
+`
+
+Where `APP_API_URL` is the url where is running the PAIOS
+
+Run the image with the following command:
+
+`
+docker run -p 3000:3000 paiassistant
+`
+---
+## Setup without docker
+
+- Install packages
+  
+`
+    npm i
+`
+
+- Download the backend (pAI-OS) from the following repository and run the instructions:
+
+[pAI-OS GitHub Repository](https://github.com/Kwaai-AI-Lab/assistant)
+
+- Create .env file
+In the root of the project, create a `.env` file and add the following line with the correct value of the server URL:
+`
+    REACT_APP_API_URL=http://localhost:3080/api/v1
+`
+
+- Start the frontend
+
+`
+    npm start
+`
 ---
 
 ## Creating a Persona
