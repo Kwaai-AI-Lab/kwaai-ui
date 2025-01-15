@@ -4,7 +4,7 @@ import {
   } from "@simplewebauthn/browser";
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/types';
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://localhost:8443/api/v1";
 
 export const login = async (email: string) => {
     try {
