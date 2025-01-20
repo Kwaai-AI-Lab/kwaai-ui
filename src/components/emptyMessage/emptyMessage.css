@@ -6,18 +6,17 @@
     height: 100%;
     width: 100%;
     text-align: center;
-  }
-  
-  .empty-message img {
+}
+
+.empty-message img {
     margin-bottom: 20px; /* Adjust as needed */
-  }
-  
-  .empty-message span {
+}
+
+.empty-message span {
     display: block;
     margin-bottom: 10px; /* Adjust as needed */
     font-weight: 600;
     font-size: 32px;
     color: #595959;
     font-family: 'Poppins', sans-serif;
-  }
-  
+}

@@ -1,118 +1,118 @@
 .agentInteractionContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
 }
 
 .headerInteractionContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  width: calc(100% - 20px);
-  gap: 10px;
-  padding-left: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    width: calc(100% - 20px);
+    gap: 10px;
+    padding-left: 5px;
 }
 
 .backButton {
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .backIcon {
-  width: 44px;
-  height: 44px;
+    width: 44px;
+    height: 44px;
 }
 
 .botName {
-  font-family: 'Poppins', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 48px;
-  text-align: left;
-  display: flex;
-  align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+    text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 .additionalText {
-  font-family: 'Poppins', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 30px;
-  text-align: left;
-  color: #9577F5;
-  display: flex;
-  align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: left;
+    color: #9577f5;
+    display: flex;
+    align-items: center;
 }
 
 .bodyInteractionContainer {
-  display: flex;
-  width: 100%;
-  height: 100%;
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
 
 .leftContent {
-  width: 78%;
-  height: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 10px;
+    width: 78%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 10px;
 }
 
 .rightContent {
-  width: 22%;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column; /* Set the layout to column direction */
-  align-items: center; /* Center the child elements horizontally */
+    width: 22%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Set the layout to column direction */
+    align-items: center; /* Center the child elements horizontally */
 }
 
 .imageContainer {
-  width: 95%; /* Set the width to 95% of the available space */
-  padding-bottom: 95%; /* Set the height to be equal to the width to maintain the square aspect ratio */
-  margin: 10px auto; /* Center the image horizontally */
-  border-radius: 10px; /* Set border radius for rounded corners */
-  overflow: hidden; /* Hide overflow to ensure rounded corners */
-  position: relative; /* Set the position to relative */
-  flex-shrink: 0; /* Prevent shrinking */
+    width: 95%; /* Set the width to 95% of the available space */
+    padding-bottom: 95%; /* Set the height to be equal to the width to maintain the square aspect ratio */
+    margin: 10px auto; /* Center the image horizontally */
+    border-radius: 10px; /* Set border radius for rounded corners */
+    overflow: hidden; /* Hide overflow to ensure rounded corners */
+    position: relative; /* Set the position to relative */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .botImage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure the image covers the entire container */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire container */
 }
 
 .muteButton {
-  position: absolute;
-  bottom: 5px; /* Position the button at the bottom */
-  right: 5px; /* Position the button to the right */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  border: none;
-  border-radius: 50%;
-  padding: 3px; /* Smaller padding for a smaller button */
-  cursor: pointer;
+    position: absolute;
+    bottom: 5px; /* Position the button at the bottom */
+    right: 5px; /* Position the button to the right */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border: none;
+    border-radius: 50%;
+    padding: 3px; /* Smaller padding for a smaller button */
+    cursor: pointer;
 }
 
 .muteIcon {
-  color: white;
-  font-size: 16px; /* Smaller font size for the icon */
+    color: white;
+    font-size: 16px; /* Smaller font size for the icon */
 }
 
 .historyContent {
-  background-color: #F0F3FF;
-  width: 95%; /* Set the width to 95% of the available space */
-  flex-grow: 1; /* Allow the div to take up the remaining space */
-  margin: 10px auto; /* Center the element horizontally */
-  border-radius: 10px; /* Set border radius for rounded corners */
-  overflow: hidden; /* Hide overflow to ensure rounded corners */
+    background-color: #f0f3ff;
+    width: 95%; /* Set the width to 95% of the available space */
+    flex-grow: 1; /* Allow the div to take up the remaining space */
+    margin: 10px auto; /* Center the element horizontally */
+    border-radius: 10px; /* Set border radius for rounded corners */
+    overflow: hidden; /* Hide overflow to ensure rounded corners */
 }

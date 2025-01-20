@@ -1,7 +1,7 @@
-import React from "react";
-import SideMenu from "../sideMenu/sideMenu";
-import "./sideBar.css";
-import { AgentViewType } from "../../context/botsContext";
+import React from 'react';
+import SideMenu from '../sideMenu/sideMenu';
+import './sideBar.css';
+import { AgentViewType } from '../../context/botsContext';
 
 interface SideBarProps {
     onItemClick: (viewType: AgentViewType) => void;
@@ -16,6 +16,6 @@ const SideBar: React.FC<SideBarProps> = ({ onItemClick }) => {
             </div>
         </div>
     );
-}
+};
 
 export default SideBar;

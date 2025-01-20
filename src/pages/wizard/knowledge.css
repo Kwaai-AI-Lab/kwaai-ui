@@ -2,39 +2,39 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .download-icon {
+}
+
+.download-icon {
     width: 50px;
     margin-bottom: 10px;
-  }
-  
-  .browse-text {
+}
+
+.browse-text {
     margin-top: 10px;
-  }
-  
-  .browse-link {
+}
+
+.browse-link {
     color: #3f51b5;
     cursor: pointer;
     margin-left: 5px;
-  }
-  
-  .file-list {
+}
+
+.file-list {
     margin-top: 20px;
     width: 100%;
     display: flex;
     justify-content: center; /* Center the list */
-  }
-  
-  .file-list ul {
+}
+
+.file-list ul {
     list-style: none;
     width: 100%;
     padding: 0;
     margin: 0;
     text-align: center; /* Center the text inside the list */
-  }
-  
-  .file-item {
+}
+
+.file-item {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     margin-bottom: 5px;
@@ -49,9 +49,9 @@
     width: 100%; /* Full width */
     max-width: 61%; /* No limitar el ancho */
     margin: 5px auto; /* Center the item horizontally */
-  }
-  
-  .remove-file-button {
+}
+
+.remove-file-button {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
 
@@ -61,19 +61,24 @@
     cursor: pointer;
     margin-left: 10px;
     font-weight: bold;
-  }
-  
-  .error-message {
+}
+
+.error-message {
     font-family: 'Poppins', sans-serif;
     max-width: 61.5%;
     color: red;
     font-size: 14px;
     margin-top: 10px;
-  }
+}
 
-
-  .animate-charcter {
-    background-image: linear-gradient(-225deg, #4728b4 0%, #5967F1 29%, #8f2cff 67%, #000000 100%);
+.animate-charcter {
+    background-image: linear-gradient(
+        -225deg,
+        #4728b4 0%,
+        #5967f1 29%,
+        #8f2cff 67%,
+        #000000 100%
+    );
     background-size: auto auto;
     background-clip: border-box;
     background-size: 200% auto;
@@ -86,7 +91,7 @@
     animation: textclip 2s linear infinite;
     display: inline-block;
     font-weight: 300;
-    font-family: "Raleway", sans-serif; /* Add Raleway font here */
+    font-family: 'Raleway', sans-serif; /* Add Raleway font here */
 }
 
 /* Text animation for "Thinking..." and "Searching for references" */
@@ -99,5 +104,7 @@
 /* Transition for the text */
 #text1,
 #text2 {
-    transition: filter 1s ease-in-out, opacity 1s ease-in-out;
+    transition:
+        filter 1s ease-in-out,
+        opacity 1s ease-in-out;
 }

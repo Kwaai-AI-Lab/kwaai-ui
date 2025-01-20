@@ -7,16 +7,22 @@ interface AvatarAssistantProps {
     isMuted: boolean;
 }
 
-const AvatarAssistant: React.FC<AvatarAssistantProps> = ({ personaImageUrl, toggleMuteHandler, isMuted }) => {
-
-return(
-    <div className="imageContainer">
+const AvatarAssistant: React.FC<AvatarAssistantProps> = ({
+    personaImageUrl,
+    toggleMuteHandler,
+    isMuted,
+}) => {
+    return (
+        <div className="imageContainer">
             <img src={personaImageUrl} alt="Bot" className="botImage" />
             <button onClick={toggleMuteHandler} className="muteButton">
-              <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} className="muteIcon" />
+                <FontAwesomeIcon
+                    icon={isMuted ? faVolumeMute : faVolumeUp}
+                    className="muteIcon"
+                />
             </button>
-          </div>
-          );
-}
+        </div>
+    );
+};
 
 export default AvatarAssistant;

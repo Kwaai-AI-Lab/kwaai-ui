@@ -1,32 +1,29 @@
-
-
 ### Building an image for production
 
 The above commands will build and run a development server, with the source code directoy bind-mounted to your host machine (any changes you make will immediately be re-built after saving). To create an image for production, with pre-built sources, no development dependencies etc., run the following...
 
 - Build a production Docker image
 
-`
-    docker build --tag kwaai-ui:latest .
-`
+`    docker build --tag kwaai-ui:latest .`
 
 # PAI-Assistant README
 
 Welcome to **PAI-Assistant**, a personal assistant project designed for students and professors to enhance their learning and teaching experiences. This guide will walk you through the steps to create, customize, and deploy your personal assistant using the PAI-Assistant UI.
 
 ## Table of Contents
+
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)
 3. [Setup with docker](#setup-with-docker)
 4. [Setup without docker](#setup-without-docker)
 5. [Building an image for production](#building-an-image-for-production)
 6. [Creating a Persona](#creating-a-persona)
-4. [Creating an Assistant](#creating-an-assistant)
-5. [Managing Knowledge Base](#managing-knowledge-base)
-6. [Testing Your Assistant](#testing-your-assistant)
-7. [Setting Assistant Privacy](#setting-assistant-privacy)
-8. [Deploying Your Assistant](#deploying-your-assistant)
-9. [Interacting with Your Assistant](#interacting-with-your-assistant)
+7. [Creating an Assistant](#creating-an-assistant)
+8. [Managing Knowledge Base](#managing-knowledge-base)
+9. [Testing Your Assistant](#testing-your-assistant)
+10. [Setting Assistant Privacy](#setting-assistant-privacy)
+11. [Deploying Your Assistant](#deploying-your-assistant)
+12. [Interacting with Your Assistant](#interacting-with-your-assistant)
 
 ---
 
@@ -35,9 +32,11 @@ Welcome to **PAI-Assistant**, a personal assistant project designed for students
 PAI-Assistant allows users to create personal assistants that retrieve information from a personalized knowledge base using a persona of their choice. Follow these instructions to set up your assistant.
 
 ---
+
 ## Prerequisites
 
 Before you begin, make sure you have access to:
+
 - PAI OS project Donwloaded and Running. https://github.com/Kwaai-AI-Lab/assistant
 - Ollama installed in your computer. https://ollama.com/
 - Any documents or knowledge base content you wish to upload.
@@ -48,48 +47,41 @@ Before you begin, make sure you have access to:
 
 Build the app with the following command:
 
-`
-docker build --no-cache --build-arg APP_API_URL=https://0.0.0.0:8443/api/v1 -t paiassistant .
-`
+`docker build --no-cache --build-arg APP_API_URL=https://0.0.0.0:8443/api/v1 -t paiassistant .`
 
 Where `APP_API_URL` is the url where is running the PAIOS
 
 Run the image with the following command:
 
-`
-docker run -p 3000:3000 paiassistant
-`
+`docker run -p 3000:3000 paiassistant`
+
 ---
+
 ## Setup without docker
 
 - Install packages
-  
-`
-    npm i
-`
+
+`    npm i`
 
 - Download the backend (pAI-OS) from the following repository and run the instructions:
 
 [pAI-OS GitHub Repository](https://github.com/Kwaai-AI-Lab/assistant)
 
 - Create .env file
-In the root of the project, create a `.env` file and add the following line with the correct value of the server URL:
-`
-    REACT_APP_API_URL=http://localhost:3080/api/v1
-`
+  In the root of the project, create a `.env` file and add the following line with the correct value of the server URL:
+  `    REACT_APP_API_URL=http://localhost:3080/api/v1`
 
 - Start the frontend
 
-`
-    npm start
-`
+`    npm start`
+
 ---
 
 ## Creating a Persona
 
 1. Navigate to the **Persona** tab in the PAI-Assistant UI.
 2. Create a new persona. This will define the personality of your assistant, determining how it will interact with users.
-   - **Description**: Write a description of who your assistant is and how you’d like it to respond to queries.
+    - **Description**: Write a description of who your assistant is and how you’d like it to respond to queries.
 3. Save your persona.
 
 ---
@@ -119,9 +111,9 @@ In the root of the project, create a `.env` file and add the following line with
 ## Setting Assistant Privacy
 
 1. You can set your assistant’s visibility to **Private**, **Public**, or leave it as a **Draft**.
-   - **Private**: Only you or authorized users can access the assistant.
-   - **Public**: Anyone with the link can interact with your assistant.
-   - **Draft**: Keep the assistant in development mode until it's ready for use.
+    - **Private**: Only you or authorized users can access the assistant.
+    - **Public**: Anyone with the link can interact with your assistant.
+    - **Draft**: Keep the assistant in development mode until it's ready for use.
 
 ---
 
@@ -141,4 +133,5 @@ In the root of the project, create a `.env` file and add the following line with
 ---
 
 ## Tutorial Video
+
 https://github.com/user-attachments/assets/a599102e-a13a-40d5-8f1b-e955fb176c1b

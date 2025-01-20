@@ -9,15 +9,14 @@
     transition: background-color 0.3s;
     border: none; /* Ensure no border is applied */
     border-radius: 6px;
-  }
-  
-  .primary-button.enabled {
-    background-color: #5967F1;
+}
+
+.primary-button.enabled {
+    background-color: #5967f1;
     color: white;
-  }
-  
-  .primary-button.disabled {
+}
+
+.primary-button.disabled {
     background-color: grey;
     color: white;
-  }
-  
+}

@@ -1,68 +1,70 @@
 {
-  "name": "passkey",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.5.2",
-    "@fortawesome/free-brands-svg-icons": "^6.5.2",
-    "@fortawesome/free-regular-svg-icons": "^6.5.2",
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "@prisma/client": "^5.16.1",
-    "@simplewebauthn/browser": "^11.0.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.2",
-    "body-parser": "^1.20.2",
-    "connect-pg-simple": "^9.0.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
-    "jwt-decode": "^4.0.0",
-    "ra-data-simple-rest": "^5.0.1",
-    "react": "^18.3.1",
-    "react-admin": "^5.0.1",
-    "react-datepicker": "^7.5.0",
-    "react-dom": "^18.3.1",
-    "react-dropzone": "^14.2.3",
-    "react-icons": "^5.2.1",
-    "react-modal": "^3.16.1",
-    "react-router-dom": "^6.24.0",
-    "react-scripts": "5.0.1",
-    "react-spinners": "^0.14.1",
-    "react-toastify": "^10.0.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "https://localhost:443",
-  "devDependencies": {
-    "@types/react-modal": "^3.16.3",
-    "@types/uuid": "^10.0.0"
-  },
-  "packageManager": "pnpm@8.7.1+sha512.41bb77121614697152da4e052d003baf6fde633fc9a03786ebcd3fdd45c6d066b4dcb3ee6381a076f08b7beccedcced99d61b8548e1b03093b4292727ebe5ea8"
+    "name": "passkey",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.5.2",
+        "@fortawesome/free-brands-svg-icons": "^6.5.2",
+        "@fortawesome/free-regular-svg-icons": "^6.5.2",
+        "@fortawesome/free-solid-svg-icons": "^6.5.2",
+        "@fortawesome/react-fontawesome": "^0.2.2",
+        "@prisma/client": "^5.16.1",
+        "@simplewebauthn/browser": "^11.0.0",
+        "@testing-library/jest-dom": "^5.17.0",
+        "@testing-library/react": "^13.4.0",
+        "@testing-library/user-event": "^13.5.0",
+        "axios": "^1.7.2",
+        "body-parser": "^1.20.2",
+        "connect-pg-simple": "^9.0.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.19.2",
+        "express-session": "^1.18.0",
+        "jwt-decode": "^4.0.0",
+        "ra-data-simple-rest": "^5.0.1",
+        "react": "^18.3.1",
+        "react-admin": "^5.0.1",
+        "react-datepicker": "^7.5.0",
+        "react-dom": "^18.3.1",
+        "react-dropzone": "^14.2.3",
+        "react-icons": "^5.2.1",
+        "react-modal": "^3.16.1",
+        "react-router-dom": "^6.24.0",
+        "react-scripts": "5.0.1",
+        "react-spinners": "^0.14.1",
+        "react-toastify": "^10.0.5",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "format": "prettier --write ."
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "proxy": "https://localhost:443",
+    "devDependencies": {
+        "@types/react-modal": "^3.16.3",
+        "@types/uuid": "^10.0.0",
+        "prettier": "^3.4.2"
+    },
+    "packageManager": "pnpm@8.7.1+sha512.41bb77121614697152da4e052d003baf6fde633fc9a03786ebcd3fdd45c6d066b4dcb3ee6381a076f08b7beccedcced99d61b8548e1b03093b4292727ebe5ea8"
 }

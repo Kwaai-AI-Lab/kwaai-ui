@@ -1,14 +1,14 @@
-.sidebar-container{
+.sidebar-container {
     width: 100%;
     height: 100%;
 }
 
-.sidebar-top{
+.sidebar-top {
     width: 100%;
     height: 90px;
 }
 
-.sidebar-bottom{
+.sidebar-bottom {
     width: 100%;
     height: calc(100% - 90px);
 }
