@@ -109,7 +109,7 @@
 }
 
 .historyContent {
-  background-color: #F0F3FF;
+  background-color: #F5F9FF;
   width: 95%; /* Set the width to 95% of the available space */
   flex-grow: 1; /* Allow the div to take up the remaining space */
   margin: 10px auto; /* Center the element horizontally */

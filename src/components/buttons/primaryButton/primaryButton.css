@@ -12,12 +12,12 @@
   }
   
   .primary-button.enabled {
-    background-color: #5967F1;
+    background-color: #045CE2;
     color: white;
   }
   
   .primary-button.disabled {
-    background-color: grey;
+    background-color: #E2E2E2;
     color: white;
   }
   

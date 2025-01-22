@@ -74,9 +74,9 @@
 
 textarea {
   resize: none;
-  border-color: #5967F1;
+  border-color: #045CE2;
   border-radius: 8px;
-  background-color: #F0F3FF;
+  background-color: #F5F9FF;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 16px;
@@ -85,9 +85,9 @@ textarea {
 }
 
 .dropzone {
-  border: 1px dashed #5967F1;
+  border: 1px dashed #045CE2;
   border-radius: 4px;
-  background: #F0F3FF;
+  background: #F5F9FF;
   padding: 20px;
   text-align: center;
   cursor: pointer;

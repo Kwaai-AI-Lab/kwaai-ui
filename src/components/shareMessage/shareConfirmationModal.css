@@ -14,7 +14,7 @@
 }
 
 .share-div {
-  border: 1px solid #5967F1;
+  border: 1px solid #045CE2;
   border-radius: 4px;
   height: 66px;
   width: calc(100% - 48px);
@@ -63,7 +63,7 @@
   align-items: center;
   height: 44px;
   padding: 0 12px;
-  border: 1px solid #5967F1;
+  border: 1px solid #045CE2;
   border-radius: 6px;
   background-color: #f9f9f9;
   font-family: 'Poppins', sans-serif;

@@ -221,7 +221,6 @@ const AgentInteraction: React.FC<AgentInteractionProps> = ({ bot, onBack }) => {
           <img src={backIcon} alt="Back" className="backIcon" />
         </button>
         <h1 className="botName">{bot.name}</h1>
-        <p className="additionalText">CS-346</p>
       </div>
       <div className="bodyInteractionContainer">
         <div className="leftContent">

@@ -33,7 +33,7 @@ body {
     flex-direction: column;
     height: 100%;
     padding: 10px;
-    background-color: #F0F3FF;
+    background-color: #F5F9FF;
     width: 100%; /* Set width to 100% */
     border-radius: 4px;
     margin-bottom: 30px;
@@ -47,7 +47,7 @@ body {
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    background-color: #F0F3FF; /* Set background color to match container */
+    background-color: #F5F9FF; /* Set background color to match container */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
   

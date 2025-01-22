@@ -5,17 +5,16 @@
     line-height: 24px;
     text-align: center;
     padding: 10px 28px;
-    border: 1px solid #5967F1; /* Border with specified color */
     background-color: white; /* Background color white */
-    color: #5967F1; /* Text color */
-    border-radius: 6px; /* Border radius */
+    color: #565656; /* Text color */
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    border: 1px solid #E2E2E2; /* Add a border */
   }
   
   .secondary-button.enabled {
-    background-color: white; /* Background color white when enabled */
-    color: #5967F1; /* Text color when enabled */
+    background-color: #E2E2E2; /* Background color white when enabled */
+    color: #565656; /* Text color when enabled */
   }
   
   .secondary-button.disabled {

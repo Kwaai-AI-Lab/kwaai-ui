@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SideMenuItem from "./sideMenuItem/sideMenuItem";
 import agentIcon from "../../assets/agent-icon.png";
 import UserIcon from "../../assets/user-regular.svg";
+import kwaaiLogo from "../../assets/kwaai-new-logo.png";
 import "./sideMenu.css";
 import { AgentViewType } from "../../context/botsContext";
 
@@ -29,6 +30,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ onItemClick, viewType }) => {
 
   return (
     <div className="sideMenu-container">
+      <div className="sideMenu-logo">
+        <img src={kwaaiLogo} alt="kwaai logo" />
+      </div>
       {menuItems.map((item, index) => (
         <SideMenuItem 
           key={index} 
